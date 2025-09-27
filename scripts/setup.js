@@ -4,87 +4,71 @@
 // Includes.
 ///
 const { db } = require('@arangodb')
-const { context } = require('@arangodb/locals')
 
 ///
 // Local includes.
 ///
-const helpers = require("../utils/helpers.js")
 const K = require("../globals")
 
 ///
-// Indexes.
+// Operation results log.
 ///
-const idx_fields = {
-	idx_species: ["properties.eu.species_list[*]"],
-	idx_units: ["properties.eufgis.gcu_id_number_list[*]"]
+const results = []
+
+///
+// Collection name.
+///
+const collectionName = K.collection.name
+
+///
+// Create collection.
+///
+if(!db._collection(collectionName)) {
+	console.debug(`Creating document collection ${collectionName}.`)
+	db._createDocumentCollection(collectionName)
+	results.push(`Created document collection ${collectionName}.`)
+} else {
+	results.push(`Using existing document collection ${collectionName}.`)
 }
 
 ///
-// Results.
+// Reference collection.
 ///
-const results = {
-	created: [],
-	existing: [],
-	indexes: []
-}
-
+const collection = db._collection(collectionName)
 
 ///
-// Handle pair collections.
+// Create indexes.
 ///
-for (const pair of K.pairs.list)
-{
-	///
-	// Iterate types.
-	///
-	for (const type of K.types.list)
-	{
-		///
-		// Create final collection with indexes for pair.
-		///
-		const name = `${pair}_${type}`
-		if(!db._collection(name)) {
-			console.debug(`Creating document collection ${name}.`)
-			db._createDocumentCollection(name)
-			results.created.push(name)
-		} else {
-			results.existing.push(name)
-			if(context.isProduction) {
-				console.debug(`Document collection ${name} already exists. Leaving it untouched.`)
-			}
-		}
-
-		///
-		// Save collection and collect existing indexes.
-		///
-		const collection = db._collection(name)
-		const index_names = collection.getIndexes().map(index => index.name)
-		
-		///
-		// Create indexes.
-		///
-		Object.entries(idx_fields)
-			.forEach(([idx_name, idx_field]) => {
-				// Check index.
-				if(!index_names.includes(idx_name)) {
-					results.indexes.push(`${name}.${idx_name}`)
-					if (context.isProduction) {
-						console.debug(`Ensuring index ${idx_name} for collection ${name}.`)
-					}
-					collection.ensureIndex({
-						name: idx_name,
-						type: "persistent",
-						fields: idx_field,
-						estimates: true,
-						cacheEnabled: false,
-						deduplicate: false,
-						sparse: false,
-						unique: false
-					})
-				}
-			})
+const indexes = collection.getIndexes().map(index => index.name)
+K.collection.index.forEach((index) => {
+	if(!indexes.includes(index.name)) {
+		console.debug(`Ensuring index ${index.name} for collection ${collectionName}.`)
+		collection.ensureIndex({
+			name: index.name,
+			type: index.type,
+			fields: index.fields,
+			cacheEnabled: index.cache,
+			deduplicate: index.deduplicate,
+			sparse: index.sparse,
+			unique: index.unique
+		})
+		results.push(`Created index ${index.name} for collection ${collectionName}.`)
+	} else {
+		results.push(`Using existing index ${index.name} from collection ${collectionName}.`)
 	}
-}
+})
+
+///
+// Create views.
+///
+K.collection.view.forEach((view) => {
+	if (db._view(view.name) === null) {
+		console.debug(`Ensuring view ${view.name}.`)
+		db._createView(view.name, view.type, view.properties)
+		results.push(`Created view ${view.name}.`)
+	} else {
+		results.push(`Using existing view ${view.name}.`)
+	}
+})
 
 module.exports = results
