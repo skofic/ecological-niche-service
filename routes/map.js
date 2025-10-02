@@ -29,7 +29,8 @@ const K = require("../globals.js")
 ///
 // Models.
 ///
-const ModelMapPointsArray = require('../models/ModelMapPointsArray')
+const ModelMapCoordinatesArray = require('../models/ModelMapCoordinatesArray')
+const ModelMapCoordinatesJson = require('../models/ModelMapCoordinatesJson')
 const ModelScenarioParam = require('../models/ModelScenarioParam')
 const ModelSpeciesParam = require('../models/ModelSpeciesParam')
 const ModelPeriodParam = require('../models/ModelPeriodParam')
@@ -39,9 +40,15 @@ const ModelLimit = require("../models/ModelLimit");
 const ErrorModel = require("../models/error.generic");
 
 ///
+// Helpers.
+///
+const helpers = require("../utils/helpers.js")
+
+///
 // Queries.
 ///
-const QueryMapPointsArray = require('../queries/mapPointsArray')
+const QueryMapCoordinatesArray = require('../queries/mapCoordinatesArray')
+const QueryMapCoordinatesJson = require('../queries/mapCoordinatesJson')
 
 
 ///
@@ -84,14 +91,14 @@ router.tag('map')
  */
 router
 	.get(
-		'/point/array',
+		'/coordinates/array',
 		function (request, response) {
-			pointArray(request, response)
+			coordinatesArray(request, response)
 		},
-		'map-point-array'
+		'map-coordinates-array'
 	)
-	.summary(metadata.pointArray.summary)
-	.description(metadata.pointArray.description)
+	.summary(metadata.coordinatesArray.summary)
+	.description(metadata.coordinatesArray.description)
 	
 	.queryParam('species', ModelSpeciesParam)
 	.queryParam('period', ModelPeriodParam)
@@ -100,7 +107,49 @@ router
 	.queryParam('start', ModelStart)
 	.queryParam('limit', ModelLimit)
 	
-	.response(200, [ModelMapPointsArray], metadata.pointArray.response)
+	.response(200, [ModelMapCoordinatesArray], metadata.coordinatesArray.response)
+	.response(400, ErrorModel, dd`
+		Known and intercepted error:
+		- *errorNum*: Error number.
+		- *errorMessage*: Error message.
+		- *code*: Internal error code.
+	`)
+
+/**
+ * Map coordinates and probability as JSON.
+ *
+ * This service will return one object for each grid coordinate that has a value
+ * and grid point, points with missing probabilities will be ignored.
+ *
+ * The service expects the following parameters:
+ * - species: The requested genus and species.
+ * - period:  The period for which we want the probability.
+ * - model:   The scenario for future modelled data.
+ *
+ * The service will return the following object:
+ * - lon: Longitude in decimal degrees.
+ * - lat: Latitude in decimal degrees.
+ * - value: Species occurrence probability (0-100).
+ */
+router
+	.get(
+		'/coordinates/json',
+		function (request, response) {
+			coordinatesJson(request, response)
+		},
+		'map-coordinates-json'
+	)
+	.summary(metadata.coordinatesJson.summary)
+	.description(metadata.coordinatesJson.description)
+	
+	.queryParam('species', ModelSpeciesParam)
+	.queryParam('period', ModelPeriodParam)
+	.queryParam('scenario', ModelScenarioParam)
+	
+	.queryParam('start', ModelStart)
+	.queryParam('limit', ModelLimit)
+	
+	.response(200, [ModelMapCoordinatesJson], metadata.coordinatesJson.response)
 	.response(400, ErrorModel, dd`
 		Known and intercepted error:
 		- *errorNum*: Error number.
@@ -128,69 +177,75 @@ router
  * @param {Object} request: Service request.
  * @param {Object} response: Service response.
  */
-function pointArray(request, response)
+function coordinatesArray(request, response)
 {
-	///
-	// Parameters.
-	///
-	const period = request.queryParams.period
-	const species = request.queryParams.species
-	const scenario = request.queryParams.scenario
-	const start = request.queryParams.start
-	const limit = request.queryParams.limit
-	
 	///
 	// Validate parameters.
 	///
-	switch(period) {
-		case 'cur2005':
-			break
-		
-		case 'fut2035':
-		case 'fut2065':
-		case 'fut2095':
-			switch(scenario) {
-				case 'rcp45':
-				case 'rcp85':
-					break
-				
-				default:
-					response.status(400)
-					response.send({
-						errorNum: 2,
-						errorMessage: `Invalid scenario (${scenario}), provide 'rcp45' or 'rcp85'.`,
-						code: 0
-					})
-					return
-			}
-			break
-		
-		default:
-			response.status(400)
-			response.send({
-				errorNum: 1,
-				errorMessage: `Invalid period (${period}), provide 'cur2005', 'fut2035', 'fut2065' or 'fut2095'.`,
-				code: 0
-			})
-			return
+	if(! helpers.validatePeriod(request, response)) {
+		return
 	}
 	
 	///
 	// Perform query.
 	///
 	response
-	    .send(
-	 		db._query(
-	 			QueryMapPointsArray,
-	 			{
-	 				'@collection': K.collection.name,
-	 				'period': period,
-	 				'species': species,
-	 				'scenario': scenario,
-	 				'start': start,
-				    'limit': limit
-	 			}
-	 		).toArray()
-	 	)
+		.send(
+			db._query(
+				QueryMapCoordinatesArray,
+				{
+					'@collection': K.collection.name,
+					'period': request.queryParams.period,
+					'species': request.queryParams.species,
+					'scenario': request.queryParams.scenario,
+					'start': request.queryParams.start,
+					'limit': request.queryParams.limit
+				}
+			).toArray()
+		)
+	
+} // coordinatesArray()
 
-} // pointArray()
+/**
+ * Return array of coordinates and species occurrence probabilities.
+ *
+ * The function will first ensure all required parameters have been provided and
+ * are correct, then it will query the database and return the result as an array
+ * of objects holding three elements:
+ * - lon: Longitude in decimal degrees.
+ * - lat: Latitude in decimal degrees.
+ * - value: Species occurrence as a float in the range from 0 to 100.
+ *
+ * No value is returned by the function, the service response is handled here.
+ *
+ * @param {Object} request: Service request.
+ * @param {Object} response: Service response.
+ */
+function coordinatesJson(request, response)
+{
+	///
+	// Validate parameters.
+	///
+	if(! helpers.validatePeriod(request, response)) {
+		return
+	}
+	
+	///
+	// Perform query.
+	///
+	response
+		.send(
+			db._query(
+				QueryMapCoordinatesJson,
+				{
+					'@collection': K.collection.name,
+					'period': request.queryParams.period,
+					'species': request.queryParams.species,
+					'scenario': request.queryParams.scenario,
+					'start': request.queryParams.start,
+					'limit': request.queryParams.limit
+				}
+			).toArray()
+		)
+	
+} // coordinatesJson()
