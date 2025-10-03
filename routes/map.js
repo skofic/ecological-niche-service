@@ -29,8 +29,13 @@ const K = require("../globals.js")
 ///
 // Models.
 ///
+const ModelMapSpeciesCoordinatesArray = require('../models/ModelMapSpeciesCoordinatesArray')
+const ModelMapSpeciesCoordinatesPoint = require('../models/ModelMapSpeciesCoordinatesPoint')
+const ModelMapSpeciesCoordinatesPoly = require('../models/ModelMapSpeciesCoordinatesPoly')
+const ModelMapCoordinatesCount = require('../models/ModelMapCoordinatesCount')
 const ModelMapCoordinatesArray = require('../models/ModelMapCoordinatesArray')
-const ModelMapCoordinatesJson = require('../models/ModelMapCoordinatesJson')
+const ModelMapCoordinatesPoint = require('../models/ModelMapCoordinatesPoint')
+const ModelMapCoordinatesPoly = require('../models/ModelMapCoordinatesPoly')
 const ModelScenarioParam = require('../models/ModelScenarioParam')
 const ModelSpeciesParam = require('../models/ModelSpeciesParam')
 const ModelPeriodParam = require('../models/ModelPeriodParam')
@@ -47,8 +52,14 @@ const helpers = require("../utils/helpers.js")
 ///
 // Queries.
 ///
+const QueryMapSpeciesCoordinatesCount = require('../queries/mapSpeciesCoordinatesCount')
+const QueryMapSpeciesCoordinatesArray = require('../queries/mapSpeciesCoordinatesArray')
+const QueryMapSpeciesCoordinatesPoint = require('../queries/mapSpeciesCoordinatesPoint')
+const QueryMapSpeciesCoordinatesPoly = require('../queries/mapSpeciesCoordinatesPoly')
+const QueryMapCoordinatesCount = require('../queries/mapCoordinatesCount')
 const QueryMapCoordinatesArray = require('../queries/mapCoordinatesArray')
-const QueryMapCoordinatesJson = require('../queries/mapCoordinatesJson')
+const QueryMapCoordinatesPoint = require('../queries/mapCoordinatesPoint')
+const QueryMapCoordinatesPoly = require('../queries/mapCoordinatesPoly')
 
 
 ///
@@ -74,7 +85,159 @@ router.tag('map')
 /******************************************************************************/
 
 /**
- * Map coordinates and probability as array.
+ * Map coordinates count.
+ *
+ * This service will return the count of all map grid points.
+ */
+router
+	.get(
+		'coordinates/count',
+		function (request, response) {
+			coordinatesCount(request, response)
+		},
+		'map-coordinates-count'
+	)
+	
+	.summary(metadata.coordinatesCount.summary)
+	.description(metadata.coordinatesCount.description)
+	
+	.response(200, ModelMapCoordinatesCount, metadata.coordinatesCount.response)
+
+/**
+ * Map coordinates as array.
+ *
+ * This service will return the coordinates for all grid points.
+ *
+ * The service expects the following parameters:
+ * - start: First record index (0 based).
+ * - limit: Number of records to return.
+ *
+ * The service will return each record as the following array:
+ * - Longitude in decimal degrees.
+ * - Latitude in decimal degrees.
+ */
+router
+	.get(
+		'coordinates/array',
+		function (request, response) {
+			coordinatesArray(request, response)
+		},
+		'map-coordinates-array'
+	)
+	.summary(metadata.coordinatesArray.summary)
+	.description(metadata.coordinatesArray.description)
+	
+	.queryParam('start', ModelStart)
+	.queryParam('limit', ModelLimit)
+	
+	.response(200, [ModelMapCoordinatesArray], metadata.coordinatesArray.response)
+	.response(400, ErrorModel, dd`
+		Known and intercepted error:
+		- *errorNum*: Error number.
+		- *errorMessage*: Error message.
+		- *code*: Internal error code.
+	`)
+
+/**
+ * Map coordinates as points.
+ *
+ * This service will return the coordinates for all grid cells
+ * as GeoJSON points.
+ *
+ * The service expects the following parameters:
+ * - start: First record index (0 based).
+ * - limit: Number of records to return.
+ *
+ * The service will return each record as a GeoJSONL point.
+ */
+router
+	.get(
+		'coordinates/point',
+		function (request, response) {
+			coordinatesPoint(request, response)
+		},
+		'map-coordinates-point'
+	)
+	.summary(metadata.coordinatesPoint.summary)
+	.description(metadata.coordinatesPoint.description)
+	
+	.queryParam('start', ModelStart)
+	.queryParam('limit', ModelLimit)
+	
+	.response(200, [ModelMapCoordinatesPoint], metadata.coordinatesPoint.response)
+	.response(400, ErrorModel, dd`
+		Known and intercepted error:
+		- *errorNum*: Error number.
+		- *errorMessage*: Error message.
+		- *code*: Internal error code.
+	`)
+
+/**
+ * Map coordinates as polygons.
+ *
+ * This service will return the coordinates for all grid cells
+ * as GeoJSON polygons.
+ *
+ * The service expects the following parameters:
+ * - start: First record index (0 based).
+ * - limit: Number of records to return.
+ *
+ * The service will return each record as a GeoJSONL polygon.
+ */
+router
+	.get(
+		'coordinates/poly',
+		function (request, response) {
+			coordinatesPoly(request, response)
+		},
+		'map-coordinates-poly'
+	)
+	.summary(metadata.coordinatesPoly.summary)
+	.description(metadata.coordinatesPoly.description)
+	
+	.queryParam('start', ModelStart)
+	.queryParam('limit', ModelLimit)
+	
+	.response(200, [ModelMapCoordinatesPoly], metadata.coordinatesPoly.response)
+	.response(400, ErrorModel, dd`
+		Known and intercepted error:
+		- *errorNum*: Error number.
+		- *errorMessage*: Error message.
+		- *code*: Internal error code.
+	`)
+
+/**
+ * Map species occurrence probability values count.
+ *
+ * This service will return the count of all available grid cells
+ * for the provided species, period and model scenario.
+ *
+ * The service expects the following parameters:
+ * - species: The requested genus and species.
+ * - period:  The period for which we want the probability.
+ * - model:   The scenario for future modelled data.
+ *
+ * The service will return tan integer with the records count.
+ */
+router
+	.get(
+		'/species/coordinates/count',
+		function (request, response) {
+			speciesCoordinatesCount(request, response)
+		},
+		'map-species-coordinates-count'
+	)
+	.summary(metadata.coordinatesCount.summary)
+	.description(metadata.coordinatesCount.description)
+	
+	.queryParam('species', ModelSpeciesParam)
+	.queryParam('period', ModelPeriodParam)
+	.queryParam('scenario', ModelScenarioParam)
+	
+	.response(200, ModelMapCoordinatesCount, metadata.coordinatesCount.response)
+
+/**
+ * Map species occurrence probability as array.
  *
  * This service will return one array for each grid coordinate that has a value
  * and grid point, points with missing probabilities will be ignored.
@@ -91,14 +254,14 @@ router.tag('map')
  */
 router
 	.get(
-		'/coordinates/array',
+		'/species/coordinates/array',
 		function (request, response) {
-			coordinatesArray(request, response)
+			speciesCoordinatesArray(request, response)
 		},
-		'map-coordinates-array'
+		'map-species-coordinates-array'
 	)
-	.summary(metadata.coordinatesArray.summary)
-	.description(metadata.coordinatesArray.description)
+	.summary(metadata.speciesCoordinatesArray.summary)
+	.description(metadata.speciesCoordinatesArray.description)
 	
 	.queryParam('species', ModelSpeciesParam)
 	.queryParam('period', ModelPeriodParam)
@@ -107,7 +270,7 @@ router
 	.queryParam('start', ModelStart)
 	.queryParam('limit', ModelLimit)
 	
-	.response(200, [ModelMapCoordinatesArray], metadata.coordinatesArray.response)
+	.response(200, [ModelMapSpeciesCoordinatesArray], metadata.speciesCoordinatesArray.response)
 	.response(400, ErrorModel, dd`
 		Known and intercepted error:
 		- *errorNum*: Error number.
@@ -116,31 +279,29 @@ router
 	`)
 
 /**
- * Map coordinates and probability as JSON.
+ * Map species occurrence probability as GeoJSONL point.
  *
- * This service will return one object for each grid coordinate that has a value
- * and grid point, points with missing probabilities will be ignored.
+ * This service will return a GeoJSONL point object for each grid cell
+ * that has a value, grid cells with missing probabilities will be ignored.
  *
  * The service expects the following parameters:
  * - species: The requested genus and species.
  * - period:  The period for which we want the probability.
  * - model:   The scenario for future modelled data.
  *
- * The service will return the following object:
- * - lon: Longitude in decimal degrees.
- * - lat: Latitude in decimal degrees.
- * - value: Species occurrence probability (0-100).
+ * The service will return A GeoJSONL object with the cell center point
+ * and as property the species occurrence probability as 'value' (0-100).
  */
 router
 	.get(
-		'/coordinates/json',
+		'/species/coordinates/point',
 		function (request, response) {
-			coordinatesJson(request, response)
+			speciesCoordinatesPoint(request, response)
 		},
-		'map-coordinates-json'
+		'map-species-coordinates-point'
 	)
-	.summary(metadata.coordinatesJson.summary)
-	.description(metadata.coordinatesJson.description)
+	.summary(metadata.speciesCoordinatesPoint.summary)
+	.description(metadata.speciesCoordinatesPoint.description)
 	
 	.queryParam('species', ModelSpeciesParam)
 	.queryParam('period', ModelPeriodParam)
@@ -149,7 +310,47 @@ router
 	.queryParam('start', ModelStart)
 	.queryParam('limit', ModelLimit)
 	
-	.response(200, [ModelMapCoordinatesJson], metadata.coordinatesJson.response)
+	.response(200, [ModelMapSpeciesCoordinatesPoint], metadata.speciesCoordinatesPoint.response)
+	.response(400, ErrorModel, dd`
+		Known and intercepted error:
+		- *errorNum*: Error number.
+		- *errorMessage*: Error message.
+		- *code*: Internal error code.
+	`)
+
+/**
+ * Map species occurrence probability as GeoJSONL polygon.
+ *
+ * This service will return a GeoJSONL polygon object for each grid cell
+ * that has a value, grid cells with missing probabilities will be ignored.
+ *
+ * The service expects the following parameters:
+ * - species: The requested genus and species.
+ * - period:  The period for which we want the probability.
+ * - model:   The scenario for future modelled data.
+ *
+ * The service will return A GeoJSONL object with the cell bounding box
+ * and as property the species occurrence probability as 'value' (0-100).
+ */
+router
+	.get(
+		'/species/coordinates/poly',
+		function (request, response) {
+			speciesCoordinatesPoly(request, response)
+		},
+		'map-species-coordinates-poly'
+	)
+	.summary(metadata.speciesCoordinatesPoly.summary)
+	.description(metadata.speciesCoordinatesPoly.description)
+	
+	.queryParam('species', ModelSpeciesParam)
+	.queryParam('period', ModelPeriodParam)
+	.queryParam('scenario', ModelScenarioParam)
+	
+	.queryParam('start', ModelStart)
+	.queryParam('limit', ModelLimit)
+	
+	.response(200, [ModelMapSpeciesCoordinatesPoly], metadata.speciesCoordinatesPoly.response)
 	.response(400, ErrorModel, dd`
 		Known and intercepted error:
 		- *errorNum*: Error number.
@@ -161,6 +362,160 @@ router
 /******************************************************************************/
 /*                                 FUNCTIONS                                  */
 /******************************************************************************/
+
+/**
+ * Return count of all map grid cells.
+ *
+ * No value is returned by the function, the service response is handled here.
+ *
+ * @param {Object} request: Service request.
+ * @param {Object} response: Service response.
+ */
+function coordinatesCount(request, response)
+{
+	///
+	// Perform query.
+	///
+	response
+		.send(
+			db._query(
+				QueryMapCoordinatesCount,
+				{
+					'@collection': K.collection.name
+				}
+			).toArray()[0]
+		)
+	
+} // coordinatesCount()
+
+/**
+ * Return array of all grid point coordinates.
+ *
+ * The function expects the @count parameter:
+ * - start: 0-based first record index.
+ * - limit: Number of records to return.
+ *
+ * No value is returned by the function, the service response is handled here.
+ *
+ * @param {Object} request: Service request.
+ * @param {Object} response: Service response.
+ */
+function coordinatesArray(request, response)
+{
+	///
+	// Perform query.
+	///
+	response
+		.send(
+			db._query(
+				QueryMapCoordinatesArray,
+				{
+					'@collection': K.collection.name,
+					'start': request.queryParams.start,
+					'limit': request.queryParams.limit
+				}
+			).toArray()
+		)
+	
+} // coordinatesArray()
+
+/**
+ * Return array of all grid GeoJson points.
+ *
+ * The function expects the @count parameter:
+ * - start: 0-based first record index.
+ * - limit: Number of records to return.
+ *
+ * No value is returned by the function, the service response is handled here.
+ *
+ * @param {Object} request: Service request.
+ * @param {Object} response: Service response.
+ */
+function coordinatesPoint(request, response)
+{
+	///
+	// Perform query.
+	///
+	response
+		.send(
+			db._query(
+				QueryMapCoordinatesPoint,
+				{
+					'@collection': K.collection.name,
+					'start': request.queryParams.start,
+					'limit': request.queryParams.limit
+				}
+			).toArray()
+		)
+	
+} // coordinatesPoint()
+
+/**
+ * Return array of all grid GeoJson polygons.
+ *
+ * The function expects the following parameters:
+ * - start: 0-based first record index.
+ * - limit: Number of records to return.
+ *
+ * No value is returned by the function, the service response is handled here.
+ *
+ * @param {Object} request: Service request.
+ * @param {Object} response: Service response.
+ */
+function coordinatesPoly(request, response)
+{
+	///
+	// Perform query.
+	///
+	response
+		.send(
+			db._query(
+				QueryMapCoordinatesPoly,
+				{
+					'@collection': K.collection.name,
+					'start': request.queryParams.start,
+					'limit': request.queryParams.limit
+				}
+			).toArray()
+		)
+	
+} // coordinatesPoly()
+
+/**
+ * Return occurrence probability grid cell count for species,
+ * period and model scenario.
+ *
+ * No value is returned by the function, the service response is handled here.
+ *
+ * @param {Object} request: Service request.
+ * @param {Object} response: Service response.
+ */
+function speciesCoordinatesCount(request, response)
+{
+	///
+	// Validate parameters.
+	///
+	if(! helpers.validatePeriod(request, response)) {
+		return
+	}
+	
+	///
+	// Perform query.
+	///
+	response
+		.send(
+			db._query(
+				QueryMapSpeciesCoordinatesCount,
+				{
+					'@collection': K.collection.name,
+					'period': request.queryParams.period,
+					'species': request.queryParams.species,
+					'scenario': request.queryParams.scenario
+				}
+			).toArray()[0]
+		)
+	
+} // speciesCoordinatesCount()
 
 /**
  * Return array of coordinates and species occurrence probabilities.
@@ -177,7 +532,7 @@ router
  * @param {Object} request: Service request.
  * @param {Object} response: Service response.
  */
-function coordinatesArray(request, response)
+function speciesCoordinatesArray(request, response)
 {
 	///
 	// Validate parameters.
@@ -192,7 +547,7 @@ function coordinatesArray(request, response)
 	response
 		.send(
 			db._query(
-				QueryMapCoordinatesArray,
+				QueryMapSpeciesCoordinatesArray,
 				{
 					'@collection': K.collection.name,
 					'period': request.queryParams.period,
@@ -204,24 +559,22 @@ function coordinatesArray(request, response)
 			).toArray()
 		)
 	
-} // coordinatesArray()
+} // speciesCoordinatesArray()
 
 /**
- * Return array of coordinates and species occurrence probabilities.
+ * Return GeoJSONL point and species occurrence probabilities.
  *
  * The function will first ensure all required parameters have been provided and
  * are correct, then it will query the database and return the result as an array
- * of objects holding three elements:
- * - lon: Longitude in decimal degrees.
- * - lat: Latitude in decimal degrees.
- * - value: Species occurrence as a float in the range from 0 to 100.
+ * of GeoJSONL objects with a point geometry and the species occurrence
+ * probability.
  *
  * No value is returned by the function, the service response is handled here.
  *
  * @param {Object} request: Service request.
  * @param {Object} response: Service response.
  */
-function coordinatesJson(request, response)
+function speciesCoordinatesPoint(request, response)
 {
 	///
 	// Validate parameters.
@@ -236,7 +589,7 @@ function coordinatesJson(request, response)
 	response
 		.send(
 			db._query(
-				QueryMapCoordinatesJson,
+				QueryMapSpeciesCoordinatesPoint,
 				{
 					'@collection': K.collection.name,
 					'period': request.queryParams.period,
@@ -248,4 +601,46 @@ function coordinatesJson(request, response)
 			).toArray()
 		)
 	
-} // coordinatesJson()
+} // speciesCoordinatesPoint()
+
+/**
+ * Return GeoJSONL polygon and species occurrence probabilities.
+ *
+ * The function will first ensure all required parameters have been provided and
+ * are correct, then it will query the database and return the result as an array
+ * of GeoJSONL objects with a bounding box geometry and the species occurrence
+ * probability.
+ *
+ * No value is returned by the function, the service response is handled here.
+ *
+ * @param {Object} request: Service request.
+ * @param {Object} response: Service response.
+ */
+function speciesCoordinatesPoly(request, response)
+{
+	///
+	// Validate parameters.
+	///
+	if(! helpers.validatePeriod(request, response)) {
+		return
+	}
+	
+	///
+	// Perform query.
+	///
+	response
+		.send(
+			db._query(
+				QueryMapSpeciesCoordinatesPoly,
+				{
+					'@collection': K.collection.name,
+					'period': request.queryParams.period,
+					'species': request.queryParams.species,
+					'scenario': request.queryParams.scenario,
+					'start': request.queryParams.start,
+					'limit': request.queryParams.limit
+				}
+			).toArray()
+		)
+	
+} // speciesCoordinatesPoly()

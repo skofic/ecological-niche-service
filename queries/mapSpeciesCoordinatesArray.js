@@ -2,7 +2,7 @@
 
 /**
  * Return a map grid of species occurrence probabilities
- * for a specific period and model scenario as an array of objects.
+ * for a specific period and model scenario as an array of arrays.
  *
  * The map will contain a grid of rects:
  * Pixel Size 0.08333333333333332871,-0.08333333333333332871
@@ -13,9 +13,9 @@
  * - @scenario: Future model scenario (e.g. "rcp45" or "rcp85"; ignored for @period cur2005).
  *
  * Returns:
- * - lon: Decimal degrees longitude of grid cell center.
- * - lat: Decimal degrees latitude of grid cell center.
- * - val: Species occurrence probability (0-100).
+ * - [0]: Decimal degrees longitude of grid cell center.
+ * - [1]: Decimal degrees latitude of grid cell center.
+ * - [2]: Species occurrence probability (0-100).
  *
  * @type {string}
  */
@@ -26,13 +26,13 @@ FOR doc IN @@collection
                               : doc.properties.probabilities.@species.@period.@scenario
                               != null
   LIMIT @start, @limit
-RETURN {
-  lon: doc.geometry_point.coordinates[0],
-  lat: doc.geometry_point.coordinates[1],
-  val: @period == "cur2005"
-	    ? doc.properties.probabilities.@species.@period.value
-	    : doc.properties.probabilities.@species.@period.@scenario
-}
+RETURN [
+  doc.geometry_point.coordinates[0],
+  doc.geometry_point.coordinates[1],
+  @period == "cur2005"
+    ? doc.properties.probabilities.@species.@period.value
+    : doc.properties.probabilities.@species.@period.@scenario
+]
 `
 
 module.exports = query
