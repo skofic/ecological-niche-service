@@ -1,9 +1,9 @@
 'use strict'
 
 /**
- * ModelMapCoordinatesArray.js
+ * ModelMapGridArray.js
  *
- * Model for map data output as an array:
+ * Model for map grid cells output as an array:
  * - Decimal longitude degrees.
  * - Decimal latitude degrees.
  */

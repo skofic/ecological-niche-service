@@ -1,9 +1,9 @@
 'use strict'
 
 /**
- * ModelMapCoordinatesCount.js
+ * ModelMapGridCount.js
  *
- * Model for grid points count:
+ * Model for map grid cells count:
  * - Integer count.
  */
 

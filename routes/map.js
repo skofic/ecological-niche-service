@@ -29,13 +29,15 @@ const K = require("../globals.js")
 ///
 // Models.
 ///
-const ModelMapSpeciesCoordinatesArray = require('../models/ModelMapSpeciesCoordinatesArray')
-const ModelMapSpeciesCoordinatesPoint = require('../models/ModelMapSpeciesCoordinatesPoint')
-const ModelMapSpeciesCoordinatesPoly = require('../models/ModelMapSpeciesCoordinatesPoly')
-const ModelMapCoordinatesCount = require('../models/ModelMapCoordinatesCount')
-const ModelMapCoordinatesArray = require('../models/ModelMapCoordinatesArray')
-const ModelMapCoordinatesPoint = require('../models/ModelMapCoordinatesPoint')
-const ModelMapCoordinatesPoly = require('../models/ModelMapCoordinatesPoly')
+const ModelMapGridCount = require('../models/ModelMapGridCount')
+const ModelMapGridArray = require('../models/ModelMapGridArray')
+const ModelMapGridPoint = require('../models/ModelMapGridPoint')
+const ModelMapGridPoly = require('../models/ModelMapGridPoly')
+
+const ModelMapSpeciesCoordinatesArray = require('../models/ModelMapSpeciesArray')
+const ModelMapSpeciesCoordinatesPoint = require('../models/ModelMapSpeciesPoint')
+const ModelMapSpeciesCoordinatesPoly = require('../models/ModelMapSpeciesPoly')
+
 const ModelScenarioParam = require('../models/ModelScenarioParam')
 const ModelSpeciesParam = require('../models/ModelSpeciesParam')
 const ModelPeriodParam = require('../models/ModelPeriodParam')
@@ -52,14 +54,15 @@ const helpers = require("../utils/helpers.js")
 ///
 // Queries.
 ///
-const QueryMapSpeciesCoordinatesCount = require('../queries/mapSpeciesCoordinatesCount')
-const QueryMapSpeciesCoordinatesArray = require('../queries/mapSpeciesCoordinatesArray')
-const QueryMapSpeciesCoordinatesPoint = require('../queries/mapSpeciesCoordinatesPoint')
-const QueryMapSpeciesCoordinatesPoly = require('../queries/mapSpeciesCoordinatesPoly')
-const QueryMapCoordinatesCount = require('../queries/mapCoordinatesCount')
-const QueryMapCoordinatesArray = require('../queries/mapCoordinatesArray')
-const QueryMapCoordinatesPoint = require('../queries/mapCoordinatesPoint')
-const QueryMapCoordinatesPoly = require('../queries/mapCoordinatesPoly')
+const QueryMapGridCount = require('../queries/mapGridCount')
+const QueryMapGridArray = require('../queries/mapGridArray')
+const QueryMapGridPoint = require('../queries/mapGridPoint')
+const QueryMapGridPoly = require('../queries/mapGridPoly')
+
+const QueryMapSpeciesCount = require('../queries/mapSpeciesCount')
+const QueryMapSpeciesArray = require('../queries/mapSpeciesArray')
+const QueryMapSpeciesPoint = require('../queries/mapSpeciesPoint')
+const QueryMapSpeciesPoly = require('../queries/mapSpeciesPoly')
 
 
 ///
@@ -91,17 +94,17 @@ router.tag('map')
  */
 router
 	.get(
-		'coordinates/count',
+		'grid/count',
 		function (request, response) {
 			coordinatesCount(request, response)
 		},
-		'map-coordinates-count'
+		'map-grid-count'
 	)
 	
 	.summary(metadata.coordinatesCount.summary)
 	.description(metadata.coordinatesCount.description)
 	
-	.response(200, ModelMapCoordinatesCount, metadata.coordinatesCount.response)
+	.response(200, ModelMapGridCount, metadata.coordinatesCount.response)
 
 /**
  * Map coordinates as array.
@@ -118,11 +121,11 @@ router
  */
 router
 	.get(
-		'coordinates/array',
+		'grid/array',
 		function (request, response) {
 			coordinatesArray(request, response)
 		},
-		'map-coordinates-array'
+		'map-grid-array'
 	)
 	.summary(metadata.coordinatesArray.summary)
 	.description(metadata.coordinatesArray.description)
@@ -130,7 +133,7 @@ router
 	.queryParam('start', ModelStart)
 	.queryParam('limit', ModelLimit)
 	
-	.response(200, [ModelMapCoordinatesArray], metadata.coordinatesArray.response)
+	.response(200, [ModelMapGridArray], metadata.coordinatesArray.response)
 	.response(400, ErrorModel, dd`
 		Known and intercepted error:
 		- *errorNum*: Error number.
@@ -152,11 +155,11 @@ router
  */
 router
 	.get(
-		'coordinates/point',
+		'grid/point',
 		function (request, response) {
 			coordinatesPoint(request, response)
 		},
-		'map-coordinates-point'
+		'map-grid-point'
 	)
 	.summary(metadata.coordinatesPoint.summary)
 	.description(metadata.coordinatesPoint.description)
@@ -164,7 +167,7 @@ router
 	.queryParam('start', ModelStart)
 	.queryParam('limit', ModelLimit)
 	
-	.response(200, [ModelMapCoordinatesPoint], metadata.coordinatesPoint.response)
+	.response(200, [ModelMapGridPoint], metadata.coordinatesPoint.response)
 	.response(400, ErrorModel, dd`
 		Known and intercepted error:
 		- *errorNum*: Error number.
@@ -186,11 +189,11 @@ router
  */
 router
 	.get(
-		'coordinates/poly',
+		'grid/poly',
 		function (request, response) {
 			coordinatesPoly(request, response)
 		},
-		'map-coordinates-poly'
+		'map-grid-poly'
 	)
 	.summary(metadata.coordinatesPoly.summary)
 	.description(metadata.coordinatesPoly.description)
@@ -198,7 +201,7 @@ router
 	.queryParam('start', ModelStart)
 	.queryParam('limit', ModelLimit)
 	
-	.response(200, [ModelMapCoordinatesPoly], metadata.coordinatesPoly.response)
+	.response(200, [ModelMapGridPoly], metadata.coordinatesPoly.response)
 	.response(400, ErrorModel, dd`
 		Known and intercepted error:
 		- *errorNum*: Error number.
@@ -221,11 +224,11 @@ router
  */
 router
 	.get(
-		'/species/coordinates/count',
+		'/species/count',
 		function (request, response) {
-			speciesCoordinatesCount(request, response)
+			speciesCount(request, response)
 		},
-		'map-species-coordinates-count'
+		'map-species-count'
 	)
 	.summary(metadata.coordinatesCount.summary)
 	.description(metadata.coordinatesCount.description)
@@ -234,7 +237,7 @@ router
 	.queryParam('period', ModelPeriodParam)
 	.queryParam('scenario', ModelScenarioParam)
 	
-	.response(200, ModelMapCoordinatesCount, metadata.coordinatesCount.response)
+	.response(200, ModelMapGridCount, metadata.coordinatesCount.response)
 
 /**
  * Map species occurrence probability as array.
@@ -254,11 +257,11 @@ router
  */
 router
 	.get(
-		'/species/coordinates/array',
+		'/species/array',
 		function (request, response) {
-			speciesCoordinatesArray(request, response)
+			speciesArray(request, response)
 		},
-		'map-species-coordinates-array'
+		'map-species-array'
 	)
 	.summary(metadata.speciesCoordinatesArray.summary)
 	.description(metadata.speciesCoordinatesArray.description)
@@ -294,11 +297,11 @@ router
  */
 router
 	.get(
-		'/species/coordinates/point',
+		'/species/point',
 		function (request, response) {
-			speciesCoordinatesPoint(request, response)
+			speciesPoint(request, response)
 		},
-		'map-species-coordinates-point'
+		'map-species-point'
 	)
 	.summary(metadata.speciesCoordinatesPoint.summary)
 	.description(metadata.speciesCoordinatesPoint.description)
@@ -334,11 +337,11 @@ router
  */
 router
 	.get(
-		'/species/coordinates/poly',
+		'/species/poly',
 		function (request, response) {
-			speciesCoordinatesPoly(request, response)
+			speciesPoly(request, response)
 		},
-		'map-species-coordinates-poly'
+		'map-species-poly'
 	)
 	.summary(metadata.speciesCoordinatesPoly.summary)
 	.description(metadata.speciesCoordinatesPoly.description)
@@ -379,7 +382,7 @@ function coordinatesCount(request, response)
 	response
 		.send(
 			db._query(
-				QueryMapCoordinatesCount,
+				QueryMapGridCount,
 				{
 					'@collection': K.collection.name
 				}
@@ -408,7 +411,7 @@ function coordinatesArray(request, response)
 	response
 		.send(
 			db._query(
-				QueryMapCoordinatesArray,
+				QueryMapGridArray,
 				{
 					'@collection': K.collection.name,
 					'start': request.queryParams.start,
@@ -439,7 +442,7 @@ function coordinatesPoint(request, response)
 	response
 		.send(
 			db._query(
-				QueryMapCoordinatesPoint,
+				QueryMapGridPoint,
 				{
 					'@collection': K.collection.name,
 					'start': request.queryParams.start,
@@ -470,7 +473,7 @@ function coordinatesPoly(request, response)
 	response
 		.send(
 			db._query(
-				QueryMapCoordinatesPoly,
+				QueryMapGridPoly,
 				{
 					'@collection': K.collection.name,
 					'start': request.queryParams.start,
@@ -490,7 +493,7 @@ function coordinatesPoly(request, response)
  * @param {Object} request: Service request.
  * @param {Object} response: Service response.
  */
-function speciesCoordinatesCount(request, response)
+function speciesCount(request, response)
 {
 	///
 	// Validate parameters.
@@ -505,7 +508,7 @@ function speciesCoordinatesCount(request, response)
 	response
 		.send(
 			db._query(
-				QueryMapSpeciesCoordinatesCount,
+				QueryMapSpeciesCount,
 				{
 					'@collection': K.collection.name,
 					'period': request.queryParams.period,
@@ -515,7 +518,7 @@ function speciesCoordinatesCount(request, response)
 			).toArray()[0]
 		)
 	
-} // speciesCoordinatesCount()
+} // speciesCount()
 
 /**
  * Return array of coordinates and species occurrence probabilities.
@@ -532,7 +535,7 @@ function speciesCoordinatesCount(request, response)
  * @param {Object} request: Service request.
  * @param {Object} response: Service response.
  */
-function speciesCoordinatesArray(request, response)
+function speciesArray(request, response)
 {
 	///
 	// Validate parameters.
@@ -547,7 +550,7 @@ function speciesCoordinatesArray(request, response)
 	response
 		.send(
 			db._query(
-				QueryMapSpeciesCoordinatesArray,
+				QueryMapSpeciesArray,
 				{
 					'@collection': K.collection.name,
 					'period': request.queryParams.period,
@@ -559,7 +562,7 @@ function speciesCoordinatesArray(request, response)
 			).toArray()
 		)
 	
-} // speciesCoordinatesArray()
+} // speciesArray()
 
 /**
  * Return GeoJSONL point and species occurrence probabilities.
@@ -574,7 +577,7 @@ function speciesCoordinatesArray(request, response)
  * @param {Object} request: Service request.
  * @param {Object} response: Service response.
  */
-function speciesCoordinatesPoint(request, response)
+function speciesPoint(request, response)
 {
 	///
 	// Validate parameters.
@@ -589,7 +592,7 @@ function speciesCoordinatesPoint(request, response)
 	response
 		.send(
 			db._query(
-				QueryMapSpeciesCoordinatesPoint,
+				QueryMapSpeciesPoint,
 				{
 					'@collection': K.collection.name,
 					'period': request.queryParams.period,
@@ -601,7 +604,7 @@ function speciesCoordinatesPoint(request, response)
 			).toArray()
 		)
 	
-} // speciesCoordinatesPoint()
+} // speciesPoint()
 
 /**
  * Return GeoJSONL polygon and species occurrence probabilities.
@@ -616,7 +619,7 @@ function speciesCoordinatesPoint(request, response)
  * @param {Object} request: Service request.
  * @param {Object} response: Service response.
  */
-function speciesCoordinatesPoly(request, response)
+function speciesPoly(request, response)
 {
 	///
 	// Validate parameters.
@@ -631,7 +634,7 @@ function speciesCoordinatesPoly(request, response)
 	response
 		.send(
 			db._query(
-				QueryMapSpeciesCoordinatesPoly,
+				QueryMapSpeciesPoly,
 				{
 					'@collection': K.collection.name,
 					'period': request.queryParams.period,
@@ -643,4 +646,4 @@ function speciesCoordinatesPoly(request, response)
 			).toArray()
 		)
 	
-} // speciesCoordinatesPoly()
+} // speciesPoly()

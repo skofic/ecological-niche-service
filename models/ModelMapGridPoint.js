@@ -1,9 +1,9 @@
 'use strict'
 
 /**
- * ModelMapCoordinatesPoly.js
+ * ModelMapGridPoint.js
  *
- * Model for map data output as a GeoJSON polygon.
+ * Model for map grid cells as a GeoJSON point.
  */
 
 const joi = require('joi')
@@ -18,14 +18,13 @@ module.exports =
 			type: 'Polygon',
 			coordinates: joi
 				.array()
-				.items(
-					joi.array()
-				)
+				.length(2)
+				.items(joi.number())
 		}
 	})
 		.required()
 		.description(dd`
-			**Map point coordinates**
+			**Map polygon coordinates**
 			
-			Each record is a GeoJSON point.
+			Each record is a GeoJSON polygon.
 		`)

@@ -1,7 +1,7 @@
 'use strict'
 
 /**
- * ModelMapSpeciesCoordinatesArray.js
+ * ModelMapSpeciesArray.js
  *
  * Model for map data output as an array:
  * - Decimal longitude degrees.
