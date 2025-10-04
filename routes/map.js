@@ -230,14 +230,14 @@ router
 		},
 		'map-species-count'
 	)
-	.summary(metadata.coordinatesCount.summary)
-	.description(metadata.coordinatesCount.description)
+	.summary(metadata.speciesCount.summary)
+	.description(metadata.speciesCount.description)
 	
 	.queryParam('species', ModelSpeciesParam)
 	.queryParam('period', ModelPeriodParam)
 	.queryParam('scenario', ModelScenarioParam)
 	
-	.response(200, ModelMapGridCount, metadata.coordinatesCount.response)
+	.response(200, ModelMapGridCount, metadata.speciesCount.response)
 
 /**
  * Map species occurrence probability as array.
