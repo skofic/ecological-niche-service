@@ -1,0 +1,1070 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "EcologicalNiche.paw",
+    "description": "",
+    "version": "1.0.0",
+    "contact": {
+      "name": "milko",
+      "email": "skofic@gmail.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://echo.paw.cloud/",
+      "description": ""
+    }
+  ],
+  "paths": {
+    "/{protocol}:/{host}:{port}/_db/{db}/{path}/map/grid/count/": {
+      "get": {
+        "summary": "Map species grid cells count",
+        "description": "This service will return the count of all map grid cells that have species occurrence probabilities, regardless of period and future model scenario.\n\nThe result will be a single integer value.",
+        "operationId": "ad1f90f3-6def-4510-b781-238fab12569b",
+        "parameters": [],
+        "requestBody": {
+          "description": "This service will return the count of all map grid cells that have species occurrence probabilities, regardless of period and future model scenario.\n\nThe result will be a single integer value.",
+          "content": {
+            "text/plain": {}
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "value": 146633
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/{protocol}:/{host}:{port}/_db/{db}/{path}/map/grid/array/": {
+      "get": {
+        "summary": "Map species grid cells as array",
+        "description": "This service will return all map grid cell coordinates that have species occurrence probabilities, regardless of period and future model scenario.\n\nEach record will be an array of two elements: longitude and latitude.\n\nThe service expects two required URL parameters:\n\n- `start`: First record index, zero-based.\n- `limit`: Number of records to return.",
+        "operationId": "c69d3379-927d-4b0f-8f64-b43cac8fcd58",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "1000",
+              "description": ""
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "0",
+              "description": ""
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "This service will return all map grid cell coordinates that have species occurrence probabilities, regardless of period and future model scenario.\n\nEach record will be an array of two elements: longitude and latitude.\n\nThe service expects two required URL parameters:\n\n- `start`: First record index, zero-based.\n- `limit`: Number of records to return.",
+          "content": {
+            "text/plain": {}
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Pragma": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "no-cache"
+                }
+              },
+              "X-Content-Type-Options": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "nosniff"
+                }
+              },
+              "Content-Security-Policy": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "frame-ancestors 'self'; form-action 'self';"
+                }
+              },
+              "Strict-Transport-Security": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "max-age=31536000 ; includeSubDomains"
+                }
+              },
+              "Server": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "ArangoDB"
+                }
+              },
+              "Content-Type": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Cache-Control": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "no-cache, no-store, must-revalidate, pre-check=0, post-check=0, max-age=0, s-maxage=0"
+                }
+              },
+              "Expires": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "0"
+                }
+              },
+              "Content-Length": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "23088"
+                }
+              },
+              "X-Arango-Queue-Time-Seconds": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "0.000000"
+                }
+              },
+              "Connection": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "Close"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/{protocol}:/{host}:{port}/_db/{db}/{path}/map/grid/point/": {
+      "get": {
+        "summary": "Map species grid cells as GeoJSON points",
+        "description": "This service will return all map grid cell points that have species occurrence probabilities, regardless of period and future model scenario.\n\nEach record will be a GeoJSON point object.\n\nThe service expects two required URL parameters:\n\n- `start`: First record index, zero-based.\n- `limit`: Number of records to return.",
+        "operationId": "c8ce90d8-8644-4253-9ba2-1d3edd3455b4",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "1000",
+              "description": ""
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "0",
+              "description": ""
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "This service will return all map grid cell points that have species occurrence probabilities, regardless of period and future model scenario.\n\nEach record will be a GeoJSON point object.\n\nThe service expects two required URL parameters:\n\n- `start`: First record index, zero-based.\n- `limit`: Number of records to return.",
+          "content": {
+            "text/plain": {}
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "geometry": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "example": "Point"
+                          },
+                          "coordinates": {
+                            "type": "number",
+                            "items": {
+                              "type": "number"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Pragma": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "no-cache"
+                }
+              },
+              "X-Content-Type-Options": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "nosniff"
+                }
+              },
+              "Content-Security-Policy": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "frame-ancestors 'self'; form-action 'self';"
+                }
+              },
+              "Strict-Transport-Security": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "max-age=31536000 ; includeSubDomains"
+                }
+              },
+              "Server": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "ArangoDB"
+                }
+              },
+              "Content-Type": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Cache-Control": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "no-cache, no-store, must-revalidate, pre-check=0, post-check=0, max-age=0, s-maxage=0"
+                }
+              },
+              "Expires": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "0"
+                }
+              },
+              "Content-Length": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "67088"
+                }
+              },
+              "X-Arango-Queue-Time-Seconds": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "0.000000"
+                }
+              },
+              "Connection": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "Close"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/{protocol}:/{host}:{port}/_db/{db}/{path}/map/grid/poly/": {
+      "get": {
+        "summary": "Map species grid cells as GeoJSON polygons",
+        "description": "This service will return all map grid cell polygons that have species occurrence probabilities, regardless of period and future model scenario.\n\nEach record will be a GeoJSON polygon object.\n\nThe service expects two required URL parameters:\n\n- `start`: First record index, zero-based.\n- `limit`: Number of records to return.",
+        "operationId": "2f36ac0e-b704-426e-82c0-014ff5fcac2a",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "1000",
+              "description": ""
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "0",
+              "description": ""
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "This service will return all map grid cell polygons that have species occurrence probabilities, regardless of period and future model scenario.\n\nEach record will be a GeoJSON polygon object.\n\nThe service expects two required URL parameters:\n\n- `start`: First record index, zero-based.\n- `limit`: Number of records to return.",
+          "content": {
+            "text/plain": {}
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "geometry": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "example": "Polygon"
+                          },
+                          "coordinates": {
+                            "type": "object",
+                            "items": {
+                              "type": "array",
+                              "items": {
+                                "type": "array",
+                                "items": {
+                                  "type": "number"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Pragma": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "no-cache"
+                }
+              },
+              "X-Content-Type-Options": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "nosniff"
+                }
+              },
+              "Content-Security-Policy": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "frame-ancestors 'self'; form-action 'self';"
+                }
+              },
+              "Strict-Transport-Security": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "max-age=31536000 ; includeSubDomains"
+                }
+              },
+              "Server": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "ArangoDB"
+                }
+              },
+              "Content-Type": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Cache-Control": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "no-cache, no-store, must-revalidate, pre-check=0, post-check=0, max-age=0, s-maxage=0"
+                }
+              },
+              "Expires": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "0"
+                }
+              },
+              "Content-Length": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "247124"
+                }
+              },
+              "X-Arango-Queue-Time-Seconds": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "0.000000"
+                }
+              },
+              "Connection": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "Close"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/{protocol}:/{host}:{port}/_db/{db}/{path}/map/species/count/": {
+      "get": {
+        "summary": "Map species, period and scenario grid cells count",
+        "description": "This service will return the count of all map grid cells for a specific species, period and future scenario.\n\nThe service expects the following URL parameters:\n\n- `species`: Genus and species.\n- `period`: The time period:\n   - `cur2005`: Centered on 2005, current period.\n   - `fut2035`: Future modeled period centered on 2035.\n   - `fut2065`: Future modeled period centered on 2065.\n   - `fut2095`: Future modeled period centered on 2095.\n- `scenario`: Model scenario, only for future periods:\n   - `rcp45`: Representative Concentration Pathway 4.5 (RCP 4.5).\n   - `rcp85`: Representative Concentration Pathway 8.5 (RCP 8.5).\n\nIf the period is `cur2005`, the scenario will be ignored.\n\nThe result will be a single integer value.",
+        "operationId": "7ca78729-2614-41f2-b6ca-12f6d9138763",
+        "parameters": [
+          {
+            "name": "period",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "fut2035",
+              "description": ""
+            }
+          },
+          {
+            "name": "scenario",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "rcp45",
+              "description": ""
+            }
+          },
+          {
+            "name": "species",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "Abies alba",
+              "description": ""
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "This service will return the count of all map grid cells for a specific species, period and future scenario.\n\nThe service expects the following URL parameters:\n\n- `species`: Genus and species.\n- `period`: The time period:\n   - `cur2005`: Centered on 2005, current period.\n   - `fut2035`: Future modeled period centered on 2035.\n   - `fut2065`: Future modeled period centered on 2065.\n   - `fut2095`: Future modeled period centered on 2095.\n- `scenario`: Model scenario, only for future periods:\n   - `rcp45`: Representative Concentration Pathway 4.5 (RCP 4.5).\n   - `rcp85`: Representative Concentration Pathway 8.5 (RCP 8.5).\n\nIf the period is `cur2005`, the scenario will be ignored.\n\nThe result will be a single integer value.",
+          "content": {
+            "text/plain": {}
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "value": 57230
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/{protocol}:/{host}:{port}/_db/{db}/{path}/map/species/array/": {
+      "get": {
+        "summary": "Map species, period and scenario as array",
+        "description": "Given a species, a period and a model scenario, this service will return all the available grid cell coordinates, for the target species, the time period and the eventual future model scenario, as an array of three floating point values: longitude, latitude and occurrence probability in the range from 0 to 100.\n\nThe service expects the following parameters:\n\n- `species`: Genus and species.\n- `period`: The time period:\n   - `cur2005`: Centered on 2005, current period.\n   - `fut2035`: Future modeled period centered on 2035.\n   - `fut2065`: Future modeled period centered on 2065.\n   - `fut2095`: Future modeled period centered on 2095.\n- `scenario`: Model scenario, only for future periods:\n   - `rcp45`: Representative Concentration Pathway 4.5 (RCP 4.5).\n   - `rcp85`: Representative Concentration Pathway 8.5 (RCP 8.5).\n- `start`: First record index, zero-based.\n- `limit`: Number of records to return.\n\nEach record will be an array of three elements: longitude, latitude and occurrence probability in the range from 0 to 100.\n",
+        "operationId": "82e6d807-1e59-47ff-8706-c6db48b7b7a8",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "1000",
+              "description": ""
+            }
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "fut2035",
+              "description": ""
+            }
+          },
+          {
+            "name": "scenario",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "rcp45",
+              "description": ""
+            }
+          },
+          {
+            "name": "species",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "Abies alba",
+              "description": ""
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "0",
+              "description": ""
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Given a species, a period and a model scenario, this service will return all the available grid cell coordinates, for the target species, the time period and the eventual future model scenario, as an array of three floating point values: longitude, latitude and occurrence probability in the range from 0 to 100.\n\nThe service expects the following parameters:\n\n- `species`: Genus and species.\n- `period`: The time period:\n   - `cur2005`: Centered on 2005, current period.\n   - `fut2035`: Future modeled period centered on 2035.\n   - `fut2065`: Future modeled period centered on 2065.\n   - `fut2095`: Future modeled period centered on 2095.\n- `scenario`: Model scenario, only for future periods:\n   - `rcp45`: Representative Concentration Pathway 4.5 (RCP 4.5).\n   - `rcp85`: Representative Concentration Pathway 8.5 (RCP 8.5).\n- `start`: First record index, zero-based.\n- `limit`: Number of records to return.\n\nEach record will be an array of three elements: longitude, latitude and occurrence probability in the range from 0 to 100.\n",
+          "content": {
+            "text/plain": {}
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Pragma": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "no-cache"
+                }
+              },
+              "X-Content-Type-Options": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "nosniff"
+                }
+              },
+              "Content-Security-Policy": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "frame-ancestors 'self'; form-action 'self';"
+                }
+              },
+              "Strict-Transport-Security": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "max-age=31536000 ; includeSubDomains"
+                }
+              },
+              "Server": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "ArangoDB"
+                }
+              },
+              "Content-Type": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Cache-Control": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "no-cache, no-store, must-revalidate, pre-check=0, post-check=0, max-age=0, s-maxage=0"
+                }
+              },
+              "Expires": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "0"
+                }
+              },
+              "Content-Length": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "27192"
+                }
+              },
+              "X-Arango-Queue-Time-Seconds": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "0.000000"
+                }
+              },
+              "Connection": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "Close"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/{protocol}:/{host}:{port}/_db/{db}/{path}/map/species/point/": {
+      "get": {
+        "summary": "Map species, period and scenario as GeoJSON points",
+        "description": "Given a species, a period and a model scenario, this service will return all the available grid points, for the target species, the time period and the eventual future model scenario, as a GeoJSON point object with the property 'value' in the range from 0 to 100.\n\nThe service expects the following parameters:\n\n- `species`: Genus and species.\n- `period`: The time period:\n   - `cur2005`: Centered on 2005, current period.\n   - `fut2035`: Future modeled period centered on 2035.\n   - `fut2065`: Future modeled period centered on 2065.\n   - `fut2095`: Future modeled period centered on 2095.\n- `scenario`: Model scenario, only for future periods:\n   - `rcp45`: Representative Concentration Pathway 4.5 (RCP 4.5).\n   - `rcp85`: Representative Concentration Pathway 8.5 (RCP 8.5).\n- `start`: First record index, zero-based.\n- `limit`: Number of records to return.\n\nEach record is a GeoJSON point object with its 'value' property corresponding to the species occurrence probability as a float value ranging from 0 to 100.\n",
+        "operationId": "01262888-7b9f-4be0-b20d-7e1f148eca89",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "1000",
+              "description": ""
+            }
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "fut2035",
+              "description": ""
+            }
+          },
+          {
+            "name": "scenario",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "rcp45",
+              "description": ""
+            }
+          },
+          {
+            "name": "species",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "Abies alba",
+              "description": ""
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "0",
+              "description": ""
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Given a species, a period and a model scenario, this service will return all the available grid points, for the target species, the time period and the eventual future model scenario, as a GeoJSON point object with the property 'value' in the range from 0 to 100.\n\nThe service expects the following parameters:\n\n- `species`: Genus and species.\n- `period`: The time period:\n   - `cur2005`: Centered on 2005, current period.\n   - `fut2035`: Future modeled period centered on 2035.\n   - `fut2065`: Future modeled period centered on 2065.\n   - `fut2095`: Future modeled period centered on 2095.\n- `scenario`: Model scenario, only for future periods:\n   - `rcp45`: Representative Concentration Pathway 4.5 (RCP 4.5).\n   - `rcp85`: Representative Concentration Pathway 8.5 (RCP 8.5).\n- `start`: First record index, zero-based.\n- `limit`: Number of records to return.\n\nEach record is a GeoJSON point object with its 'value' property corresponding to the species occurrence probability as a float value ranging from 0 to 100.\n",
+          "content": {
+            "text/plain": {}
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "example": "Feature"
+                      },
+                      "geometry": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "example": "Point"
+                          },
+                          "coordinates": {
+                            "type": "number",
+                            "items": {
+                              "type": "number"
+                            }
+                          }
+                        }
+                      },
+                      "properties": {
+                        "type": "object",
+                        "properties": {
+                          "value": {
+                            "type": "number"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Pragma": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "no-cache"
+                }
+              },
+              "X-Content-Type-Options": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "nosniff"
+                }
+              },
+              "Content-Security-Policy": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "frame-ancestors 'self'; form-action 'self';"
+                }
+              },
+              "Strict-Transport-Security": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "max-age=31536000 ; includeSubDomains"
+                }
+              },
+              "Server": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "ArangoDB"
+                }
+              },
+              "Content-Type": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Cache-Control": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "no-cache, no-store, must-revalidate, pre-check=0, post-check=0, max-age=0, s-maxage=0"
+                }
+              },
+              "Expires": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "0"
+                }
+              },
+              "Content-Length": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "111192"
+                }
+              },
+              "X-Arango-Queue-Time-Seconds": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "0.000000"
+                }
+              },
+              "Connection": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "Close"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/{protocol}:/{host}:{port}/_db/{db}/{path}/map/species/poly/": {
+      "get": {
+        "summary": "Map species, period and scenario as GeoJSON polygons",
+        "description": "Given a species, a period and a model scenario, this service will return all the available grid points, for the target species, the time period and the eventual future model scenario, as a GeoJSON polygon object with the property 'value' in the range from 0 to 100.\n\nThe service expects the following parameters:\n\n- `species`: Genus and species.\n- `period`: The time period:\n   - `cur2005`: Centered on 2005, current period.\n   - `fut2035`: Future modeled period centered on 2035.\n   - `fut2065`: Future modeled period centered on 2065.\n   - `fut2095`: Future modeled period centered on 2095.\n- `scenario`: Model scenario, only for future periods:\n   - `rcp45`: Representative Concentration Pathway 4.5 (RCP 4.5).\n   - `rcp85`: Representative Concentration Pathway 8.5 (RCP 8.5).\n- `start`: First record index, zero-based.\n- `limit`: Number of records to return.\n\nEach record is a GeoJSON polygon object with its 'value' property corresponding to the species occurrence probability as a float value ranging from 0 to 100.\n",
+        "operationId": "90bb4a59-e659-4406-a96b-cb01be1fc6ac",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "1000",
+              "description": ""
+            }
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "fut2035",
+              "description": ""
+            }
+          },
+          {
+            "name": "scenario",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "rcp45",
+              "description": ""
+            }
+          },
+          {
+            "name": "species",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "Abies alba",
+              "description": ""
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "0",
+              "description": ""
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Given a species, a period and a model scenario, this service will return all the available grid points, for the target species, the time period and the eventual future model scenario, as a GeoJSON polygon object with the property 'value' in the range from 0 to 100.\n\nThe service expects the following parameters:\n\n- `species`: Genus and species.\n- `period`: The time period:\n   - `cur2005`: Centered on 2005, current period.\n   - `fut2035`: Future modeled period centered on 2035.\n   - `fut2065`: Future modeled period centered on 2065.\n   - `fut2095`: Future modeled period centered on 2095.\n- `scenario`: Model scenario, only for future periods:\n   - `rcp45`: Representative Concentration Pathway 4.5 (RCP 4.5).\n   - `rcp85`: Representative Concentration Pathway 8.5 (RCP 8.5).\n- `start`: First record index, zero-based.\n- `limit`: Number of records to return.\n\nEach record is a GeoJSON polygon object with its 'value' property corresponding to the species occurrence probability as a float value ranging from 0 to 100.\n",
+          "content": {
+            "text/plain": {}
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "example": "Feature"
+                      },
+                      "geometry": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "example": "Polygon"
+                          },
+                          "coordinates": {
+                            "type": "object",
+                            "items": {
+                              "type": "array",
+                              "items": {
+                                "type": "array",
+                                "items": {
+                                  "type": "number"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "properties": {
+                        "type": "object",
+                        "properties": {
+                          "value": {
+                            "type": "number"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Pragma": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "no-cache"
+                }
+              },
+              "X-Content-Type-Options": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "nosniff"
+                }
+              },
+              "Content-Security-Policy": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "frame-ancestors 'self'; form-action 'self';"
+                }
+              },
+              "Strict-Transport-Security": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "max-age=31536000 ; includeSubDomains"
+                }
+              },
+              "Server": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "ArangoDB"
+                }
+              },
+              "Content-Type": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Cache-Control": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "no-cache, no-store, must-revalidate, pre-check=0, post-check=0, max-age=0, s-maxage=0"
+                }
+              },
+              "Expires": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "0"
+                }
+              },
+              "Content-Length": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "291164"
+                }
+              },
+              "X-Arango-Queue-Time-Seconds": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "0.000000"
+                }
+              },
+              "Connection": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "Close"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {}
+}

@@ -1,0 +1,388 @@
+{
+  "info": {
+    "name": "EcologicalNiche.paw",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "MAP",
+      "item": [
+        {
+          "name": "GRID",
+          "item": [
+            {
+              "name": "Map species grid cells count",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/grid/count",
+                  "query": null,
+                  "protocol": null,
+                  "host": [
+                    "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/grid/count"
+                  ],
+                  "port": null,
+                  "path": null
+                },
+                "description": "This service will return the count of all map grid cells that have species occurrence probabilities, regardless of period and future model scenario.\n\nThe result will be a single integer value.",
+                "header": [],
+                "body": null,
+                "auth": null
+              },
+              "protocolProfileBehavior": {
+                "followRedirects": false,
+                "followOriginalHttpMethod": false,
+                "followAuthorizationHeader": false
+              },
+              "response": []
+            },
+            {
+              "name": "Map species grid cells as array",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/grid/array?start=0&limit=1000",
+                  "query": [
+                    {
+                      "key": "start",
+                      "value": "0",
+                      "disabled": false,
+                      "description": "First record index, 0-based."
+                    },
+                    {
+                      "key": "limit",
+                      "value": "1000",
+                      "disabled": false,
+                      "description": "Number of records to return."
+                    }
+                  ],
+                  "protocol": null,
+                  "host": [
+                    "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/grid/array"
+                  ],
+                  "port": null,
+                  "path": null
+                },
+                "description": "This service will return all map grid cell coordinates that have species occurrence probabilities, regardless of period and future model scenario.\n\nEach record will be an array of two elements: longitude and latitude.\n\nThe service expects two required URL parameters:\n\n- `start`: First record index, zero-based.\n- `limit`: Number of records to return.",
+                "header": [],
+                "body": null,
+                "auth": null
+              },
+              "protocolProfileBehavior": {
+                "followRedirects": false,
+                "followOriginalHttpMethod": false,
+                "followAuthorizationHeader": false
+              },
+              "response": []
+            },
+            {
+              "name": "Map species grid cells as GeoJSON points",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/grid/point?start=0&limit=1000",
+                  "query": [
+                    {
+                      "key": "start",
+                      "value": "0",
+                      "disabled": false,
+                      "description": "First record index, 0-based."
+                    },
+                    {
+                      "key": "limit",
+                      "value": "1000",
+                      "disabled": false,
+                      "description": "Number of records to return."
+                    }
+                  ],
+                  "protocol": null,
+                  "host": [
+                    "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/grid/point"
+                  ],
+                  "port": null,
+                  "path": null
+                },
+                "description": "This service will return all map grid cell points that have species occurrence probabilities, regardless of period and future model scenario.\n\nEach record will be a GeoJSON point object.\n\nThe service expects two required URL parameters:\n\n- `start`: First record index, zero-based.\n- `limit`: Number of records to return.",
+                "header": [],
+                "body": null,
+                "auth": null
+              },
+              "protocolProfileBehavior": {
+                "followRedirects": false,
+                "followOriginalHttpMethod": false,
+                "followAuthorizationHeader": false
+              },
+              "response": []
+            },
+            {
+              "name": "Map species grid cells as GeoJSON polygons",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/grid/poly?start=0&limit=1000",
+                  "query": [
+                    {
+                      "key": "start",
+                      "value": "0",
+                      "disabled": false,
+                      "description": "First record index, 0-based."
+                    },
+                    {
+                      "key": "limit",
+                      "value": "1000",
+                      "disabled": false,
+                      "description": "Number of records to return."
+                    }
+                  ],
+                  "protocol": null,
+                  "host": [
+                    "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/grid/poly"
+                  ],
+                  "port": null,
+                  "path": null
+                },
+                "description": "This service will return all map grid cell polygons that have species occurrence probabilities, regardless of period and future model scenario.\n\nEach record will be a GeoJSON polygon object.\n\nThe service expects two required URL parameters:\n\n- `start`: First record index, zero-based.\n- `limit`: Number of records to return.",
+                "header": [],
+                "body": null,
+                "auth": null
+              },
+              "protocolProfileBehavior": {
+                "followRedirects": false,
+                "followOriginalHttpMethod": false,
+                "followAuthorizationHeader": false
+              },
+              "response": []
+            }
+          ],
+          "protocolProfileBehavior": null,
+          "response": []
+        },
+        {
+          "name": "SPECIES",
+          "item": [
+            {
+              "name": "Map species, period and scenario grid cells count",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/species/count?species=Abies alba&period=fut2035&scenario=rcp45",
+                  "query": [
+                    {
+                      "key": "species",
+                      "value": "Abies alba",
+                      "disabled": false,
+                      "description": "Provide genus and species."
+                    },
+                    {
+                      "key": "period",
+                      "value": "fut2035",
+                      "disabled": false,
+                      "description": "Period of interest"
+                    },
+                    {
+                      "key": "scenario",
+                      "value": "rcp45",
+                      "disabled": false,
+                      "description": "Future model scenario, ignore for period `cur2005`."
+                    }
+                  ],
+                  "protocol": null,
+                  "host": [
+                    "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/species/count"
+                  ],
+                  "port": null,
+                  "path": null
+                },
+                "description": "This service will return the count of all map grid cells for a specific species, period and future scenario.\n\nThe service expects the following URL parameters:\n\n- `species`: Genus and species.\n- `period`: The time period:\n   - `cur2005`: Centered on 2005, current period.\n   - `fut2035`: Future modeled period centered on 2035.\n   - `fut2065`: Future modeled period centered on 2065.\n   - `fut2095`: Future modeled period centered on 2095.\n- `scenario`: Model scenario, only for future periods:\n   - `rcp45`: Representative Concentration Pathway 4.5 (RCP 4.5).\n   - `rcp85`: Representative Concentration Pathway 8.5 (RCP 8.5).\n\nIf the period is `cur2005`, the scenario will be ignored.\n\nThe result will be a single integer value.",
+                "header": [],
+                "body": null,
+                "auth": null
+              },
+              "protocolProfileBehavior": {
+                "followRedirects": false,
+                "followOriginalHttpMethod": false,
+                "followAuthorizationHeader": false
+              },
+              "response": []
+            },
+            {
+              "name": "Map species, period and scenario as array",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/species/array?start=0&limit=1000&species=Abies alba&period=fut2035&scenario=rcp45",
+                  "query": [
+                    {
+                      "key": "start",
+                      "value": "0",
+                      "disabled": false,
+                      "description": "First record index, 0-based."
+                    },
+                    {
+                      "key": "limit",
+                      "value": "1000",
+                      "disabled": false,
+                      "description": "Number of records to return."
+                    },
+                    {
+                      "key": "species",
+                      "value": "Abies alba",
+                      "disabled": false,
+                      "description": "Genus and species."
+                    },
+                    {
+                      "key": "period",
+                      "value": "fut2035",
+                      "disabled": false,
+                      "description": "Period of interest."
+                    },
+                    {
+                      "key": "scenario",
+                      "value": "rcp45",
+                      "disabled": false,
+                      "description": "Future period model scenario, ignored for current period (cur2005)."
+                    }
+                  ],
+                  "protocol": null,
+                  "host": [
+                    "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/species/array"
+                  ],
+                  "port": null,
+                  "path": null
+                },
+                "description": "Given a species, a period and a model scenario, this service will return all the available grid cell coordinates, for the target species, the time period and the eventual future model scenario, as an array of three floating point values: longitude, latitude and occurrence probability in the range from 0 to 100.\n\nThe service expects the following parameters:\n\n- `species`: Genus and species.\n- `period`: The time period:\n   - `cur2005`: Centered on 2005, current period.\n   - `fut2035`: Future modeled period centered on 2035.\n   - `fut2065`: Future modeled period centered on 2065.\n   - `fut2095`: Future modeled period centered on 2095.\n- `scenario`: Model scenario, only for future periods:\n   - `rcp45`: Representative Concentration Pathway 4.5 (RCP 4.5).\n   - `rcp85`: Representative Concentration Pathway 8.5 (RCP 8.5).\n- `start`: First record index, zero-based.\n- `limit`: Number of records to return.\n\nEach record will be an array of three elements: longitude, latitude and occurrence probability in the range from 0 to 100.\n",
+                "header": [],
+                "body": null,
+                "auth": null
+              },
+              "protocolProfileBehavior": {
+                "followRedirects": false,
+                "followOriginalHttpMethod": false,
+                "followAuthorizationHeader": false
+              },
+              "response": []
+            },
+            {
+              "name": "Map species, period and scenario as GeoJSON points",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/species/point?start=0&limit=1000&species=Abies alba&period=fut2035&scenario=rcp45",
+                  "query": [
+                    {
+                      "key": "start",
+                      "value": "0",
+                      "disabled": false,
+                      "description": "First record index, 0-based."
+                    },
+                    {
+                      "key": "limit",
+                      "value": "1000",
+                      "disabled": false,
+                      "description": "Number of records to return."
+                    },
+                    {
+                      "key": "species",
+                      "value": "Abies alba",
+                      "disabled": false,
+                      "description": "Genus and species."
+                    },
+                    {
+                      "key": "period",
+                      "value": "fut2035",
+                      "disabled": false,
+                      "description": "Period of interest."
+                    },
+                    {
+                      "key": "scenario",
+                      "value": "rcp45",
+                      "disabled": false,
+                      "description": "Future period model scenario, ignored for current period (cur2005)."
+                    }
+                  ],
+                  "protocol": null,
+                  "host": [
+                    "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/species/point"
+                  ],
+                  "port": null,
+                  "path": null
+                },
+                "description": "Given a species, a period and a model scenario, this service will return all the available grid points, for the target species, the time period and the eventual future model scenario, as a GeoJSON point object with the property 'value' in the range from 0 to 100.\n\nThe service expects the following parameters:\n\n- `species`: Genus and species.\n- `period`: The time period:\n   - `cur2005`: Centered on 2005, current period.\n   - `fut2035`: Future modeled period centered on 2035.\n   - `fut2065`: Future modeled period centered on 2065.\n   - `fut2095`: Future modeled period centered on 2095.\n- `scenario`: Model scenario, only for future periods:\n   - `rcp45`: Representative Concentration Pathway 4.5 (RCP 4.5).\n   - `rcp85`: Representative Concentration Pathway 8.5 (RCP 8.5).\n- `start`: First record index, zero-based.\n- `limit`: Number of records to return.\n\nEach record is a GeoJSON point object with its 'value' property corresponding to the species occurrence probability as a float value ranging from 0 to 100.\n",
+                "header": [],
+                "body": null,
+                "auth": null
+              },
+              "protocolProfileBehavior": {
+                "followRedirects": false,
+                "followOriginalHttpMethod": false,
+                "followAuthorizationHeader": false
+              },
+              "response": []
+            },
+            {
+              "name": "Map species, period and scenario as GeoJSON polygons",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/species/poly?start=0&limit=1000&species=Abies alba&period=fut2035&scenario=rcp45",
+                  "query": [
+                    {
+                      "key": "start",
+                      "value": "0",
+                      "disabled": false,
+                      "description": "First record index, 0-based."
+                    },
+                    {
+                      "key": "limit",
+                      "value": "1000",
+                      "disabled": false,
+                      "description": "Number of records to return."
+                    },
+                    {
+                      "key": "species",
+                      "value": "Abies alba",
+                      "disabled": false,
+                      "description": "Genus and species."
+                    },
+                    {
+                      "key": "period",
+                      "value": "fut2035",
+                      "disabled": false,
+                      "description": "Period of interest."
+                    },
+                    {
+                      "key": "scenario",
+                      "value": "rcp45",
+                      "disabled": false,
+                      "description": "Future period model scenario, ignored for current period (cur2005)."
+                    }
+                  ],
+                  "protocol": null,
+                  "host": [
+                    "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/species/poly"
+                  ],
+                  "port": null,
+                  "path": null
+                },
+                "description": "Given a species, a period and a model scenario, this service will return all the available grid points, for the target species, the time period and the eventual future model scenario, as a GeoJSON polygon object with the property 'value' in the range from 0 to 100.\n\nThe service expects the following parameters:\n\n- `species`: Genus and species.\n- `period`: The time period:\n   - `cur2005`: Centered on 2005, current period.\n   - `fut2035`: Future modeled period centered on 2035.\n   - `fut2065`: Future modeled period centered on 2065.\n   - `fut2095`: Future modeled period centered on 2095.\n- `scenario`: Model scenario, only for future periods:\n   - `rcp45`: Representative Concentration Pathway 4.5 (RCP 4.5).\n   - `rcp85`: Representative Concentration Pathway 8.5 (RCP 8.5).\n- `start`: First record index, zero-based.\n- `limit`: Number of records to return.\n\nEach record is a GeoJSON polygon object with its 'value' property corresponding to the species occurrence probability as a float value ranging from 0 to 100.\n",
+                "header": [],
+                "body": null,
+                "auth": null
+              },
+              "protocolProfileBehavior": {
+                "followRedirects": false,
+                "followOriginalHttpMethod": false,
+                "followAuthorizationHeader": false
+              },
+              "response": []
+            }
+          ],
+          "protocolProfileBehavior": null,
+          "response": []
+        }
+      ],
+      "protocolProfileBehavior": null,
+      "response": []
+    }
+  ]
+}

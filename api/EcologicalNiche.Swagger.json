@@ -1,0 +1,370 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "EcologicalNiche.paw",
+    "version": "v0.0.0"
+  },
+  "host": "null",
+  "schemes": [
+    null
+  ],
+  "basePath": "//:/_db///map",
+  "paths": {
+    "/grid/count": {
+      "get": {
+        "summary": "Map species grid cells count",
+        "description": "This service will return the count of all map grid cells that have species occurrence probabilities, regardless of period and future model scenario.\n\nThe result will be a single integer value.",
+        "operationId": "ad1f90f3-6def-4510-b781-238fab12569b",
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        },
+        "parameters": []
+      }
+    },
+    "/grid/array": {
+      "get": {
+        "summary": "Map species grid cells as array",
+        "description": "This service will return all map grid cell coordinates that have species occurrence probabilities, regardless of period and future model scenario.\n\nEach record will be an array of two elements: longitude and latitude.\n\nThe service expects two required URL parameters:\n\n- `start`: First record index, zero-based.\n- `limit`: Number of records to return.",
+        "operationId": "c69d3379-927d-4b0f-8f64-b43cac8fcd58",
+        "parameters": [
+          {
+            "type": "string",
+            "minimum": 0,
+            "default": "0",
+            "name": "start",
+            "description": "First record index, 0-based.",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "minimum": 1,
+            "default": "1000",
+            "name": "limit",
+            "description": "Number of records to return.",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      }
+    },
+    "/grid/point": {
+      "get": {
+        "summary": "Map species grid cells as GeoJSON points",
+        "description": "This service will return all map grid cell points that have species occurrence probabilities, regardless of period and future model scenario.\n\nEach record will be a GeoJSON point object.\n\nThe service expects two required URL parameters:\n\n- `start`: First record index, zero-based.\n- `limit`: Number of records to return.",
+        "operationId": "c8ce90d8-8644-4253-9ba2-1d3edd3455b4",
+        "parameters": [
+          {
+            "type": "string",
+            "minimum": 0,
+            "default": "0",
+            "name": "start",
+            "description": "First record index, 0-based.",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "minimum": 1,
+            "default": "1000",
+            "name": "limit",
+            "description": "Number of records to return.",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      }
+    },
+    "/grid/poly": {
+      "get": {
+        "summary": "Map species grid cells as GeoJSON polygons",
+        "description": "This service will return all map grid cell polygons that have species occurrence probabilities, regardless of period and future model scenario.\n\nEach record will be a GeoJSON polygon object.\n\nThe service expects two required URL parameters:\n\n- `start`: First record index, zero-based.\n- `limit`: Number of records to return.",
+        "operationId": "2f36ac0e-b704-426e-82c0-014ff5fcac2a",
+        "parameters": [
+          {
+            "type": "string",
+            "minimum": 0,
+            "default": "0",
+            "name": "start",
+            "description": "First record index, 0-based.",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "minimum": 1,
+            "default": "1000",
+            "name": "limit",
+            "description": "Number of records to return.",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      }
+    },
+    "/species/count": {
+      "get": {
+        "summary": "Map species, period and scenario grid cells count",
+        "description": "This service will return the count of all map grid cells for a specific species, period and future scenario.\n\nThe service expects the following URL parameters:\n\n- `species`: Genus and species.\n- `period`: The time period:\n   - `cur2005`: Centered on 2005, current period.\n   - `fut2035`: Future modeled period centered on 2035.\n   - `fut2065`: Future modeled period centered on 2065.\n   - `fut2095`: Future modeled period centered on 2095.\n- `scenario`: Model scenario, only for future periods:\n   - `rcp45`: Representative Concentration Pathway 4.5 (RCP 4.5).\n   - `rcp85`: Representative Concentration Pathway 8.5 (RCP 8.5).\n\nIf the period is `cur2005`, the scenario will be ignored.\n\nThe result will be a single integer value.",
+        "operationId": "7ca78729-2614-41f2-b6ca-12f6d9138763",
+        "parameters": [
+          {
+            "type": "string",
+            "default": "Abies alba",
+            "name": "species",
+            "description": "Provide genus and species.",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "default": "fut2035",
+            "enum": [
+              "cur2005",
+              "fut2035",
+              "fut2065",
+              "fut2095"
+            ],
+            "name": "period",
+            "description": "Period of interest",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "default": "rcp45",
+            "enum": [
+              "rcp45",
+              "rcp85"
+            ],
+            "name": "scenario",
+            "description": "Future model scenario, ignore for period `cur2005`.",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      }
+    },
+    "/species/array": {
+      "get": {
+        "summary": "Map species, period and scenario as array",
+        "description": "Given a species, a period and a model scenario, this service will return all the available grid cell coordinates, for the target species, the time period and the eventual future model scenario, as an array of three floating point values: longitude, latitude and occurrence probability in the range from 0 to 100.\n\nThe service expects the following parameters:\n\n- `species`: Genus and species.\n- `period`: The time period:\n   - `cur2005`: Centered on 2005, current period.\n   - `fut2035`: Future modeled period centered on 2035.\n   - `fut2065`: Future modeled period centered on 2065.\n   - `fut2095`: Future modeled period centered on 2095.\n- `scenario`: Model scenario, only for future periods:\n   - `rcp45`: Representative Concentration Pathway 4.5 (RCP 4.5).\n   - `rcp85`: Representative Concentration Pathway 8.5 (RCP 8.5).\n- `start`: First record index, zero-based.\n- `limit`: Number of records to return.\n\nEach record will be an array of three elements: longitude, latitude and occurrence probability in the range from 0 to 100.\n",
+        "operationId": "82e6d807-1e59-47ff-8706-c6db48b7b7a8",
+        "parameters": [
+          {
+            "type": "string",
+            "minimum": 0,
+            "default": "0",
+            "name": "start",
+            "description": "First record index, 0-based.",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "minimum": 1,
+            "default": "1000",
+            "name": "limit",
+            "description": "Number of records to return.",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "default": "Abies alba",
+            "name": "species",
+            "description": "Genus and species.",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "default": "fut2035",
+            "enum": [
+              "cur2005",
+              "fut2035",
+              "fut2065",
+              "fut2095"
+            ],
+            "name": "period",
+            "description": "Period of interest.",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "default": "rcp45",
+            "enum": [
+              "rcp45",
+              "rcp85"
+            ],
+            "name": "scenario",
+            "description": "Future period model scenario, ignored for current period (cur2005).",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      }
+    },
+    "/species/point": {
+      "get": {
+        "summary": "Map species, period and scenario as GeoJSON points",
+        "description": "Given a species, a period and a model scenario, this service will return all the available grid points, for the target species, the time period and the eventual future model scenario, as a GeoJSON point object with the property 'value' in the range from 0 to 100.\n\nThe service expects the following parameters:\n\n- `species`: Genus and species.\n- `period`: The time period:\n   - `cur2005`: Centered on 2005, current period.\n   - `fut2035`: Future modeled period centered on 2035.\n   - `fut2065`: Future modeled period centered on 2065.\n   - `fut2095`: Future modeled period centered on 2095.\n- `scenario`: Model scenario, only for future periods:\n   - `rcp45`: Representative Concentration Pathway 4.5 (RCP 4.5).\n   - `rcp85`: Representative Concentration Pathway 8.5 (RCP 8.5).\n- `start`: First record index, zero-based.\n- `limit`: Number of records to return.\n\nEach record is a GeoJSON point object with its 'value' property corresponding to the species occurrence probability as a float value ranging from 0 to 100.\n",
+        "operationId": "01262888-7b9f-4be0-b20d-7e1f148eca89",
+        "parameters": [
+          {
+            "type": "string",
+            "minimum": 0,
+            "default": "0",
+            "name": "start",
+            "description": "First record index, 0-based.",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "minimum": 1,
+            "default": "1000",
+            "name": "limit",
+            "description": "Number of records to return.",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "default": "Abies alba",
+            "name": "species",
+            "description": "Genus and species.",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "default": "fut2035",
+            "enum": [
+              "cur2005",
+              "fut2035",
+              "fut2065",
+              "fut2095"
+            ],
+            "name": "period",
+            "description": "Period of interest.",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "default": "rcp45",
+            "enum": [
+              "rcp45",
+              "rcp85"
+            ],
+            "name": "scenario",
+            "description": "Future period model scenario, ignored for current period (cur2005).",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      }
+    },
+    "/species/poly": {
+      "get": {
+        "summary": "Map species, period and scenario as GeoJSON polygons",
+        "description": "Given a species, a period and a model scenario, this service will return all the available grid points, for the target species, the time period and the eventual future model scenario, as a GeoJSON polygon object with the property 'value' in the range from 0 to 100.\n\nThe service expects the following parameters:\n\n- `species`: Genus and species.\n- `period`: The time period:\n   - `cur2005`: Centered on 2005, current period.\n   - `fut2035`: Future modeled period centered on 2035.\n   - `fut2065`: Future modeled period centered on 2065.\n   - `fut2095`: Future modeled period centered on 2095.\n- `scenario`: Model scenario, only for future periods:\n   - `rcp45`: Representative Concentration Pathway 4.5 (RCP 4.5).\n   - `rcp85`: Representative Concentration Pathway 8.5 (RCP 8.5).\n- `start`: First record index, zero-based.\n- `limit`: Number of records to return.\n\nEach record is a GeoJSON polygon object with its 'value' property corresponding to the species occurrence probability as a float value ranging from 0 to 100.\n",
+        "operationId": "90bb4a59-e659-4406-a96b-cb01be1fc6ac",
+        "parameters": [
+          {
+            "type": "string",
+            "minimum": 0,
+            "default": "0",
+            "name": "start",
+            "description": "First record index, 0-based.",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "minimum": 1,
+            "default": "1000",
+            "name": "limit",
+            "description": "Number of records to return.",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "default": "Abies alba",
+            "name": "species",
+            "description": "Genus and species.",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "default": "fut2035",
+            "enum": [
+              "cur2005",
+              "fut2035",
+              "fut2065",
+              "fut2095"
+            ],
+            "name": "period",
+            "description": "Period of interest.",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "default": "rcp45",
+            "enum": [
+              "rcp45",
+              "rcp85"
+            ],
+            "name": "scenario",
+            "description": "Future period model scenario, ignored for current period (cur2005).",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      }
+    }
+  },
+  "tags": []
+}
