@@ -25,6 +25,13 @@ module.exports = Object.freeze({
 				"deduplicate": false,
 				"sparse": true,
 				"unique": false
+			},
+			{
+				"name": "idx_geometry",
+				"type": "geo",
+				"fields": ["geometry"],
+				"sparse": true,
+				"unique": false
 			}
 		],
 		"view": []
