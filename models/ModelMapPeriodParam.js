@@ -1,7 +1,7 @@
 'use strict'
 
 /**
- * ModelPeriodParam.js
+ * ModelMapPeriodParam.js
  *
  * Model to provide time period.
  */

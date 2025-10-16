@@ -2,7 +2,8 @@
 
 /**
  * Map service metadata.
- * - test: Test service.
+ *
+ * The metadata record contains the descriptions for all the grid services.
  */
 
 ///
@@ -17,7 +18,7 @@ const dd = require('dedent')
 const metadata =
 {
 	coordinatesCount: {
-		summary: "Map species grid cells count",
+		summary: "Occurrence grid cells count",
 		description: dd`
 			This service will return the count of all map grid cells that \
 			have species occurrence probabilities, regardless of period and \
@@ -28,7 +29,7 @@ const metadata =
 		`
 	},
 	coordinatesArray: {
-		summary: "Map species grid cells as array",
+		summary: "Occurrence grid cells as array",
 		description: dd`
 			This service will return all map grid cell coordinates that have \
 			species occurrence probabilities, regardless of period and future \
@@ -41,7 +42,7 @@ const metadata =
 		`
 	},
 	coordinatesPoint: {
-		summary: "Map species grid cells as GeoJSON points",
+		summary: "Occurrence grid cells as GeoJSON points",
 		description: dd`
 			This service will return all map grid cell points that have \
 			species occurrence probabilities, regardless of period and future \
@@ -52,7 +53,7 @@ const metadata =
 		`
 	},
 	speciesCount: {
-		summary: "Map species, period and scenario grid cells count",
+		summary: "Species occurrence count by period and scenario",
 		description: dd`
 			This service will return the count of all map grid cells for \
 			a specific species, period and future scenario.
@@ -62,7 +63,7 @@ const metadata =
 		`
 	},
 	speciesCoordinatesArray: {
-		summary: "Map species, period and scenario occurrence probability as array",
+		summary: "Species occurrence probability by period and scenario as array",
 		description: dd`
 			Given a species, a period and a model scenario, this service will \
 			return all the available grid cell coordinates, for the target \
@@ -78,7 +79,7 @@ const metadata =
 		`
 	},
 	speciesCoordinatesPoint: {
-		summary: "Map species period and scenario occurrence probability as GeoJSON points",
+		summary: "Species occurrence probability by period and scenario as GeoJSON points",
 		description: dd`
 			Given a species, a period and a model scenario, this service will \
 			return all the available grid points, for the target species, the \

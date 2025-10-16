@@ -22,6 +22,17 @@ At this point the service should be ready to serve data, provided you have creat
 
 The services are divided into two sections sections: one section providing data for *maps* and the other providing data for indicator pair *scatterplots*. All services are described in the ArangoDB service tabs on the database.
 
+### map
+
+This set of services cover species coordinates grid and occurrence probabilities:
+
+- `/map/grid/count`: Return the grid points count for all species.
+- `/map/grid/array`: Return the grid coordinates for all species as an array.
+- `/map/grid/point`: Return the grid coordinates for all species as an array of GeoJSON points.
+- `/map/species/count`: Return the grid points count for the provided species.
+- `/map/species/array`: Return the grid coordinates for the provided species as an array.
+- `/map/species/point`: Return the grid coordinates for the provided species as an array of GeoJSON points.
+
 ## License
 
 Copyright (c) 2025 Milko Skofic

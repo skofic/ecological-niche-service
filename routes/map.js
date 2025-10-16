@@ -29,16 +29,16 @@ const K = require("../globals.js")
 ///
 // Models.
 ///
-const ModelMapGridCount = require('../models/ModelMapGridCount')
-const ModelMapGridArray = require('../models/ModelMapGridArray')
-const ModelMapGridPoint = require('../models/ModelMapGridPoint')
+const ModelGridCount = require('../models/ModelMapGridCount')
+const ModelGridArray = require('../models/ModelMapGridArray')
+const ModelGridPoint = require('../models/ModelMapGridPoint')
 
-const ModelMapSpeciesCoordinatesArray = require('../models/ModelMapSpeciesArray')
-const ModelMapSpeciesCoordinatesPoint = require('../models/ModelMapSpeciesPoint')
+const ModelSpeciesCoordinatesArray = require('../models/ModelMapSpeciesArray')
+const ModelSpeciesCoordinatesPoint = require('../models/ModelMapSpeciesPoint')
 
+const ModelPeriodParam = require('../models/ModelMapPeriodParam')
 const ModelScenarioParam = require('../models/ModelScenarioParam')
 const ModelSpeciesParam = require('../models/ModelSpeciesParam')
-const ModelPeriodParam = require('../models/ModelPeriodParam')
 
 const ModelStart = require("../models/ModelStart");
 const ModelLimit = require("../models/ModelLimit");
@@ -100,7 +100,7 @@ router
 	.summary(metadata.coordinatesCount.summary)
 	.description(metadata.coordinatesCount.description)
 	
-	.response(200, ModelMapGridCount, metadata.coordinatesCount.response)
+	.response(200, ModelGridCount, metadata.coordinatesCount.response)
 
 /**
  * Map coordinates as array.
@@ -129,7 +129,7 @@ router
 	.queryParam('start', ModelStart)
 	.queryParam('limit', ModelLimit)
 	
-	.response(200, [ModelMapGridArray], metadata.coordinatesArray.response)
+	.response(200, [ModelGridArray], metadata.coordinatesArray.response)
 	.response(400, ErrorModel, dd`
 		Known and intercepted error:
 		- *errorNum*: Error number.
@@ -163,7 +163,7 @@ router
 	.queryParam('start', ModelStart)
 	.queryParam('limit', ModelLimit)
 	
-	.response(200, [ModelMapGridPoint], metadata.coordinatesPoint.response)
+	.response(200, [ModelGridPoint], metadata.coordinatesPoint.response)
 	.response(400, ErrorModel, dd`
 		Known and intercepted error:
 		- *errorNum*: Error number.
@@ -199,7 +199,7 @@ router
 	.queryParam('period', ModelPeriodParam)
 	.queryParam('scenario', ModelScenarioParam)
 	
-	.response(200, ModelMapGridCount, metadata.speciesCount.response)
+	.response(200, ModelGridCount, metadata.speciesCount.response)
 
 /**
  * Map species occurrence probability as array.
@@ -235,7 +235,7 @@ router
 	.queryParam('start', ModelStart)
 	.queryParam('limit', ModelLimit)
 	
-	.response(200, [ModelMapSpeciesCoordinatesArray], metadata.speciesCoordinatesArray.response)
+	.response(200, [ModelSpeciesCoordinatesArray], metadata.speciesCoordinatesArray.response)
 	.response(400, ErrorModel, dd`
 		Known and intercepted error:
 		- *errorNum*: Error number.
@@ -275,7 +275,7 @@ router
 	.queryParam('start', ModelStart)
 	.queryParam('limit', ModelLimit)
 	
-	.response(200, [ModelMapSpeciesCoordinatesPoint], metadata.speciesCoordinatesPoint.response)
+	.response(200, [ModelSpeciesCoordinatesPoint], metadata.speciesCoordinatesPoint.response)
 	.response(400, ErrorModel, dd`
 		Known and intercepted error:
 		- *errorNum*: Error number.
@@ -389,7 +389,7 @@ function speciesCount(request, response)
 	///
 	// Validate parameters.
 	///
-	if(! helpers.validatePeriod(request, response)) {
+	if(! helpers.validateMapPeriod(request, response)) {
 		return
 	}
 	
@@ -431,7 +431,7 @@ function speciesArray(request, response)
 	///
 	// Validate parameters.
 	///
-	if(! helpers.validatePeriod(request, response)) {
+	if(! helpers.validateMapPeriod(request, response)) {
 		return
 	}
 	
@@ -473,7 +473,7 @@ function speciesPoint(request, response)
 	///
 	// Validate parameters.
 	///
-	if(! helpers.validatePeriod(request, response)) {
+	if(! helpers.validateMapPeriod(request, response)) {
 		return
 	}
 	
