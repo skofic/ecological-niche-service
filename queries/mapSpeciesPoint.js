@@ -25,7 +25,7 @@ FOR doc IN @@collection
 	LIMIT @start, @limit
 RETURN {
 	type: 'Feature',
-	geometry: doc.geometry_point,
+	geometry: doc.geometry,
 	properties: {
 		value: @period == "cur2005"
 			    ? doc.properties.probabilities.@species.@period.value

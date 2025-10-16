@@ -21,8 +21,8 @@ FOR doc IN @@collection
 	FILTER HAS(doc.properties, 'probabilities')
 	LIMIT @start, @limit
 RETURN [
-	doc.geometry_point.coordinates[0],
-	doc.geometry_point.coordinates[1]
+	doc.geometry.coordinates[0],
+	doc.geometry.coordinates[1]
 ]
 `
 

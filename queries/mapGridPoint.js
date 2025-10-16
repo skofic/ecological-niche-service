@@ -19,7 +19,7 @@ FOR doc IN @@collection
 	FILTER HAS(doc.properties, 'probabilities')
 	LIMIT @start, @limit
 RETURN {
-	geometry: doc.geometry_point
+	geometry: doc.geometry
 }
 `
 

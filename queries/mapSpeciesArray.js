@@ -27,8 +27,8 @@ FOR doc IN @@collection
                               != null
   LIMIT @start, @limit
 RETURN [
-  doc.geometry_point.coordinates[0],
-  doc.geometry_point.coordinates[1],
+  doc.geometry.coordinates[0],
+  doc.geometry.coordinates[1],
   @period == "cur2005"
     ? doc.properties.probabilities.@species.@period.value
     : doc.properties.probabilities.@species.@period.@scenario

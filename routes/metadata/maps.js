@@ -5,10 +5,17 @@
  * - test: Test service.
  */
 
+///
+// Includes.
+///
 const dd = require('dedent')
 
 
-const metadata = {
+///
+// Metadata record.
+///
+const metadata =
+{
 	coordinatesCount: {
 		summary: "Map species grid cells count",
 		description: dd`
@@ -42,17 +49,6 @@ const metadata = {
 		`,
 		response: dd`
 			Each record is a GeoJSON point object.
-		`
-	},
-	coordinatesPoly: {
-		summary: "Map species grid cells as GeoJSON polygons",
-		description: dd`
-			This service will return all map grid cell polygons that have \
-			species occurrence probabilities, regardless of period and future \
-			model scenario.
-		`,
-		response: dd`
-			Each record is a GeoJSON polygon object.
 		`
 	},
 	speciesCount: {
@@ -91,20 +87,6 @@ const metadata = {
 		`,
 		response: dd`
 			Each record is a GeoJSON point object with its 'value' property \
-			corresponding to the species occurrence probability as a float \
-			value ranging from 0 to 100.
-		`
-	},
-	speciesCoordinatesPoly: {
-		summary: "Map species period and scenario occurrence probability as GeoJSON polygon",
-		description: dd`
-			Given a species, a period and a model scenario, this service will \
-			return all the available grid points, for the target species, the \
-			time period and the eventual future model scenario, as a GeoJSON \
-			polygon object with the property 'value' in the range from 0 to 100.
-		`,
-		response: dd`
-			Each record is a GeoJSON polygon object with its 'value' property \
 			corresponding to the species occurrence probability as a float \
 			value ranging from 0 to 100.
 		`
