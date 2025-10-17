@@ -1,9 +1,9 @@
 'use strict'
 
 /**
- * ModelLimit.js
+ * ModelLimitParameter.js
  *
- * Model to provide query limits records count parameter.
+ * Model to provide query limits records stats parameter.
  */
 
 const joi = require('joi')

@@ -17,18 +17,18 @@ const dd = require('dedent')
 ///
 const metadata =
 {
-	coordinatesCount: {
-		summary: "Occurrence grid cells count",
+	stats: {
+		summary: "Occurrence grid cells statistics",
 		description: dd`
 			This service will return the count of all map grid cells that \
 			have species occurrence probabilities, regardless of period and \
 			future model scenario.
 		`,
 		response: dd`
-			A single integer with the count.
+A single integer with the count.
 		`
 	},
-	coordinatesArray: {
+	array: {
 		summary: "Occurrence grid cells as array",
 		description: dd`
 			This service will return all map grid cell coordinates that have \
@@ -36,12 +36,12 @@ const metadata =
 			model scenario.
 		`,
 		response: dd`
-			Each record is an array of two items:
-			- *[0]*: Longitude in decimal degrees.
-			- *[1]*: Latitude in decimal degrees.
+Each record is an array of two items:
+- *[0]*: Longitude in decimal degrees.
+- *[1]*: Latitude in decimal degrees.
 		`
 	},
-	coordinatesPoint: {
+	point: {
 		summary: "Occurrence grid cells as GeoJSON points",
 		description: dd`
 			This service will return all map grid cell points that have \
@@ -49,20 +49,20 @@ const metadata =
 			model scenario.
 		`,
 		response: dd`
-			Each record is a GeoJSON point object.
+Each record is a GeoJSON point object.
 		`
 	},
-	speciesCount: {
-		summary: "Species occurrence count by period and scenario",
+	speciesStats: {
+		summary: "Species occurrence stats by period and scenario",
 		description: dd`
 			This service will return the count of all map grid cells for \
 			a specific species, period and future scenario.
 		`,
 		response: dd`
-			A single integer with the count.
+A single integer with the count.
 		`
 	},
-	speciesCoordinatesArray: {
+	speciesArray: {
 		summary: "Species occurrence probability by period and scenario as array",
 		description: dd`
 			Given a species, a period and a model scenario, this service will \
@@ -72,13 +72,13 @@ const metadata =
 			probability in the range from 0 to 100.
 		`,
 		response: dd`
-			Each record is an array of three items:
-			- *[0]*: Longitude in decimal degrees.
-			- *[1]*: Latitude in decimal degrees.
-			- *[2]*: Species occurrence probability as a float with a 0 to 100 range.
+Each record is an array of three items:
+- *[0]*: Longitude in decimal degrees.
+- *[1]*: Latitude in decimal degrees.
+- *[2]*: Species occurrence probability as a float with a 0 to 100 range.
 		`
 	},
-	speciesCoordinatesPoint: {
+	speciesPoint: {
 		summary: "Species occurrence probability by period and scenario as GeoJSON points",
 		description: dd`
 			Given a species, a period and a model scenario, this service will \
@@ -87,9 +87,9 @@ const metadata =
 			point object with the property 'value' in the range from 0 to 100.
 		`,
 		response: dd`
-			Each record is a GeoJSON point object with its 'value' property \
-			corresponding to the species occurrence probability as a float \
-			value ranging from 0 to 100.
+Each record is a GeoJSON point object with its 'value' property \
+corresponding to the species occurrence probability as a float \
+value ranging from 0 to 100.
 		`
 	}
 }

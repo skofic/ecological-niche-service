@@ -1,12 +1,12 @@
 'use strict'
 
 /**
- * Return count of all grid points.
+ * Return stats of all grid points.
  *
  * The query selects all records that have species occurrence probability,
  * regardless of the specific species.
  *
- * Returns an integer count of the grid cells.
+ * Returns an integer stats of the grid cells.
  *
  * @type {string}
  */

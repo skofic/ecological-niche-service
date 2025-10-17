@@ -1,9 +1,9 @@
 'use strict'
 
 /**
- * ModelMapSpeciesPoint.js
+ * ModelGridSpeciesPoly.js
  *
- * Model for species occurrence probability as point and 'value'
+ * Model for species occurrence probability as polygon and 'value'
  * property ranging from 0 to 100.
  */
 
@@ -17,10 +17,9 @@ module.exports =
 	joi.object({
 		type: 'Feature',
 		geometry: joi.object({
-			type: 'Point',
+			type: 'Polygon',
 			coordinates: joi.array()
-				.length(2)
-				.items(joi.number())
+				.items(joi.array())
 		}),
 		properties: joi.object({
 			value: joi
@@ -30,7 +29,7 @@ module.exports =
 		})
 	})
 		.description(dd`
-			**Species occurrence probability by point**
+			**Species occurrence probability by polygon**
 			
 			Each entry is a GeoJSONL object with its 'value' property \
 			corresponding to the species occurrence probability \

@@ -1,10 +1,10 @@
 'use strict'
 
 /**
- * ModelPairCount.js
+ * ModelGridStats.js
  *
- * Model for indicator pairs count:
- * - Integer count.
+ * Model for map grid cells stats:
+ * - Integer stats.
  */
 
 const joi = require('joi')
@@ -17,7 +17,7 @@ module.exports =
 	joi.number()
 		.integer()
 		.description(dd`
-			**Indicatora pair count**
+			**Map coordinates count**
 			
-			Returns the count of existing pairs of indicator values.
+			Returns the count of all map grid points.
 		`)

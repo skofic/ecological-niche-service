@@ -3,23 +3,9 @@
 ///
 // Includes.
 ///
-const joi = require('joi')
 const dd = require('dedent')
-const status = require('statuses')
-const {db, aql} = require('@arangodb')
-const httpError = require('http-errors')
-const { errors } = require('@arangodb')
-const { context } = require('@arangodb/locals')
+const {db} = require('@arangodb')
 const createRouter = require('@arangodb/foxx/router')
-
-///
-// ArangoDB includes.
-///
-const ARANGO_NOT_FOUND = errors.ERROR_ARANGO_DOCUMENT_NOT_FOUND.code
-const ARANGO_DUPLICATE = errors.ERROR_ARANGO_UNIQUE_CONSTRAINT_VIOLATED.code
-const ARANGO_CONFLICT = errors.ERROR_ARANGO_CONFLICT.code
-const HTTP_NOT_FOUND = status('not found')
-const HTTP_CONFLICT = status('conflict')
 
 ///
 // Global includes.
@@ -29,19 +15,20 @@ const K = require("../globals.js")
 ///
 // Models.
 ///
-const ModelGridCount = require('../models/ModelMapGridCount')
-const ModelGridArray = require('../models/ModelMapGridArray')
-const ModelGridPoint = require('../models/ModelMapGridPoint')
+const ModelStats = require('../models/ModelGridStats')
+const ModelArray = require('../models/ModelGridArray')
+const ModelPoint = require('../models/ModelGridPoint')
 
-const ModelSpeciesCoordinatesArray = require('../models/ModelMapSpeciesArray')
-const ModelSpeciesCoordinatesPoint = require('../models/ModelMapSpeciesPoint')
+const ModelSpeciesArray = require('../models/ModelGridSpeciesArray')
+const ModelSpeciesPoint = require('../models/ModelGridSpeciesPoint')
 
-const ModelPeriodParam = require('../models/ModelMapPeriodParam')
+const ModelPeriodParam = require('../models/ModelGridPeriodParam')
 const ModelScenarioParam = require('../models/ModelScenarioParam')
 const ModelSpeciesParam = require('../models/ModelSpeciesParam')
 
-const ModelStart = require("../models/ModelStart");
-const ModelLimit = require("../models/ModelLimit");
+const ModelStart = require("../models/ModelStartParameter");
+const ModelLimit = require("../models/ModelLimitParameter");
+
 const ErrorModel = require("../models/error.generic");
 
 ///
@@ -52,13 +39,13 @@ const helpers = require("../utils/helpers.js")
 ///
 // Queries.
 ///
-const QueryMapGridCount = require('../queries/mapGridCount')
-const QueryMapGridArray = require('../queries/mapGridArray')
-const QueryMapGridPoint = require('../queries/mapGridPoint')
+const QueryStats = require('../queries/gridStats')
+const QueryArray = require('../queries/gridArray')
+const QueryPoint = require('../queries/gridPoint')
 
-const QueryMapSpeciesCount = require('../queries/mapSpeciesCount')
-const QueryMapSpeciesArray = require('../queries/mapSpeciesArray')
-const QueryMapSpeciesPoint = require('../queries/mapSpeciesPoint')
+const QuerySpeciesStats = require('../queries/gridSpeciesStats')
+const QuerySpeciesArray = require('../queries/gridSpeciesArray')
+const QuerySpeciesPoint = require('../queries/gridSpeciesPoint')
 
 
 ///
@@ -84,23 +71,23 @@ router.tag('map')
 /******************************************************************************/
 
 /**
- * Map coordinates count.
+ * Map coordinates stats.
  *
- * This service will return the count of all map grid points.
+ * This service will return the stats of all map grid points.
  */
 router
 	.get(
-		'grid/count',
+		'stat',
 		function (request, response) {
-			coordinatesCount(request, response)
+			gridStats(request, response)
 		},
-		'map-grid-count'
+		'map-grid-stat'
 	)
 	
-	.summary(metadata.coordinatesCount.summary)
-	.description(metadata.coordinatesCount.description)
+	.summary(metadata.stats.summary)
+	.description(metadata.stats.description)
 	
-	.response(200, ModelGridCount, metadata.coordinatesCount.response)
+	.response(200, ModelStats, metadata.stats.response)
 
 /**
  * Map coordinates as array.
@@ -117,19 +104,19 @@ router
  */
 router
 	.get(
-		'grid/array',
+		'array',
 		function (request, response) {
 			coordinatesArray(request, response)
 		},
 		'map-grid-array'
 	)
-	.summary(metadata.coordinatesArray.summary)
-	.description(metadata.coordinatesArray.description)
+	.summary(metadata.array.summary)
+	.description(metadata.array.description)
 	
 	.queryParam('start', ModelStart)
 	.queryParam('limit', ModelLimit)
 	
-	.response(200, [ModelGridArray], metadata.coordinatesArray.response)
+	.response(200, [ModelArray], metadata.array.response)
 	.response(400, ErrorModel, dd`
 		Known and intercepted error:
 		- *errorNum*: Error number.
@@ -151,19 +138,19 @@ router
  */
 router
 	.get(
-		'grid/point',
+		'point',
 		function (request, response) {
 			coordinatesPoint(request, response)
 		},
 		'map-grid-point'
 	)
-	.summary(metadata.coordinatesPoint.summary)
-	.description(metadata.coordinatesPoint.description)
+	.summary(metadata.point.summary)
+	.description(metadata.point.description)
 	
 	.queryParam('start', ModelStart)
 	.queryParam('limit', ModelLimit)
 	
-	.response(200, [ModelGridPoint], metadata.coordinatesPoint.response)
+	.response(200, [ModelPoint], metadata.point.response)
 	.response(400, ErrorModel, dd`
 		Known and intercepted error:
 		- *errorNum*: Error number.
@@ -172,9 +159,9 @@ router
 	`)
 
 /**
- * Map species occurrence probability values count.
+ * Map species occurrence probability values stats.
  *
- * This service will return the count of all available grid cells
+ * This service will return the stats of all available grid cells
  * for the provided species, period and model scenario.
  *
  * The service expects the following parameters:
@@ -182,24 +169,24 @@ router
  * - period:  The period for which we want the probability.
  * - model:   The scenario for future modelled data.
  *
- * The service will return tan integer with the records count.
+ * The service will return tan integer with the records stats.
  */
 router
 	.get(
-		'/species/count',
+		'species/stat',
 		function (request, response) {
 			speciesCount(request, response)
 		},
-		'map-species-count'
+		'map-species-stat'
 	)
-	.summary(metadata.speciesCount.summary)
-	.description(metadata.speciesCount.description)
+	.summary(metadata.speciesStats.summary)
+	.description(metadata.speciesStats.description)
 	
 	.queryParam('species', ModelSpeciesParam)
 	.queryParam('period', ModelPeriodParam)
 	.queryParam('scenario', ModelScenarioParam)
 	
-	.response(200, ModelGridCount, metadata.speciesCount.response)
+	.response(200, ModelStats, metadata.speciesStats.response)
 
 /**
  * Map species occurrence probability as array.
@@ -219,14 +206,14 @@ router
  */
 router
 	.get(
-		'/species/array',
+		'species/array',
 		function (request, response) {
 			speciesArray(request, response)
 		},
 		'map-species-array'
 	)
-	.summary(metadata.speciesCoordinatesArray.summary)
-	.description(metadata.speciesCoordinatesArray.description)
+	.summary(metadata.speciesArray.summary)
+	.description(metadata.speciesArray.description)
 	
 	.queryParam('species', ModelSpeciesParam)
 	.queryParam('period', ModelPeriodParam)
@@ -235,7 +222,7 @@ router
 	.queryParam('start', ModelStart)
 	.queryParam('limit', ModelLimit)
 	
-	.response(200, [ModelSpeciesCoordinatesArray], metadata.speciesCoordinatesArray.response)
+	.response(200, [ModelSpeciesArray], metadata.speciesArray.response)
 	.response(400, ErrorModel, dd`
 		Known and intercepted error:
 		- *errorNum*: Error number.
@@ -259,14 +246,14 @@ router
  */
 router
 	.get(
-		'/species/point',
+		'species/point',
 		function (request, response) {
 			speciesPoint(request, response)
 		},
 		'map-species-point'
 	)
-	.summary(metadata.speciesCoordinatesPoint.summary)
-	.description(metadata.speciesCoordinatesPoint.description)
+	.summary(metadata.speciesPoint.summary)
+	.description(metadata.speciesPoint.description)
 	
 	.queryParam('species', ModelSpeciesParam)
 	.queryParam('period', ModelPeriodParam)
@@ -275,7 +262,7 @@ router
 	.queryParam('start', ModelStart)
 	.queryParam('limit', ModelLimit)
 	
-	.response(200, [ModelSpeciesCoordinatesPoint], metadata.speciesCoordinatesPoint.response)
+	.response(200, [ModelSpeciesPoint], metadata.speciesPoint.response)
 	.response(400, ErrorModel, dd`
 		Known and intercepted error:
 		- *errorNum*: Error number.
@@ -289,14 +276,14 @@ router
 /******************************************************************************/
 
 /**
- * Return count of all map grid cells.
+ * Return stats of all map grid cells.
  *
  * No value is returned by the function, the service response is handled here.
  *
  * @param {Object} request: Service request.
  * @param {Object} response: Service response.
  */
-function coordinatesCount(request, response)
+function gridStats(request, response)
 {
 	///
 	// Perform query.
@@ -304,19 +291,19 @@ function coordinatesCount(request, response)
 	response
 		.send(
 			db._query(
-				QueryMapGridCount,
+				QueryStats,
 				{
 					'@collection': K.collection.name
 				}
 			).toArray()[0]
 		)
 	
-} // coordinatesCount()
+} // gridStats()
 
 /**
  * Return array of all grid point coordinates.
  *
- * The function expects the @count parameter:
+ * The function expects the @stats parameter:
  * - start: 0-based first record index.
  * - limit: Number of records to return.
  *
@@ -333,7 +320,7 @@ function coordinatesArray(request, response)
 	response
 		.send(
 			db._query(
-				QueryMapGridArray,
+				QueryArray,
 				{
 					'@collection': K.collection.name,
 					'start': request.queryParams.start,
@@ -342,12 +329,12 @@ function coordinatesArray(request, response)
 			).toArray()
 		)
 	
-} // coordinatesArray()
+} // array()
 
 /**
  * Return array of all grid GeoJson points.
  *
- * The function expects the @count parameter:
+ * The function expects the @stats parameter:
  * - start: 0-based first record index.
  * - limit: Number of records to return.
  *
@@ -364,7 +351,7 @@ function coordinatesPoint(request, response)
 	response
 		.send(
 			db._query(
-				QueryMapGridPoint,
+				QueryPoint,
 				{
 					'@collection': K.collection.name,
 					'start': request.queryParams.start,
@@ -373,10 +360,10 @@ function coordinatesPoint(request, response)
 			).toArray()
 		)
 	
-} // coordinatesPoint()
+} // point()
 
 /**
- * Return occurrence probability grid cell count for species,
+ * Return occurrence probability grid cell stats for species,
  * period and model scenario.
  *
  * No value is returned by the function, the service response is handled here.
@@ -399,7 +386,7 @@ function speciesCount(request, response)
 	response
 		.send(
 			db._query(
-				QueryMapSpeciesCount,
+				QuerySpeciesStats,
 				{
 					'@collection': K.collection.name,
 					'period': request.queryParams.period,
@@ -409,7 +396,7 @@ function speciesCount(request, response)
 			).toArray()[0]
 		)
 	
-} // speciesCount()
+} // speciesStats()
 
 /**
  * Return array of coordinates and species occurrence probabilities.
@@ -441,7 +428,7 @@ function speciesArray(request, response)
 	response
 		.send(
 			db._query(
-				QueryMapSpeciesArray,
+				QuerySpeciesArray,
 				{
 					'@collection': K.collection.name,
 					'period': request.queryParams.period,
@@ -483,7 +470,7 @@ function speciesPoint(request, response)
 	response
 		.send(
 			db._query(
-				QueryMapSpeciesPoint,
+				QuerySpeciesPoint,
 				{
 					'@collection': K.collection.name,
 					'period': request.queryParams.period,

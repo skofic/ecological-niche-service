@@ -1,7 +1,7 @@
 'use strict'
 
 /**
- * ModelStart.js
+ * ModelStartParameter.js
  *
  * Model to provide query limits start parameter.
  */

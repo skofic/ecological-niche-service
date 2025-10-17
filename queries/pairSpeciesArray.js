@@ -1,11 +1,10 @@
 'use strict'
 
 /**
- * Indicator pair combinations for period and scenario,
- * for provided species.
+ * Indicator pair combinations for species, period and scenario.
  *
  * Requires the following parameters:
- * - @species: Genus and species of interest.
+ * - @species: Requested genus and species (e.g. Abies alba).
  * - @period:  Period for data (e.g. "1960-1990").
  * - @scenario: Future model scenario (e.g. "rcp45" or "rcp85"; ignored for @period 1960-1990).
  * - @X: Variable name for X axis (e.g. "bio1").
@@ -29,27 +28,28 @@
  * Returns an array of arrays:
  * - [0]: X axis value.
  * - [1]: Y axis value.
+ * - [2]: Number of matching grid items.
  *
  * @type {string}
  */
 const query = `
 FOR doc IN @@collection
-  FILTER @species IN doc.properties.species
-  FILTER HAS(@period == "1960-1990" ? doc.properties.indicators.@period
-                                    : doc.properties.indicators.@period.@scenario,
-             @X)
-  FILTER HAS(@period == "1960-1990" ? doc.properties.indicators.@period
-                                    : doc.properties.indicators.@period.@scenario,
-             @Y)
-  
-  COLLECT X = @period == "1960-1990" ? doc.properties.indicators.@period.@X
-                                     : doc.properties.indicators.@period.@scenario.@X
-  COLLECT Y = @period == "1960-1990" ? doc.properties.indicators.@period.@Y
-                                     : doc.properties.indicators.@period.@scenario.@Y
 
-  LIMIT @start, @limit
-  
-RETURN [X, Y]
+	FILTER @species IN doc.properties.species
+	FILTER HAS(@period == "1960-1990" ? doc.properties.indicators.@period
+	                                  : doc.properties.indicators.@period.@scenario, @X)
+	FILTER HAS(@period == "1960-1990" ? doc.properties.indicators.@period
+	                                  : doc.properties.indicators.@period.@scenario, @Y)
+	
+	COLLECT X = @period == "1960-1990" ? doc.properties.indicators.@period.@X
+	                                   : doc.properties.indicators.@period.@scenario.@X,
+	        Y = @period == "1960-1990" ? doc.properties.indicators.@period.@Y
+	                                   : doc.properties.indicators.@period.@scenario.@Y
+	WITH COUNT INTO items
+	
+	LIMIT @start, @limit
+	
+RETURN [X, Y, items]
 `
 
 module.exports = query

@@ -22,16 +22,33 @@ At this point the service should be ready to serve data, provided you have creat
 
 The services are divided into two sections sections: one section providing data for *maps* and the other providing data for indicator pair *scatterplots*. All services are described in the ArangoDB service tabs on the database.
 
+### species
+
+This set of services provides information regarding the available species:
+
+- `/species/list`: Return the list of available species.
+
 ### map
 
 This set of services cover species coordinates grid and occurrence probabilities:
 
-- `/map/grid/count`: Return the grid points count for all species.
-- `/map/grid/array`: Return the grid coordinates for all species as an array.
-- `/map/grid/point`: Return the grid coordinates for all species as an array of GeoJSON points.
-- `/map/species/count`: Return the grid points count for the provided species.
+- `/map/stat`: Return the grid points count for all species.
+- `/map/array`: Return the grid coordinates for all species as an array.
+- `/map/point`: Return the grid coordinates for all species as an array of GeoJSON points.
+- `/map/species/stat`: Return the grid points count for the provided species.
 - `/map/species/array`: Return the grid coordinates for the provided species as an array.
 - `/map/species/point`: Return the grid coordinates for the provided species as an array of GeoJSON points.
+
+### pair
+
+This set of services cover indicators pair combinations:
+
+- `/pair/stat`: Return statistics for indicators pair, period and scenario.
+- `/pair/array`: Return indicators pair values for period and scenario as an array.
+- `/pair/object`: Return indicators pair values for period and scenario as an object.
+- `/pair/species/stat`: Return statistics for indicators pair, species, period and scenario.
+- `/pair/species/array`: Return indicators pair values for species, period and scenario as an array.
+- `/pair/species/object`: Return indicators pair values for species, period and scenario as an object.
 
 ## License
 

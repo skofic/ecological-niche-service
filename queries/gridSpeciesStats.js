@@ -9,7 +9,7 @@
  * - @species: Genus and species (e.g. "Abies alba").
  * - @scenario: Future model scenario (e.g. "rcp45" or "rcp85"; ignored for @period cur2005).
  *
- * Returns integer with the grid cells count.
+ * Returns integer with the grid cells stats.
  *
  * @type {string}
  */

@@ -5,21 +5,54 @@
   },
   "item": [
     {
+      "name": "SPECIES",
+      "item": [
+        {
+          "name": "List all species",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/species/list",
+              "query": null,
+              "protocol": null,
+              "host": [
+                "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/species/list"
+              ],
+              "port": null,
+              "path": null
+            },
+            "description": "This service will return the sorted list of all available species as an array.",
+            "header": [],
+            "body": null,
+            "auth": null
+          },
+          "protocolProfileBehavior": {
+            "followRedirects": false,
+            "followOriginalHttpMethod": false,
+            "followAuthorizationHeader": false
+          },
+          "response": []
+        }
+      ],
+      "protocolProfileBehavior": null,
+      "response": []
+    },
+    {
       "name": "MAP",
       "item": [
         {
-          "name": "GRID",
+          "name": "ALL",
           "item": [
             {
-              "name": "Map species grid cells count",
+              "name": "Occurrence grid cells statistics",
               "request": {
                 "method": "GET",
                 "url": {
-                  "raw": "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/grid/count",
+                  "raw": "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/stat",
                   "query": null,
                   "protocol": null,
                   "host": [
-                    "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/grid/count"
+                    "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/stat"
                   ],
                   "port": null,
                   "path": null
@@ -37,11 +70,11 @@
               "response": []
             },
             {
-              "name": "Map species grid cells as array",
+              "name": "Occurrence grid cells as array",
               "request": {
                 "method": "GET",
                 "url": {
-                  "raw": "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/grid/array?start=0&limit=1000",
+                  "raw": "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/array?start=0&limit=1000",
                   "query": [
                     {
                       "key": "start",
@@ -58,12 +91,12 @@
                   ],
                   "protocol": null,
                   "host": [
-                    "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/grid/array"
+                    "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/array"
                   ],
                   "port": null,
                   "path": null
                 },
-                "description": "This service will return all map grid cell coordinates that have species occurrence probabilities, regardless of period and future model scenario.\n\nEach record will be an array of two elements: longitude and latitude.\n\nThe service expects two required URL parameters:\n\n- `start`: First record index, zero-based.\n- `limit`: Number of records to return.",
+                "description": "This service will return all map grid cell coordinates that have species occurrence probabilities, regardless of period and future model scenario.\n\nThe service expects two required URL parameters:\n\n- `start`: First record index, zero-based.\n- `limit`: Number of records to return.\n\nEach record will be an array of two elements: longitude and latitude.",
                 "header": [],
                 "body": null,
                 "auth": null
@@ -76,11 +109,11 @@
               "response": []
             },
             {
-              "name": "Map species grid cells as GeoJSON points",
+              "name": "Occurrence grid cells as GeoJSON points",
               "request": {
                 "method": "GET",
                 "url": {
-                  "raw": "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/grid/point?start=0&limit=1000",
+                  "raw": "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/point?start=0&limit=1000",
                   "query": [
                     {
                       "key": "start",
@@ -97,51 +130,12 @@
                   ],
                   "protocol": null,
                   "host": [
-                    "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/grid/point"
+                    "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/point"
                   ],
                   "port": null,
                   "path": null
                 },
-                "description": "This service will return all map grid cell points that have species occurrence probabilities, regardless of period and future model scenario.\n\nEach record will be a GeoJSON point object.\n\nThe service expects two required URL parameters:\n\n- `start`: First record index, zero-based.\n- `limit`: Number of records to return.",
-                "header": [],
-                "body": null,
-                "auth": null
-              },
-              "protocolProfileBehavior": {
-                "followRedirects": false,
-                "followOriginalHttpMethod": false,
-                "followAuthorizationHeader": false
-              },
-              "response": []
-            },
-            {
-              "name": "Map species grid cells as GeoJSON polygons",
-              "request": {
-                "method": "GET",
-                "url": {
-                  "raw": "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/grid/poly?start=0&limit=1000",
-                  "query": [
-                    {
-                      "key": "start",
-                      "value": "0",
-                      "disabled": false,
-                      "description": "First record index, 0-based."
-                    },
-                    {
-                      "key": "limit",
-                      "value": "1000",
-                      "disabled": false,
-                      "description": "Number of records to return."
-                    }
-                  ],
-                  "protocol": null,
-                  "host": [
-                    "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/grid/poly"
-                  ],
-                  "port": null,
-                  "path": null
-                },
-                "description": "This service will return all map grid cell polygons that have species occurrence probabilities, regardless of period and future model scenario.\n\nEach record will be a GeoJSON polygon object.\n\nThe service expects two required URL parameters:\n\n- `start`: First record index, zero-based.\n- `limit`: Number of records to return.",
+                "description": "This service will return all map grid cell points that have species occurrence probabilities, regardless of period and future model scenario.\n\nThe service expects two required URL parameters:\n\n- `start`: First record index, zero-based.\n- `limit`: Number of records to return.\n\nEach record will be a GeoJSON point object.",
                 "header": [],
                 "body": null,
                 "auth": null
@@ -161,11 +155,11 @@
           "name": "SPECIES",
           "item": [
             {
-              "name": "Map species, period and scenario grid cells count",
+              "name": "Species occurrence stats by period and scenario",
               "request": {
                 "method": "GET",
                 "url": {
-                  "raw": "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/species/count?species=Abies alba&period=fut2035&scenario=rcp45",
+                  "raw": "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/species/stat?species=Abies alba&period=fut2035&scenario=rcp45",
                   "query": [
                     {
                       "key": "species",
@@ -188,7 +182,7 @@
                   ],
                   "protocol": null,
                   "host": [
-                    "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/species/count"
+                    "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/species/stat"
                   ],
                   "port": null,
                   "path": null
@@ -206,7 +200,7 @@
               "response": []
             },
             {
-              "name": "Map species, period and scenario as array",
+              "name": "Species occurrence data by period and scenario as array",
               "request": {
                 "method": "GET",
                 "url": {
@@ -263,7 +257,7 @@
               "response": []
             },
             {
-              "name": "Map species, period and scenario as GeoJSON points",
+              "name": "Species occurrence data by period and scenario as GeoJSON points",
               "request": {
                 "method": "GET",
                 "url": {
@@ -318,53 +312,389 @@
                 "followAuthorizationHeader": false
               },
               "response": []
-            },
+            }
+          ],
+          "protocolProfileBehavior": null,
+          "response": []
+        }
+      ],
+      "protocolProfileBehavior": null,
+      "response": []
+    },
+    {
+      "name": "PAIR",
+      "item": [
+        {
+          "name": "ALL",
+          "item": [
             {
-              "name": "Map species, period and scenario as GeoJSON polygons",
+              "name": "Indicators pair statistics for period and scenario",
               "request": {
                 "method": "GET",
                 "url": {
-                  "raw": "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/species/poly?start=0&limit=1000&species=Abies alba&period=fut2035&scenario=rcp45",
+                  "raw": "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/pair/stat?period=1991-2020&scenario=rcp45&X=bio01&Y=bio12",
                   "query": [
                     {
-                      "key": "start",
-                      "value": "0",
-                      "disabled": false,
-                      "description": "First record index, 0-based."
-                    },
-                    {
-                      "key": "limit",
-                      "value": "1000",
-                      "disabled": false,
-                      "description": "Number of records to return."
-                    },
-                    {
-                      "key": "species",
-                      "value": "Abies alba",
-                      "disabled": false,
-                      "description": "Genus and species."
-                    },
-                    {
                       "key": "period",
-                      "value": "fut2035",
+                      "value": "1991-2020",
                       "disabled": false,
-                      "description": "Period of interest."
+                      "description": "Period"
                     },
                     {
                       "key": "scenario",
                       "value": "rcp45",
                       "disabled": false,
-                      "description": "Future period model scenario, ignored for current period (cur2005)."
+                      "description": "Future model scenario"
+                    },
+                    {
+                      "key": "X",
+                      "value": "bio01",
+                      "disabled": false,
+                      "description": "X-axis indicator"
+                    },
+                    {
+                      "key": "Y",
+                      "value": "bio12",
+                      "disabled": false,
+                      "description": "Y-axis indicator"
                     }
                   ],
                   "protocol": null,
                   "host": [
-                    "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/map/species/poly"
+                    "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/pair/stat"
                   ],
                   "port": null,
                   "path": null
                 },
-                "description": "Given a species, a period and a model scenario, this service will return all the available grid points, for the target species, the time period and the eventual future model scenario, as a GeoJSON polygon object with the property 'value' in the range from 0 to 100.\n\nThe service expects the following parameters:\n\n- `species`: Genus and species.\n- `period`: The time period:\n   - `cur2005`: Centered on 2005, current period.\n   - `fut2035`: Future modeled period centered on 2035.\n   - `fut2065`: Future modeled period centered on 2065.\n   - `fut2095`: Future modeled period centered on 2095.\n- `scenario`: Model scenario, only for future periods:\n   - `rcp45`: Representative Concentration Pathway 4.5 (RCP 4.5).\n   - `rcp85`: Representative Concentration Pathway 8.5 (RCP 8.5).\n- `start`: First record index, zero-based.\n- `limit`: Number of records to return.\n\nEach record is a GeoJSON polygon object with its 'value' property corresponding to the species occurrence probability as a float value ranging from 0 to 100.\n",
+                "description": "This service will return statistics related to the requested indicators pair, period and scenario.\n\nThe service expects the following URL parameters:\n\n- `period`: The time period:\n    - `1960-1990`: Current period, centered on 1960 to 1990.\n    - `1991-2020`: Future period, centered on 1991 to 2020.\n    - `2021-2050`: Future period, centered on 2021 to 2050.\n    - `2051-2080`: Future period, centered on 2051 to 2080.\n- `scenario`: Model scenario, only for future periods:\n    - `rcp45`: Representative Concentration Pathway 4.5 (RCP 4.5).\n    - `rcp85`: Representative Concentration Pathway 8.5 (RCP 8.5).\n- `X`: X-axis indicator:\n    - `bio01`: Mean annual air temperature.\n    - `bio12`: Annual precipitation amount.\n    - `bio15`: Precipitation seasonality.\n    - `ci`: Continentality.\n    - `ps`: Summer precipitation.\n    - `pw`: Winter precipitation.\n    - `ts`: Summer temperature.\n- `Y`: Y-axis indicator, the allowed value are the same as the *X-axis* indicator.\n\nIf the period is `1960-1990`, the scenario will be ignored. The value of the *X-axis* must be different than the value of the *Y-axis*.\n\nThe service will return the following object:\n\n- `count`: Total number of unique X and Y combinations.\n- `@X`: Statistics for the X-axis indicator value: *min* minimum, *avg* average and *max* maximum.\n- `@Y`: Statistics for the Y-axis indicator value: *min* minimum, *avg* average and *max* maximum.\n- `items`: Statistics for the number of grid items matching the indicators pair value combinations: *min* minimum, *avg* average and *max* maximum.",
+                "header": [],
+                "body": null,
+                "auth": null
+              },
+              "protocolProfileBehavior": {
+                "followRedirects": false,
+                "followOriginalHttpMethod": false,
+                "followAuthorizationHeader": false
+              },
+              "response": []
+            },
+            {
+              "name": "Indicators pair values for period and scenario as array",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/pair/array?period=1991-2020&scenario=rcp45&X=bio01&Y=bio12&start=0&limit=100",
+                  "query": [
+                    {
+                      "key": "period",
+                      "value": "1991-2020",
+                      "disabled": false,
+                      "description": "Period"
+                    },
+                    {
+                      "key": "scenario",
+                      "value": "rcp45",
+                      "disabled": false,
+                      "description": "Future model scenario"
+                    },
+                    {
+                      "key": "X",
+                      "value": "bio01",
+                      "disabled": false,
+                      "description": "X-axis indicator"
+                    },
+                    {
+                      "key": "Y",
+                      "value": "bio12",
+                      "disabled": false,
+                      "description": "Y-axis indicator"
+                    },
+                    {
+                      "key": "start",
+                      "value": "0",
+                      "disabled": false,
+                      "description": "First record page index, zero is the first page"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100",
+                      "disabled": false,
+                      "description": "Number of records per page"
+                    }
+                  ],
+                  "protocol": null,
+                  "host": [
+                    "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/pair/array"
+                  ],
+                  "port": null,
+                  "path": null
+                },
+                "description": "This service will return indicators pair values related to the requested period and scenario.\n\nThe service expects the following URL parameters:\n\n- `period`: The time period:\n    - `1960-1990`: Current period, centered on 1960 to 1990.\n    - `1991-2020`: Future period, centered on 1991 to 2020.\n    - `2021-2050`: Future period, centered on 2021 to 2050.\n    - `2051-2080`: Future period, centered on 2051 to 2080.\n- `scenario`: Model scenario, only for future periods:\n    - `rcp45`: Representative Concentration Pathway 4.5 (RCP 4.5).\n    - `rcp85`: Representative Concentration Pathway 8.5 (RCP 8.5).\n- `X`: X-axis indicator:\n    - `bio01`: Mean annual air temperature.\n    - `bio12`: Annual precipitation amount.\n    - `bio15`: Precipitation seasonality.\n    - `ci`: Continentality.\n    - `ps`: Summer precipitation.\n    - `pw`: Winter precipitation.\n    - `ts`: Summer temperature.\n- `Y`: Y-axis indicator, the allowed value are the same as the *X-axis* indicator.\n- `start`: First record page index, zero is the first page.\n- `limit`: Number of records per page.\n\nIf the period is `1960-1990`, the scenario will be ignored. The value of the *X-axis* must be different than the value of the *Y-axis*.\n\nThe service will return an array of arrays:\n\n- *[0]*: X-axis indicator value.\n- *[1]*: Y-axis indicator value..\n- *[2]*: Number of matching grid items.",
+                "header": [],
+                "body": null,
+                "auth": null
+              },
+              "protocolProfileBehavior": {
+                "followRedirects": false,
+                "followOriginalHttpMethod": false,
+                "followAuthorizationHeader": false
+              },
+              "response": []
+            },
+            {
+              "name": "Indicators pair values for period and scenario as object",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/pair/object?period=1991-2020&scenario=rcp45&X=bio01&Y=bio12&start=0&limit=100",
+                  "query": [
+                    {
+                      "key": "period",
+                      "value": "1991-2020",
+                      "disabled": false,
+                      "description": "Period"
+                    },
+                    {
+                      "key": "scenario",
+                      "value": "rcp45",
+                      "disabled": false,
+                      "description": "Future model scenario"
+                    },
+                    {
+                      "key": "X",
+                      "value": "bio01",
+                      "disabled": false,
+                      "description": "X-axis indicator"
+                    },
+                    {
+                      "key": "Y",
+                      "value": "bio12",
+                      "disabled": false,
+                      "description": "Y-axis indicator"
+                    },
+                    {
+                      "key": "start",
+                      "value": "0",
+                      "disabled": false,
+                      "description": "First record page index, zero is the first page"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100",
+                      "disabled": false,
+                      "description": "Number of records per page"
+                    }
+                  ],
+                  "protocol": null,
+                  "host": [
+                    "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/pair/object"
+                  ],
+                  "port": null,
+                  "path": null
+                },
+                "description": "This service will return indicators pair values related to the requested period and scenario.\n\nThe service expects the following URL parameters:\n\n- `period`: The time period:\n    - `1960-1990`: Current period, centered on 1960 to 1990.\n    - `1991-2020`: Future period, centered on 1991 to 2020.\n    - `2021-2050`: Future period, centered on 2021 to 2050.\n    - `2051-2080`: Future period, centered on 2051 to 2080.\n- `scenario`: Model scenario, only for future periods:\n    - `rcp45`: Representative Concentration Pathway 4.5 (RCP 4.5).\n    - `rcp85`: Representative Concentration Pathway 8.5 (RCP 8.5).\n- `X`: X-axis indicator:\n    - `bio01`: Mean annual air temperature.\n    - `bio12`: Annual precipitation amount.\n    - `bio15`: Precipitation seasonality.\n    - `ci`: Continentality.\n    - `ps`: Summer precipitation.\n    - `pw`: Winter precipitation.\n    - `ts`: Summer temperature.\n- `Y`: Y-axis indicator, the allowed value are the same as the *X-axis* indicator.\n- `start`: First record page index, zero is the first page.\n- `limit`: Number of records per page.\n\nIf the period is `1960-1990`, the scenario will be ignored. The value of the *X-axis* must be different than the value of the *Y-axis*.\n\nThe service will return an array of objects:\n\n- `@X`: X-axis indicator value.\n- `@Y`: Y-axis indicator value..\n- `items`: Number of matching grid items.",
+                "header": [],
+                "body": null,
+                "auth": null
+              },
+              "protocolProfileBehavior": {
+                "followRedirects": false,
+                "followOriginalHttpMethod": false,
+                "followAuthorizationHeader": false
+              },
+              "response": []
+            }
+          ],
+          "protocolProfileBehavior": null,
+          "response": []
+        },
+        {
+          "name": "SPECIES",
+          "item": [
+            {
+              "name": "Indicators pair statistics for species, period and scenario",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/pair/species/stat?period=1991-2020&scenario=rcp45&X=bio01&Y=bio12&species=Abies alba",
+                  "query": [
+                    {
+                      "key": "period",
+                      "value": "1991-2020",
+                      "disabled": false,
+                      "description": "Period"
+                    },
+                    {
+                      "key": "scenario",
+                      "value": "rcp45",
+                      "disabled": false,
+                      "description": "Future model scenario"
+                    },
+                    {
+                      "key": "X",
+                      "value": "bio01",
+                      "disabled": false,
+                      "description": "X-axis indicator"
+                    },
+                    {
+                      "key": "Y",
+                      "value": "bio12",
+                      "disabled": false,
+                      "description": "Y-axis indicator"
+                    },
+                    {
+                      "key": "species",
+                      "value": "Abies alba",
+                      "disabled": false,
+                      "description": "Genus and species"
+                    }
+                  ],
+                  "protocol": null,
+                  "host": [
+                    "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/pair/species/stat"
+                  ],
+                  "port": null,
+                  "path": null
+                },
+                "description": "This service will return statistics related to the requested indicators pair, period and scenario.\n\nThe service expects the following URL parameters:\n\n- `species`: Genus and species of interest.\n- `period`: The time period:\n    - `1960-1990`: Current period, centered on 1960 to 1990.\n    - `1991-2020`: Future period, centered on 1991 to 2020.\n    - `2021-2050`: Future period, centered on 2021 to 2050.\n    - `2051-2080`: Future period, centered on 2051 to 2080.\n- `scenario`: Model scenario, only for future periods:\n    - `rcp45`: Representative Concentration Pathway 4.5 (RCP 4.5).\n    - `rcp85`: Representative Concentration Pathway 8.5 (RCP 8.5).\n- `X`: X-axis indicator:\n    - `bio01`: Mean annual air temperature.\n    - `bio12`: Annual precipitation amount.\n    - `bio15`: Precipitation seasonality.\n    - `ci`: Continentality.\n    - `ps`: Summer precipitation.\n    - `pw`: Winter precipitation.\n    - `ts`: Summer temperature.\n- `Y`: Y-axis indicator, the allowed value are the same as the *X-axis* indicator.\n\nIf the period is `1960-1990`, the scenario will be ignored. The value of the *X-axis* must be different than the value of the *Y-axis*.\n\nThe service will return the following object:\n\n- `count`: Total number of unique X and Y combinations.\n- `@X`: Statistics for the X-axis indicator value: *min* minimum, *avg* average and *max* maximum.\n- `@Y`: Statistics for the Y-axis indicator value: *min* minimum, *avg* average and *max* maximum.\n- `items`: Statistics for the number of grid items matching the indicators pair value combinations: *min* minimum, *avg* average and *max* maximum.",
+                "header": [],
+                "body": null,
+                "auth": null
+              },
+              "protocolProfileBehavior": {
+                "followRedirects": false,
+                "followOriginalHttpMethod": false,
+                "followAuthorizationHeader": false
+              },
+              "response": []
+            },
+            {
+              "name": "Indicators pair values for species, period and scenario as array",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/pair/species/array?period=1991-2020&scenario=rcp45&X=bio01&Y=bio12&start=0&limit=100&species=Abies alba",
+                  "query": [
+                    {
+                      "key": "period",
+                      "value": "1991-2020",
+                      "disabled": false,
+                      "description": "Period"
+                    },
+                    {
+                      "key": "scenario",
+                      "value": "rcp45",
+                      "disabled": false,
+                      "description": "Future model scenario"
+                    },
+                    {
+                      "key": "X",
+                      "value": "bio01",
+                      "disabled": false,
+                      "description": "X-axis indicator"
+                    },
+                    {
+                      "key": "Y",
+                      "value": "bio12",
+                      "disabled": false,
+                      "description": "Y-axis indicator"
+                    },
+                    {
+                      "key": "start",
+                      "value": "0",
+                      "disabled": false,
+                      "description": "First record page index, zero is the first page"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100",
+                      "disabled": false,
+                      "description": "Number of records per page"
+                    },
+                    {
+                      "key": "species",
+                      "value": "Abies alba",
+                      "disabled": false,
+                      "description": "Genus and species"
+                    }
+                  ],
+                  "protocol": null,
+                  "host": [
+                    "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/pair/species/array"
+                  ],
+                  "port": null,
+                  "path": null
+                },
+                "description": "This service will return indicators pair values related to the requested period and scenario.\n\nThe service expects the following URL parameters:\n\n- `species`: Genus and species of interest.\n- `period`: The time period:\n    - `1960-1990`: Current period, centered on 1960 to 1990.\n    - `1991-2020`: Future period, centered on 1991 to 2020.\n    - `2021-2050`: Future period, centered on 2021 to 2050.\n    - `2051-2080`: Future period, centered on 2051 to 2080.\n- `scenario`: Model scenario, only for future periods:\n    - `rcp45`: Representative Concentration Pathway 4.5 (RCP 4.5).\n    - `rcp85`: Representative Concentration Pathway 8.5 (RCP 8.5).\n- `X`: X-axis indicator:\n    - `bio01`: Mean annual air temperature.\n    - `bio12`: Annual precipitation amount.\n    - `bio15`: Precipitation seasonality.\n    - `ci`: Continentality.\n    - `ps`: Summer precipitation.\n    - `pw`: Winter precipitation.\n    - `ts`: Summer temperature.\n- `Y`: Y-axis indicator, the allowed value are the same as the *X-axis* indicator.\n- `start`: First record page index, zero is the first page.\n- `limit`: Number of records per page.\n\nIf the period is `1960-1990`, the scenario will be ignored. The value of the *X-axis* must be different than the value of the *Y-axis*.\n\nThe service will return an array of arrays:\n\n- *[0]*: X-axis indicator value.\n- *[1]*: Y-axis indicator value..\n- *[2]*: Number of matching grid items.",
+                "header": [],
+                "body": null,
+                "auth": null
+              },
+              "protocolProfileBehavior": {
+                "followRedirects": false,
+                "followOriginalHttpMethod": false,
+                "followAuthorizationHeader": false
+              },
+              "response": []
+            },
+            {
+              "name": "Indicators pair values for species, period and scenario as object",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/pair/species/object?period=1991-2020&scenario=rcp45&X=bio01&Y=bio12&start=0&limit=100&species=Abies alba",
+                  "query": [
+                    {
+                      "key": "period",
+                      "value": "1991-2020",
+                      "disabled": false,
+                      "description": "Period"
+                    },
+                    {
+                      "key": "scenario",
+                      "value": "rcp45",
+                      "disabled": false,
+                      "description": "Future model scenario"
+                    },
+                    {
+                      "key": "X",
+                      "value": "bio01",
+                      "disabled": false,
+                      "description": "X-axis indicator"
+                    },
+                    {
+                      "key": "Y",
+                      "value": "bio12",
+                      "disabled": false,
+                      "description": "Y-axis indicator"
+                    },
+                    {
+                      "key": "start",
+                      "value": "0",
+                      "disabled": false,
+                      "description": "First record page index, zero is the first page"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100",
+                      "disabled": false,
+                      "description": "Number of records per page"
+                    },
+                    {
+                      "key": "species",
+                      "value": "Abies alba",
+                      "disabled": false,
+                      "description": "Genus and species"
+                    }
+                  ],
+                  "protocol": null,
+                  "host": [
+                    "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/pair/species/object"
+                  ],
+                  "port": null,
+                  "path": null
+                },
+                "description": "This service will return indicators pair values related to the requested period and scenario.\n\nThe service expects the following URL parameters:\n\n- `species`: Genus and species of interest.\n- `period`: The time period:\n    - `1960-1990`: Current period, centered on 1960 to 1990.\n    - `1991-2020`: Future period, centered on 1991 to 2020.\n    - `2021-2050`: Future period, centered on 2021 to 2050.\n    - `2051-2080`: Future period, centered on 2051 to 2080.\n- `scenario`: Model scenario, only for future periods:\n    - `rcp45`: Representative Concentration Pathway 4.5 (RCP 4.5).\n    - `rcp85`: Representative Concentration Pathway 8.5 (RCP 8.5).\n- `X`: X-axis indicator:\n    - `bio01`: Mean annual air temperature.\n    - `bio12`: Annual precipitation amount.\n    - `bio15`: Precipitation seasonality.\n    - `ci`: Continentality.\n    - `ps`: Summer precipitation.\n    - `pw`: Winter precipitation.\n    - `ts`: Summer temperature.\n- `Y`: Y-axis indicator, the allowed value are the same as the *X-axis* indicator.\n- `start`: First record page index, zero is the first page.\n- `limit`: Number of records per page.\n\nIf the period is `1960-1990`, the scenario will be ignored. The value of the *X-axis* must be different than the value of the *Y-axis*.\n\nThe service will return an array of objects:\n\n- `@X`: X-axis indicator value.\n- `@Y`: Y-axis indicator value..\n- `items`: Number of matching grid items.",
                 "header": [],
                 "body": null,
                 "auth": null
