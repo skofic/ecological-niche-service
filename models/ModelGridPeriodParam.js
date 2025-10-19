@@ -8,13 +8,14 @@
 
 const joi = require('joi')
 const dd = require('dedent')
+const K = require("../globals.js")
 
 ///
 // Schema.
 ///
 module.exports =
 	joi.string()
-		.valid('cur2005', 'fut2035', 'fut2065', 'fut2095')
+		.valid(...K.periods.grid)
 		.default('cur2005')
 		.required()
 		.description(dd`

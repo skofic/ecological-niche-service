@@ -18,19 +18,165 @@ The data provided by this service comes from ***[EU-Trees4F](https://www.nature.
 
 At this point the service should be ready to serve data, provided you have created the collection in step 3.
 
+## Data
+
+The data is stored in a single collection structured as follows:
+
+- `geometry`: The GeoJSON point where species were observed, and/or where environmental variables were measured and forecasted for future periods.
+- `properties`: This property contains all data related to the `geometry`:
+  - `species`: The list of scientific names, genus and species, of trees observed in that location.
+  - `probabilities`: The occurrence propability, current and future, for each individual species. This block contains one  property for each species names as the species:
+    - `cur2005`: This property contains `value`, which is the probability, 0 to100, that the species currently occurs at that coordinate. The data is centered around the year 2005.
+    - `fut2035`, `fut2065` and `fut2095`: These properties provide the probability that the species occurs respectively in the period centered around 2035, 2065 and 2095. The property contains two sub-properties that correspond to the Representative Concentration Pathway (RCP) climate change projection for which the future occurence probabilities have been forecasted: `rcp45` contains the probability for the *RCP4.5* scenario and `rcp85` contains the probability for the *RCP8.5* scenario.
+  - `indicators`: This property contains a set of climatic indicators, related to the current geographic point, for the following periods: `1960-1990`, `1991-2020`, `2021-2050` and `2051-2080`. *1960-1990* is considered the current period and contains the record of indicator values. The other periods are future forecasted values for the same indicators, these contain two blocks of indicator data each corresponding to the same RCP scenarios, `rcp45` and `rcp85`, used for the species probabilities. The current indicators are:
+    - `bio01`: Mean annual air temperature.
+    - `bio12`: Annual precipitation amount.
+    - `bio15`: Precipitation seasonality.
+    - `ci`: Continentality.
+    - `ps`: Summer precipitation.
+    - `pw`: Winter precipitation.
+    - `ts`: Summer temperature.
+
+Here is an example record:
+
+```json
+{
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -3.125,
+      56.875
+    ]
+  },
+  "properties": {
+    "species": [
+      "Acer platanoides",
+      "Acer pseudoplatanus"
+    ],
+    "probabilities": {
+      "Acer platanoides": {
+        "cur2005": {
+          "value": 2
+        },
+        "fut2035": {
+          "rcp45": 2,
+          "rcp85": 2
+        },
+        "fut2065": {
+          "rcp45": 2,
+          "rcp85": 2
+        },
+        "fut2095": {
+          "rcp45": 2,
+          "rcp85": 2
+        }
+      },
+      "Acer pseudoplatanus": {
+        "cur2005": {
+          "value": 1
+        },
+        "fut2035": {
+          "rcp45": 2,
+          "rcp85": 2
+        },
+        "fut2065": {
+          "rcp45": 2,
+          "rcp85": 2
+        },
+        "fut2095": {
+          "rcp45": 3,
+          "rcp85": 3
+        }
+      }
+    },
+    "indicators": {
+      "1960-1990": {
+        "bio01": 4.9,
+        "bio12": 1071,
+        "bio15": 18,
+        "ci": 12,
+        "ps": 237,
+        "pw": 310,
+        "ts": 10.8
+      },
+      "1991-2020": {
+        "rcp45": {
+          "bio01": 5.5,
+          "bio12": 1063,
+          "bio15": 20,
+          "ci": 12,
+          "ps": 236,
+          "pw": 310,
+          "ts": 11.5
+        },
+        "rcp85": {
+          "bio01": 5.5,
+          "bio12": 1060,
+          "bio15": 19,
+          "ci": 12,
+          "ps": 234,
+          "pw": 307,
+          "ts": 11.5
+        }
+      },
+      "2021-2050": {
+        "rcp45": {
+          "bio01": 6.1,
+          "bio12": 1076,
+          "bio15": 21,
+          "ci": 12,
+          "ps": 233,
+          "pw": 319,
+          "ts": 11.9
+        },
+        "rcp85": {
+          "bio01": 6.3,
+          "bio12": 1086,
+          "bio15": 20,
+          "ci": 12,
+          "ps": 230,
+          "pw": 319,
+          "ts": 12
+        }
+      },
+      "2051-2080": {
+        "rcp45": {
+          "bio01": 6.7,
+          "bio12": 1080,
+          "bio15": 21,
+          "ci": 12,
+          "ps": 229,
+          "pw": 320,
+          "ts": 12.3
+        },
+        "rcp85": {
+          "bio01": 7.4,
+          "bio12": 1090,
+          "bio15": 23,
+          "ci": 12,
+          "ps": 215,
+          "pw": 332,
+          "ts": 13.1
+        }
+      }
+    }
+  }
+}
+```
+
 ## Services
 
 The services are divided into two sections sections: one section providing data for *maps* and the other providing data for indicator pair *scatterplots*. All services are described in the ArangoDB service tabs on the database.
 
-### species
+### Species
 
 This set of services provides information regarding the available species:
 
 - `/species/list`: Return the list of available species.
 
-### map
+### Map
 
-This set of services cover species coordinates grid and occurrence probabilities:
+This set of services return species occurrence probabilities and their coordinates:
 
 - `/map/stat`: Return the grid points count for all species.
 - `/map/array`: Return the grid coordinates for all species as an array.
@@ -39,9 +185,9 @@ This set of services cover species coordinates grid and occurrence probabilities
 - `/map/species/array`: Return the grid coordinates for the provided species as an array.
 - `/map/species/point`: Return the grid coordinates for the provided species as an array of GeoJSON points.
 
-### pair
+### Pairs
 
-This set of services cover indicators pair combinations:
+This set of services return indicator pair combinations that can be used to display scatter plots:
 
 - `/pair/stat`: Return statistics for indicators pair, period and scenario.
 - `/pair/array`: Return indicators pair values for period and scenario as an array.

@@ -8,13 +8,14 @@
 
 const joi = require('joi')
 const dd = require('dedent')
+const K = require("../globals.js")
 
 ///
 // Schema.
 ///
 module.exports =
 	joi.string()
-		.valid('bio01', 'bio12', 'bio15', 'ci', 'ps', 'pw', 'ts')
+		.valid(...K.indicators.grid)
 		.default('bio01')
 		.required()
 		.description(dd`

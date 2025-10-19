@@ -8,13 +8,14 @@
 
 const joi = require('joi')
 const dd = require('dedent')
+const K = require("../globals.js")
 
 ///
 // Schema.
 ///
 module.exports =
 	joi.string()
-		.valid('1960-1990', '1991-2020', '2021-2050', '2051-2080')
+		.valid(...K.periods.pair)
 		.default('1960-1990')
 		.required()
 		.description(dd`

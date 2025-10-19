@@ -61,7 +61,7 @@ module.exports = router
 ///
 // Set tag.
 ///
-router.tag('pair')
+router.tag('Pairs')
 
 
 /******************************************************************************/

@@ -36,7 +36,7 @@ module.exports = router
 ///
 // Set tag.
 ///
-router.tag('species')
+router.tag('Species')
 
 
 /******************************************************************************/
