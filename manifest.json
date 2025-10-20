@@ -15,11 +15,23 @@
   "tests": "test/**/*.js",
   "$schema": "http://json.schemastore.org/foxx-manifest",
   "configuration": {
-    "collection": {
-      "description": "Grid records collection name",
+    "collectionGrid": {
+      "description": "Species occurrence records collection name",
       "type": "string",
       "required": true,
-      "default": "GRID"
+      "default": "OCCURRENCE"
+    },
+    "collectionPair": {
+      "description": "Climatic indicators grid records collection name",
+      "type": "string",
+      "required": true,
+      "default": "PAIRS"
+    },
+    "collectionUnitShapes": {
+      "description": "Unit shapes collection name",
+      "type": "string",
+      "required": true,
+      "default": "UnitPolygons"
     },
     "resolution": {
       "description": "Grid cell diameter resolution in degrees",

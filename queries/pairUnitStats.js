@@ -1,9 +1,10 @@
 'use strict'
 
 /**
- * Indicator pair combinations stats for period and scenario.
+ * Indicator pair combinations stats for unit, period and scenario.
  *
  * Requires the following parameters:
+ * - @unit: Requested gene conservation unit (e.g. ITA00001).
  * - @period:  Period for data (e.g. "1960-1990").
  * - @scenario: Future model scenario (e.g. "rcp45" or "rcp85"; ignored for @period 1960-1990).
  * - @X: Variable name for X axis (e.g. "bio1").
@@ -43,20 +44,22 @@
  */
 const query = `
 LET pairs = (
-	FOR doc IN @@collection
-	
-		FILTER HAS(@period == "1960-1990" ? doc.properties.@period
-		                                  : doc.properties.@period.@scenario, @X)
-		FILTER HAS(@period == "1960-1990" ? doc.properties.@period
-		                                  : doc.properties.@period.@scenario, @Y)
-		  
-		COLLECT X = @period == "1960-1990" ? doc.properties.@period.@X
-										   : doc.properties.@period.@scenario.@X,
-				Y = @period == "1960-1990" ? doc.properties.@period.@Y
-										   : doc.properties.@period.@scenario.@Y
-	    WITH COUNT INTO items
+	FOR uni IN @@unitPolygons
+		FILTER uni._key == @unit
+		FOR doc IN @@pair
+			FILTER GEO_INTERSECTS(uni.geometry, doc.geometry)
+			FILTER HAS(@period == "1960-1990" ? doc.properties.@period
+											  : doc.properties.@period.@scenario, @X)
+			FILTER HAS(@period == "1960-1990" ? doc.properties.@period
+											  : doc.properties.@period.@scenario, @Y)
+			  
+			COLLECT X = @period == "1960-1990" ? doc.properties.@period.@X
+											   : doc.properties.@period.@scenario.@X,
+					Y = @period == "1960-1990" ? doc.properties.@period.@Y
+											   : doc.properties.@period.@scenario.@Y
+			WITH COUNT INTO items
 
-	RETURN { X, Y, items }
+  	RETURN { X, Y, items }
 )
 
 RETURN {

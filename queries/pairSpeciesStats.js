@@ -44,21 +44,22 @@
  */
 const query = `
 LET pairs = (
-	FOR doc IN @@collection
-	
-		FILTER @species IN doc.properties.species
-		FILTER HAS(@period == "1960-1990" ? doc.properties.indicators.@period
-		                                  : doc.properties.indicators.@period.@scenario, @X)
-		FILTER HAS(@period == "1960-1990" ? doc.properties.indicators.@period
-		                                  : doc.properties.indicators.@period.@scenario, @Y)
-		  
-		COLLECT X = @period == "1960-1990" ? doc.properties.indicators.@period.@X
-										   : doc.properties.indicators.@period.@scenario.@X,
-				Y = @period == "1960-1990" ? doc.properties.indicators.@period.@Y
-										   : doc.properties.indicators.@period.@scenario.@Y
-	    WITH COUNT INTO items
+	FOR spe IN @@grid
+		FILTER @species IN spe.properties.species
+		FOR doc IN @@pair
+			FILTER GEO_INTERSECTS(spe.geometry, doc.geometry)
+			FILTER HAS(@period == "1960-1990" ? doc.properties.@period
+											  : doc.properties.@period.@scenario, @X)
+			FILTER HAS(@period == "1960-1990" ? doc.properties.@period
+											  : doc.properties.@period.@scenario, @Y)
+			  
+			COLLECT X = @period == "1960-1990" ? doc.properties.@period.@X
+											   : doc.properties.@period.@scenario.@X,
+					Y = @period == "1960-1990" ? doc.properties.@period.@Y
+											   : doc.properties.@period.@scenario.@Y
+			WITH COUNT INTO items
 
-	RETURN { X, Y, items }
+  	RETURN { X, Y, items }
 )
 
 RETURN {

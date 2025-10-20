@@ -14,27 +14,43 @@ module.exports = Object.freeze({
 	///
 	// Collections.
 	///
-	"collection": {
-		"name": module.context.configuration.collection,
-		"index": [
-			{
-				"name": "idx_species",
-				"type": "persistent",
-				"fields": ["properties.species[*]"],
-				"cache": false,
-				"deduplicate": false,
-				"sparse": true,
-				"unique": false
-			},
-			{
-				"name": "idx_geometry",
-				"type": "geo",
-				"fields": ["geometry"],
-				"sparse": true,
-				"unique": false
-			}
-		],
-		"view": []
+	"collections": {
+		"grid": {
+			"name": module.context.configuration.collectionGrid,
+			"index": [
+				{
+					"name": "idx_species",
+					"type": "persistent",
+					"fields": ["properties.species[*]"],
+					"cache": false,
+					"deduplicate": false,
+					"sparse": true,
+					"unique": false
+				}
+			],
+			"view": []
+		},
+		"pair": {
+			"name": module.context.configuration.collectionPair,
+			"index": [
+				{
+					"name": "idx_geometry",
+					"type": "geo",
+					"geoJson": true,
+					"fields": ["geometry"],
+					"cache": false,
+					"deduplicate": false,
+					"sparse": true,
+					"unique": false
+				}
+			],
+			"view": []
+		},
+		"unit": {
+			"name": module.context.configuration.collectionUnitShapes,
+			"index": [],
+			"view": []
+		}
 	},
 	
 	///

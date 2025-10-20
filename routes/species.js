@@ -87,7 +87,7 @@ function speciesList(request, response)
 			db._query(
 				QuerySpecies,
 				{
-					'@collection': K.collection.name
+					'@collection': K.collections.grid.name
 				}
 			).toArray()[0]
 		)

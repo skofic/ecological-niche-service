@@ -404,7 +404,7 @@ function pairsStats(request, response)
 			db._query(
 				QueryStats,
 				{
-					'@collection': K.collection.name,
+					'@collection': K.collections.pair.name,
 					'period': request.queryParams.period,
 					'scenario': request.queryParams.scenario,
 					'X': request.queryParams.X,
@@ -453,7 +453,7 @@ function pairsArray(request, response)
 			db._query(
 				QueryArray,
 				{
-					'@collection': K.collection.name,
+					'@collection': K.collections.pair.name,
 					'period': request.queryParams.period,
 					'scenario': request.queryParams.scenario,
 					'X': request.queryParams.X,
@@ -504,7 +504,7 @@ function pairsObject(request, response)
 			db._query(
 				QueryObject,
 				{
-					'@collection': K.collection.name,
+					'@collection': K.collections.pair.name,
 					'period': request.queryParams.period,
 					'scenario': request.queryParams.scenario,
 					'X': request.queryParams.X,
@@ -554,7 +554,8 @@ function pairsSpeciesStats(request, response)
 			db._query(
 				QuerySpeciesStats,
 				{
-					'@collection': K.collection.name,
+					'@grid': K.collections.grid.name,
+					'@pair': K.collections.pair.name,
 					'species': request.queryParams.species,
 					'period': request.queryParams.period,
 					'scenario': request.queryParams.scenario,
@@ -604,7 +605,8 @@ function pairsSpeciesArray(request, response)
 			db._query(
 				QuerySpeciesArray,
 				{
-					'@collection': K.collection.name,
+					'@grid': K.collections.grid.name,
+					'@pair': K.collections.pair.name,
 					'species': request.queryParams.species,
 					'period': request.queryParams.period,
 					'scenario': request.queryParams.scenario,
@@ -656,7 +658,8 @@ function pairsSpeciesObject(request, response)
 			db._query(
 				QuerySpeciesObject,
 				{
-					'@collection': K.collection.name,
+					'@grid': K.collections.grid.name,
+					'@pair': K.collections.pair.name,
 					'species': request.queryParams.species,
 					'period': request.queryParams.period,
 					'scenario': request.queryParams.scenario,

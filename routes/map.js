@@ -293,7 +293,7 @@ function gridStats(request, response)
 			db._query(
 				QueryStats,
 				{
-					'@collection': K.collection.name
+					'@collection': K.collections.grid.name
 				}
 			).toArray()[0]
 		)
@@ -322,7 +322,7 @@ function coordinatesArray(request, response)
 			db._query(
 				QueryArray,
 				{
-					'@collection': K.collection.name,
+					'@collection': K.collections.grid.name,
 					'start': request.queryParams.start,
 					'limit': request.queryParams.limit
 				}
@@ -353,7 +353,7 @@ function coordinatesPoint(request, response)
 			db._query(
 				QueryPoint,
 				{
-					'@collection': K.collection.name,
+					'@collection': K.collections.grid.name,
 					'start': request.queryParams.start,
 					'limit': request.queryParams.limit
 				}
@@ -388,7 +388,7 @@ function speciesCount(request, response)
 			db._query(
 				QuerySpeciesStats,
 				{
-					'@collection': K.collection.name,
+					'@collection': K.collections.grid.name,
 					'period': request.queryParams.period,
 					'species': request.queryParams.species,
 					'scenario': request.queryParams.scenario
@@ -430,7 +430,7 @@ function speciesArray(request, response)
 			db._query(
 				QuerySpeciesArray,
 				{
-					'@collection': K.collection.name,
+					'@collection': K.collections.grid.name,
 					'period': request.queryParams.period,
 					'species': request.queryParams.species,
 					'scenario': request.queryParams.scenario,
@@ -472,7 +472,7 @@ function speciesPoint(request, response)
 			db._query(
 				QuerySpeciesPoint,
 				{
-					'@collection': K.collection.name,
+					'@collection': K.collections.grid.name,
 					'period': request.queryParams.period,
 					'species': request.queryParams.species,
 					'scenario': request.queryParams.scenario,
