@@ -1,9 +1,10 @@
 'use strict'
 
 /**
- * All indicator pair combinations for period and scenario as array.
+ * Indicator pair combinations for unit, period and scenario.
  *
  * Requires the following parameters:
+ * - @unit: Requested unit (e.g. ITA00001).
  * - @period:  Period for data (e.g. "1960-1990").
  * - @scenario: Future model scenario (e.g. "rcp45" or "rcp85"; ignored for @period 1960-1990).
  * - @X: Variable name for X axis (e.g. "bio1").
@@ -32,22 +33,28 @@
  * @type {string}
  */
 const query = `
-FOR doc IN @@collection
-	
-	FILTER HAS(@period == "1960-1990" ? doc.properties.@period
-	                                  : doc.properties.@period.@scenario, @X)
-	FILTER HAS(@period == "1960-1990" ? doc.properties.@period
-	                                  : doc.properties.@period.@scenario, @Y)
-	
-	COLLECT X = @period == "1960-1990" ? doc.properties.@period.@X
-	                                   : doc.properties.@period.@scenario.@X,
-	        Y = @period == "1960-1990" ? doc.properties.@period.@Y
-	                                   : doc.properties.@period.@scenario.@Y
-	WITH COUNT INTO items
-	
-	LIMIT @start, @limit
-	
-RETURN [ X, Y, items ]
+LET unit = DOCUMENT(@@unitPolygons, @unit)
+
+RETURN unit == null
+	?   []
+	:   (
+			FOR doc IN @@pair
+			
+				FILTER GEO_INTERSECTS(unit.geometry, doc.geometry)
+				FILTER HAS(@period == "1960-1990" ? doc.properties.@period
+				                                  : doc.properties.@period.@scenario, @X)
+				FILTER HAS(@period == "1960-1990" ? doc.properties.@period
+				                                  : doc.properties.@period.@scenario, @Y)
+				  
+				COLLECT X = @period == "1960-1990" ? doc.properties.@period.@X
+				                                   : doc.properties.@period.@scenario.@X,
+				        Y = @period == "1960-1990" ? doc.properties.@period.@Y
+				                                   : doc.properties.@period.@scenario.@Y
+				WITH COUNT INTO items
+				LIMIT @start, @limit
+			
+			RETURN [ X, Y, items ]
+		)
 `
 
 module.exports = query

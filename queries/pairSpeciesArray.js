@@ -51,7 +51,7 @@ FOR spe IN @@grid
 	
 	LIMIT @start, @limit
 
-RETURN { X, Y, items }
+RETURN [ X, Y, items ]
 `
 
 module.exports = query

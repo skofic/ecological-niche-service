@@ -8,7 +8,7 @@
   "schemes": [
     "http"
   ],
-  "basePath": "/_db/ecological-niche-data/scat",
+  "basePath": "/_db/GeoService/scat",
   "paths": {
     "/species/list": {
       "get": {
@@ -809,6 +809,288 @@
             "default": "Abies alba",
             "name": "species",
             "description": "Genus and species",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      }
+    },
+    "/pair/unit/stat": {
+      "get": {
+        "summary": "Indicators pair statistics for unit, period and scenario",
+        "description": "This service will return statistics related to the requested unit, period and scenario.\n\nThe service expects the following URL parameters:\n\n- `unit`: Conservation unit number.\n- `period`: The time period:\n    - `1960-1990`: Current period, centered on 1960 to 1990.\n    - `1991-2020`: Future period, centered on 1991 to 2020.\n    - `2021-2050`: Future period, centered on 2021 to 2050.\n    - `2051-2080`: Future period, centered on 2051 to 2080.\n- `scenario`: Model scenario, only for future periods:\n    - `rcp45`: Representative Concentration Pathway 4.5 (RCP 4.5).\n    - `rcp85`: Representative Concentration Pathway 8.5 (RCP 8.5).\n- `X`: X-axis indicator:\n    - `bio01`: Mean annual air temperature.\n    - `bio12`: Annual precipitation amount.\n    - `bio15`: Precipitation seasonality.\n    - `ci`: Continentality.\n    - `ps`: Summer precipitation.\n    - `pw`: Winter precipitation.\n    - `ts`: Summer temperature.\n- `Y`: Y-axis indicator, the allowed value are the same as the *X-axis* indicator.\n\nIf the period is `1960-1990`, the scenario will be ignored. The value of the *X-axis* must be different than the value of the *Y-axis*.\n\nThe service will return the following object:\n\n- `count`: Total number of unique X and Y combinations.\n- `@X`: Statistics for the X-axis indicator:\n    - `min`: Minimum X-axis indicator value.\n    - `avg`: Average X-axis indicator value.\n    - `max`: Maximum X-axis indicator value.\n- `@Y`: Statistics for the Y-axis indicator:\n    - `min`: Minimum Y-axis indicator value.\n    - `avg`: Average Y-axis indicator value.\n    - `max`: Maximum Y-axis indicator value.\n- `items`: Statistics for the number of grid items matching the indicators pair value combinations:\n    - `min`: Minimum number of grid items.\n    - `avg`: Average number of grid items.\n    - `max`: Maximum number of grid items.\n- `properties`: Unit geometry topographic statistics:\n    - `chr_AvElevation`: Average elevation in meters.\n    - `chr_MinElevation`: Minimum elevation in meters.\n    - `chr_MaxElevation`: Maximum elevation in meters.\n    - `chr_StdElevation`: Elevation standard deviation.\n    - `chr_AvSlope`: Average slope angle.\n    - `chr_AvAspect`: Average aspect in degrees.\n    - `geo_shape_area`: Unit geometry area in square meters.\n\n",
+        "operationId": "946f18ea-43d6-4a23-9b50-09ed3fbec403",
+        "parameters": [
+          {
+            "type": "string",
+            "default": "1960-1990",
+            "enum": [
+              "1960-1990",
+              "1991-2020",
+              "2021-2050",
+              "2051-2080"
+            ],
+            "name": "period",
+            "description": "Period",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "default": "-",
+            "enum": [
+              "rcp45",
+              "rcp85"
+            ],
+            "name": "scenario",
+            "description": "Future model scenario",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "default": "bio01",
+            "enum": [
+              "bio01",
+              "bio12",
+              "bio15",
+              "ci",
+              "ps",
+              "pw",
+              "ts"
+            ],
+            "name": "X",
+            "description": "X-axis indicator",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "default": "bio12",
+            "enum": [
+              "bio01",
+              "bio12",
+              "bio15",
+              "ci",
+              "ps",
+              "pw",
+              "ts"
+            ],
+            "name": "Y",
+            "description": "Y-axis indicator",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "default": "DEU00001",
+            "name": "unit",
+            "description": "Conservation unit number",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      }
+    },
+    "/pair/unit/array": {
+      "get": {
+        "summary": "Indicators pair values for unit, period and scenario as array",
+        "description": "This service will return indicators pair values related to the requested unit, period and scenario.\n\nThe service expects the following URL parameters:\n\n- `unit`: Conservation unit number.\n- `period`: The time period:\n    - `1960-1990`: Current period, centered on 1960 to 1990.\n    - `1991-2020`: Future period, centered on 1991 to 2020.\n    - `2021-2050`: Future period, centered on 2021 to 2050.\n    - `2051-2080`: Future period, centered on 2051 to 2080.\n- `scenario`: Model scenario, only for future periods:\n    - `rcp45`: Representative Concentration Pathway 4.5 (RCP 4.5).\n    - `rcp85`: Representative Concentration Pathway 8.5 (RCP 8.5).\n- `X`: X-axis indicator:\n    - `bio01`: Mean annual air temperature.\n    - `bio12`: Annual precipitation amount.\n    - `bio15`: Precipitation seasonality.\n    - `ci`: Continentality.\n    - `ps`: Summer precipitation.\n    - `pw`: Winter precipitation.\n    - `ts`: Summer temperature.\n- `Y`: Y-axis indicator, the allowed value are the same as the *X-axis* indicator.\n- `start`: First record page index, zero is the first page.\n- `limit`: Number of records per page.\n\nIf the period is `1960-1990`, the scenario will be ignored. The value of the *X-axis* must be different than the value of the *Y-axis*.\n\nThe service will return an array of arrays:\n\n- *[0]*: X-axis indicator value.\n- *[1]*: Y-axis indicator value..\n- *[2]*: Number of matching grid items.",
+        "operationId": "4c81329a-d7f8-4b37-9bb8-0a6b28591026",
+        "parameters": [
+          {
+            "type": "string",
+            "default": "1960-1990",
+            "enum": [
+              "1960-1990",
+              "1991-2020",
+              "2021-2050",
+              "2051-2080"
+            ],
+            "name": "period",
+            "description": "Period",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "default": "-",
+            "enum": [
+              "rcp45",
+              "rcp85"
+            ],
+            "name": "scenario",
+            "description": "Future model scenario",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "default": "bio01",
+            "enum": [
+              "bio01",
+              "bio12",
+              "bio15",
+              "ci",
+              "ps",
+              "pw",
+              "ts"
+            ],
+            "name": "X",
+            "description": "X-axis indicator",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "default": "bio12",
+            "enum": [
+              "bio01",
+              "bio12",
+              "bio15",
+              "ci",
+              "ps",
+              "pw",
+              "ts"
+            ],
+            "name": "Y",
+            "description": "Y-axis indicator",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "minimum": 0,
+            "default": "0",
+            "name": "start",
+            "description": "First record page index, zero is the first page",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "minimum": 1,
+            "default": "100",
+            "name": "limit",
+            "description": "Number of records per page",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "default": "DEU00001",
+            "name": "unit",
+            "description": "Conservation unit number",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      }
+    },
+    "/pair/unit/object": {
+      "get": {
+        "summary": "Indicators pair values for unit, period and scenario as object",
+        "description": "This service will return indicators pair values related to the requested period and scenario.\n\nThe service expects the following URL parameters:\n\n- `unit`: Conservation unit number.\n- `period`: The time period:\n    - `1960-1990`: Current period, centered on 1960 to 1990.\n    - `1991-2020`: Future period, centered on 1991 to 2020.\n    - `2021-2050`: Future period, centered on 2021 to 2050.\n    - `2051-2080`: Future period, centered on 2051 to 2080.\n- `scenario`: Model scenario, only for future periods:\n    - `rcp45`: Representative Concentration Pathway 4.5 (RCP 4.5).\n    - `rcp85`: Representative Concentration Pathway 8.5 (RCP 8.5).\n- `X`: X-axis indicator:\n    - `bio01`: Mean annual air temperature.\n    - `bio12`: Annual precipitation amount.\n    - `bio15`: Precipitation seasonality.\n    - `ci`: Continentality.\n    - `ps`: Summer precipitation.\n    - `pw`: Winter precipitation.\n    - `ts`: Summer temperature.\n- `Y`: Y-axis indicator, the allowed value are the same as the *X-axis* indicator.\n- `start`: First record page index, zero is the first page.\n- `limit`: Number of records per page.\n\nIf the period is `1960-1990`, the scenario will be ignored. The value of the *X-axis* must be different than the value of the *Y-axis*.\n\nThe service will return an array of objects:\n\n- `@X`: X-axis indicator value.\n- `@Y`: Y-axis indicator value..\n- `items`: Number of matching grid items.",
+        "operationId": "83911d4f-35fc-40ee-b67c-5d902f5fa22d",
+        "parameters": [
+          {
+            "type": "string",
+            "default": "1960-1990",
+            "enum": [
+              "1960-1990",
+              "1991-2020",
+              "2021-2050",
+              "2051-2080"
+            ],
+            "name": "period",
+            "description": "Period",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "default": "-",
+            "enum": [
+              "rcp45",
+              "rcp85"
+            ],
+            "name": "scenario",
+            "description": "Future model scenario",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "default": "bio01",
+            "enum": [
+              "bio01",
+              "bio12",
+              "bio15",
+              "ci",
+              "ps",
+              "pw",
+              "ts"
+            ],
+            "name": "X",
+            "description": "X-axis indicator",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "default": "bio12",
+            "enum": [
+              "bio01",
+              "bio12",
+              "bio15",
+              "ci",
+              "ps",
+              "pw",
+              "ts"
+            ],
+            "name": "Y",
+            "description": "Y-axis indicator",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "minimum": 0,
+            "default": "0",
+            "name": "start",
+            "description": "First record page index, zero is the first page",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "minimum": 1,
+            "default": "100",
+            "name": "limit",
+            "description": "Number of records per page",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "default": "DEU00001",
+            "name": "unit",
+            "description": "Conservation unit number",
             "required": true,
             "in": "query"
           }

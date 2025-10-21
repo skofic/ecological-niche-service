@@ -62,24 +62,28 @@ LET pairs = (
   	RETURN { X, Y, items }
 )
 
-RETURN {
-	count: LENGTH(pairs),
-	@X: {
-		min: MIN(pairs[*].X),
-		avg: AVG(pairs[*].X),
-		max: MAX(pairs[*].X)
-	},
-	@Y: {
-		min: MIN(pairs[*].Y),
-		avg: AVG(pairs[*].Y),
-		max: MAX(pairs[*].Y)
-	},
-	items: {
-		min: MIN(pairs[*].items),
-		avg: AVG(pairs[*].items),
-		max: MAX(pairs[*].items)
-	}
-}
+RETURN LENGTH(pairs) > 0
+	?   {
+			count: LENGTH(pairs),
+			@X: {
+				min: MIN(pairs[*].X),
+				avg: AVG(pairs[*].X),
+				max: MAX(pairs[*].X)
+			},
+			@Y: {
+				min: MIN(pairs[*].Y),
+				avg: AVG(pairs[*].Y),
+				max: MAX(pairs[*].Y)
+			},
+			items: {
+				min: MIN(pairs[*].items),
+				avg: AVG(pairs[*].items),
+				max: MAX(pairs[*].items)
+			}
+		}
+	:   {
+			count: 0
+		}
 `
 
 module.exports = query

@@ -709,6 +709,208 @@
           ],
           "protocolProfileBehavior": null,
           "response": []
+        },
+        {
+          "name": "UNIT",
+          "item": [
+            {
+              "name": "Indicators pair statistics for unit, period and scenario",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/pair/unit/stat?period=1991-2020&scenario=rcp45&X=bio01&Y=bio12&unit=DEU00001",
+                  "query": [
+                    {
+                      "key": "period",
+                      "value": "1991-2020",
+                      "disabled": false,
+                      "description": "Period"
+                    },
+                    {
+                      "key": "scenario",
+                      "value": "rcp45",
+                      "disabled": false,
+                      "description": "Future model scenario"
+                    },
+                    {
+                      "key": "X",
+                      "value": "bio01",
+                      "disabled": false,
+                      "description": "X-axis indicator"
+                    },
+                    {
+                      "key": "Y",
+                      "value": "bio12",
+                      "disabled": false,
+                      "description": "Y-axis indicator"
+                    },
+                    {
+                      "key": "unit",
+                      "value": "DEU00001",
+                      "disabled": false,
+                      "description": "Conservation unit number"
+                    }
+                  ],
+                  "protocol": null,
+                  "host": [
+                    "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/pair/unit/stat"
+                  ],
+                  "port": null,
+                  "path": null
+                },
+                "description": "This service will return statistics related to the requested unit, period and scenario.\n\nThe service expects the following URL parameters:\n\n- `unit`: Conservation unit number.\n- `period`: The time period:\n    - `1960-1990`: Current period, centered on 1960 to 1990.\n    - `1991-2020`: Future period, centered on 1991 to 2020.\n    - `2021-2050`: Future period, centered on 2021 to 2050.\n    - `2051-2080`: Future period, centered on 2051 to 2080.\n- `scenario`: Model scenario, only for future periods:\n    - `rcp45`: Representative Concentration Pathway 4.5 (RCP 4.5).\n    - `rcp85`: Representative Concentration Pathway 8.5 (RCP 8.5).\n- `X`: X-axis indicator:\n    - `bio01`: Mean annual air temperature.\n    - `bio12`: Annual precipitation amount.\n    - `bio15`: Precipitation seasonality.\n    - `ci`: Continentality.\n    - `ps`: Summer precipitation.\n    - `pw`: Winter precipitation.\n    - `ts`: Summer temperature.\n- `Y`: Y-axis indicator, the allowed value are the same as the *X-axis* indicator.\n\nIf the period is `1960-1990`, the scenario will be ignored. The value of the *X-axis* must be different than the value of the *Y-axis*.\n\nThe service will return the following object:\n\n- `count`: Total number of unique X and Y combinations.\n- `@X`: Statistics for the X-axis indicator:\n    - `min`: Minimum X-axis indicator value.\n    - `avg`: Average X-axis indicator value.\n    - `max`: Maximum X-axis indicator value.\n- `@Y`: Statistics for the Y-axis indicator:\n    - `min`: Minimum Y-axis indicator value.\n    - `avg`: Average Y-axis indicator value.\n    - `max`: Maximum Y-axis indicator value.\n- `items`: Statistics for the number of grid items matching the indicators pair value combinations:\n    - `min`: Minimum number of grid items.\n    - `avg`: Average number of grid items.\n    - `max`: Maximum number of grid items.\n- `properties`: Unit geometry topographic statistics:\n    - `chr_AvElevation`: Average elevation in meters.\n    - `chr_MinElevation`: Minimum elevation in meters.\n    - `chr_MaxElevation`: Maximum elevation in meters.\n    - `chr_StdElevation`: Elevation standard deviation.\n    - `chr_AvSlope`: Average slope angle.\n    - `chr_AvAspect`: Average aspect in degrees.\n    - `geo_shape_area`: Unit geometry area in square meters.\n\n",
+                "header": [],
+                "body": null,
+                "auth": null
+              },
+              "protocolProfileBehavior": {
+                "followRedirects": false,
+                "followOriginalHttpMethod": false,
+                "followAuthorizationHeader": false
+              },
+              "response": []
+            },
+            {
+              "name": "Indicators pair values for unit, period and scenario as array",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/pair/unit/array?period=1991-2020&scenario=rcp45&X=bio01&Y=bio12&start=0&limit=100&unit=DEU00001",
+                  "query": [
+                    {
+                      "key": "period",
+                      "value": "1991-2020",
+                      "disabled": false,
+                      "description": "Period"
+                    },
+                    {
+                      "key": "scenario",
+                      "value": "rcp45",
+                      "disabled": false,
+                      "description": "Future model scenario"
+                    },
+                    {
+                      "key": "X",
+                      "value": "bio01",
+                      "disabled": false,
+                      "description": "X-axis indicator"
+                    },
+                    {
+                      "key": "Y",
+                      "value": "bio12",
+                      "disabled": false,
+                      "description": "Y-axis indicator"
+                    },
+                    {
+                      "key": "start",
+                      "value": "0",
+                      "disabled": false,
+                      "description": "First record page index, zero is the first page"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100",
+                      "disabled": false,
+                      "description": "Number of records per page"
+                    },
+                    {
+                      "key": "unit",
+                      "value": "DEU00001",
+                      "disabled": false,
+                      "description": "Conservation unit number"
+                    }
+                  ],
+                  "protocol": null,
+                  "host": [
+                    "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/pair/unit/array"
+                  ],
+                  "port": null,
+                  "path": null
+                },
+                "description": "This service will return indicators pair values related to the requested unit, period and scenario.\n\nThe service expects the following URL parameters:\n\n- `unit`: Conservation unit number.\n- `period`: The time period:\n    - `1960-1990`: Current period, centered on 1960 to 1990.\n    - `1991-2020`: Future period, centered on 1991 to 2020.\n    - `2021-2050`: Future period, centered on 2021 to 2050.\n    - `2051-2080`: Future period, centered on 2051 to 2080.\n- `scenario`: Model scenario, only for future periods:\n    - `rcp45`: Representative Concentration Pathway 4.5 (RCP 4.5).\n    - `rcp85`: Representative Concentration Pathway 8.5 (RCP 8.5).\n- `X`: X-axis indicator:\n    - `bio01`: Mean annual air temperature.\n    - `bio12`: Annual precipitation amount.\n    - `bio15`: Precipitation seasonality.\n    - `ci`: Continentality.\n    - `ps`: Summer precipitation.\n    - `pw`: Winter precipitation.\n    - `ts`: Summer temperature.\n- `Y`: Y-axis indicator, the allowed value are the same as the *X-axis* indicator.\n- `start`: First record page index, zero is the first page.\n- `limit`: Number of records per page.\n\nIf the period is `1960-1990`, the scenario will be ignored. The value of the *X-axis* must be different than the value of the *Y-axis*.\n\nThe service will return an array of arrays:\n\n- *[0]*: X-axis indicator value.\n- *[1]*: Y-axis indicator value..\n- *[2]*: Number of matching grid items.",
+                "header": [],
+                "body": null,
+                "auth": null
+              },
+              "protocolProfileBehavior": {
+                "followRedirects": false,
+                "followOriginalHttpMethod": false,
+                "followAuthorizationHeader": false
+              },
+              "response": []
+            },
+            {
+              "name": "Indicators pair values for unit, period and scenario as object",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/pair/unit/object?period=1991-2020&scenario=rcp45&X=bio01&Y=bio12&start=0&limit=100&unit=DEU00001",
+                  "query": [
+                    {
+                      "key": "period",
+                      "value": "1991-2020",
+                      "disabled": false,
+                      "description": "Period"
+                    },
+                    {
+                      "key": "scenario",
+                      "value": "rcp45",
+                      "disabled": false,
+                      "description": "Future model scenario"
+                    },
+                    {
+                      "key": "X",
+                      "value": "bio01",
+                      "disabled": false,
+                      "description": "X-axis indicator"
+                    },
+                    {
+                      "key": "Y",
+                      "value": "bio12",
+                      "disabled": false,
+                      "description": "Y-axis indicator"
+                    },
+                    {
+                      "key": "start",
+                      "value": "0",
+                      "disabled": false,
+                      "description": "First record page index, zero is the first page"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100",
+                      "disabled": false,
+                      "description": "Number of records per page"
+                    },
+                    {
+                      "key": "unit",
+                      "value": "DEU00001",
+                      "disabled": false,
+                      "description": "Conservation unit number"
+                    }
+                  ],
+                  "protocol": null,
+                  "host": [
+                    "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/pair/unit/object"
+                  ],
+                  "port": null,
+                  "path": null
+                },
+                "description": "This service will return indicators pair values related to the requested period and scenario.\n\nThe service expects the following URL parameters:\n\n- `unit`: Conservation unit number.\n- `period`: The time period:\n    - `1960-1990`: Current period, centered on 1960 to 1990.\n    - `1991-2020`: Future period, centered on 1991 to 2020.\n    - `2021-2050`: Future period, centered on 2021 to 2050.\n    - `2051-2080`: Future period, centered on 2051 to 2080.\n- `scenario`: Model scenario, only for future periods:\n    - `rcp45`: Representative Concentration Pathway 4.5 (RCP 4.5).\n    - `rcp85`: Representative Concentration Pathway 8.5 (RCP 8.5).\n- `X`: X-axis indicator:\n    - `bio01`: Mean annual air temperature.\n    - `bio12`: Annual precipitation amount.\n    - `bio15`: Precipitation seasonality.\n    - `ci`: Continentality.\n    - `ps`: Summer precipitation.\n    - `pw`: Winter precipitation.\n    - `ts`: Summer temperature.\n- `Y`: Y-axis indicator, the allowed value are the same as the *X-axis* indicator.\n- `start`: First record page index, zero is the first page.\n- `limit`: Number of records per page.\n\nIf the period is `1960-1990`, the scenario will be ignored. The value of the *X-axis* must be different than the value of the *Y-axis*.\n\nThe service will return an array of objects:\n\n- `@X`: X-axis indicator value.\n- `@Y`: Y-axis indicator value..\n- `items`: Number of matching grid items.",
+                "header": [],
+                "body": null,
+                "auth": null
+              },
+              "protocolProfileBehavior": {
+                "followRedirects": false,
+                "followOriginalHttpMethod": false,
+                "followAuthorizationHeader": false
+              },
+              "response": []
+            }
+          ],
+          "protocolProfileBehavior": null,
+          "response": []
         }
       ],
       "protocolProfileBehavior": null,

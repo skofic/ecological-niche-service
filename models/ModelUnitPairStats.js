@@ -1,13 +1,12 @@
 'use strict'
 
 /**
- * ModelPairStats.js
+ * ModelUnitPairStats.js
  *
- * Model for indicator pairs statistics.
+ * Model for condervation unit indicator pairs statistics.
  */
 
 const joi = require('joi')
-const dd = require('dedent')
 
 ///
 // Schema.
@@ -29,10 +28,19 @@ module.exports =
 			min: joi.number().required(),
 			avg: joi.number().required(),
 			max: joi.number().required()
-		})
+		}),
+		properties: {
+			chr_AvElevation: joi.number(),
+			chr_MinElevation: joi.number(),
+			chr_MaxElevation: joi.number(),
+			chr_StdElevation: joi.number(),
+			chr_AvSlope: joi.number(),
+			chr_AvAspect: joi.number(),
+			geo_shape_area: joi.number()
+		}
 	})
 		.description(`
-**Indicator pair statistics**
+**Conservation unit indicator pair statistics**
 
 - *count*: Total number of unique X and Y combinations.
 - *@X*: Statistics for the X-axis indicator:
@@ -47,4 +55,12 @@ module.exports =
   - *min*: Minimum number of grid items.
   - *avg*: Average number of grid items.
   - *max*: Maximum number of grid items.
+- *properties*: Unit geometry topographic statistics:
+  - *chr_AvElevation*: Average elevation in meters.
+  - *chr_MinElevation*: Minimum elevation in meters.
+  - *chr_MaxElevation*: Maximum elevation in meters.
+  - *chr_StdElevation*: Elevation standard deviation.
+  - *chr_AvSlope*: Average slope angle.
+  - *chr_AvAspect*: Average aspect in degrees.
+  - *geo_shape_area*: Unit geometry area in square meters.
 		`)
