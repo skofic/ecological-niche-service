@@ -50,7 +50,9 @@ LET unit = (
 )
 
 LET pairs = LENGTH(unit) == 0
-	?   []
+	?   (
+			[]
+		)
 	:   (
 			FOR doc IN @@pair
 			
