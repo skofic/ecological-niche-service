@@ -43,29 +43,33 @@
  * @type {string}
  */
 const query = `
-LET unit = DOCUMENT(@@unitPolygons, @unit)
-
-LET pairs = unit == null ? (
-  []
-) : (
-	FOR doc IN @@pair
-	
-		FILTER GEO_INTERSECTS(unit.geometry, doc.geometry)
-		FILTER HAS(@period == "1960-1990" ? doc.properties.@period
-                                      : doc.properties.@period.@scenario, @X)
-		FILTER HAS(@period == "1960-1990" ? doc.properties.@period
-                                      : doc.properties.@period.@scenario, @Y)
-		  
-		COLLECT X = @period == "1960-1990" ? doc.properties.@period.@X
-                                       : doc.properties.@period.@scenario.@X,
-            Y = @period == "1960-1990" ? doc.properties.@period.@Y
-                                       : doc.properties.@period.@scenario.@Y
-		WITH COUNT INTO items
-
-	RETURN { X, Y, items }
+LET unit = (
+	FOR doc IN @@unitPolygons
+		FILTER doc._key == @unit
+	RETURN doc
 )
 
-RETURN unit == null
+LET pairs = LENGTH(unit) == 0
+	?   []
+	:   (
+			FOR doc IN @@pair
+			
+				FILTER GEO_INTERSECTS(unit[0].geometry, doc.geometry)
+				FILTER HAS(@period == "1960-1990" ? doc.properties.@period
+												  : doc.properties.@period.@scenario, @X)
+				FILTER HAS(@period == "1960-1990" ? doc.properties.@period
+												  : doc.properties.@period.@scenario, @Y)
+				  
+				COLLECT X = @period == "1960-1990" ? doc.properties.@period.@X
+												   : doc.properties.@period.@scenario.@X,
+		                Y = @period == "1960-1990" ? doc.properties.@period.@Y
+												   : doc.properties.@period.@scenario.@Y
+				WITH COUNT INTO items
+		
+			RETURN { X, Y, items }
+		)
+
+RETURN LENGTH(unit) == 0
 	?   {
             count: 0
 		}
@@ -86,7 +90,7 @@ RETURN unit == null
 				avg: AVG(pairs[*].items),
 				max: MAX(pairs[*].items)
 			},
-			properties: unit.properties
+			properties: unit[0].properties
 		}
 `
 

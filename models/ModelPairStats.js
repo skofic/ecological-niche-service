@@ -14,7 +14,7 @@ const dd = require('dedent')
 ///
 module.exports =
 	joi.object({
-		stats: joi.number().integer().required(),
+		count: joi.number().integer().required(),
 		"@X": joi.object({
 			min: joi.number().required(),
 			avg: joi.number().required(),

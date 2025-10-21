@@ -13,21 +13,21 @@ const joi = require('joi')
 ///
 module.exports =
 	joi.object({
-		stats: joi.number().integer().required(),
+		count: joi.number().integer().required(),
 		"@X": joi.object({
-			min: joi.number().required(),
-			avg: joi.number().required(),
-			max: joi.number().required()
+			min: joi.number(),
+			avg: joi.number(),
+			max: joi.number()
 		}),
 		"@Y": joi.object({
-			min: joi.number().required(),
-			avg: joi.number().required(),
-			max: joi.number().required()
+			min: joi.number(),
+			avg: joi.number(),
+			max: joi.number()
 		}),
 		items: joi.object({
-			min: joi.number().required(),
-			avg: joi.number().required(),
-			max: joi.number().required()
+			min: joi.number(),
+			avg: joi.number(),
+			max: joi.number()
 		}),
 		properties: {
 			chr_AvElevation: joi.number(),
