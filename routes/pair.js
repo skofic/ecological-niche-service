@@ -417,6 +417,9 @@ router
 	.queryParam('Y', ModelYParam)
 	
 	.response(200, ModelUnitStats, metadata.unitStats.response)
+	.response(404, ErrorModel, dd`
+		Provided unit number not found.
+	`)
 	.response(400, ErrorModel, dd`
 		Known and intercepted error:
 		- *errorNum*: Error number.
@@ -465,6 +468,9 @@ router
 	.queryParam('limit', ModelLimit)
 	
 	.response(200, [ModelPairArray], metadata.unitArray.response)
+	.response(404, ErrorModel, dd`
+		Provided unit number not found.
+	`)
 	.response(400, ErrorModel, dd`
 		Known and intercepted error:
 		- *errorNum*: Error number.
@@ -513,6 +519,9 @@ router
 	.queryParam('limit', ModelLimit)
 	
 	.response(200, [ModelPairObject], metadata.unitObject.response)
+	.response(404, ErrorModel, dd`
+		Provided unit number not found.
+	`)
 	.response(400, ErrorModel, dd`
 		Known and intercepted error:
 		- *errorNum*: Error number.
