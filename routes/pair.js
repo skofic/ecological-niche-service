@@ -611,19 +611,15 @@ function pairsArray(request, response)
 	response
 		.send(
 			db._query(
-				QueryArray,
-				{
-					'@collection': K.collections.pair.name,
-					
-					'period': request.queryParams.period,
-					'scenario': request.queryParams.scenario,
-					
-					'X': request.queryParams.X,
-					'Y': request.queryParams.Y,
-					
-					'start': request.queryParams.start,
-					'limit': request.queryParams.limit
-				}
+				QueryArray(
+					db._collection(K.collections.pair.name),
+					request.queryParams.period,
+					request.queryParams.scenario,
+					request.queryParams.X,
+					request.queryParams.Y,
+					request.queryParams.start,
+					request.queryParams.limit
+				)
 			).toArray()
 		)
 	
@@ -665,19 +661,15 @@ function pairsObject(request, response)
 	response
 		.send(
 			db._query(
-				QueryObject,
-				{
-					'@collection': K.collections.pair.name,
-					
-					'period': request.queryParams.period,
-					'scenario': request.queryParams.scenario,
-					
-					'X': request.queryParams.X,
-					'Y': request.queryParams.Y,
-					
-					'start': request.queryParams.start,
-					'limit': request.queryParams.limit
-				}
+				QueryObject(
+					db._collection(K.collections.pair.name),
+					request.queryParams.period,
+					request.queryParams.scenario,
+					request.queryParams.X,
+					request.queryParams.Y,
+					request.queryParams.start,
+					request.queryParams.limit
+				)
 			).toArray()
 		)
 	
@@ -771,21 +763,20 @@ function pairsSpeciesArray(request, response)
 	response
 		.send(
 			db._query(
-				QuerySpeciesArray,
-				{
-					'@grid': K.collections.grid.name,
-					'@pair': K.collections.pair.name,
+				QuerySpeciesArray(
+					db._collection(K.collections.grid.name),
+					db._collection(K.collections.pair.name),
 					
-					'species': request.queryParams.species,
-					'period': request.queryParams.period,
-					'scenario': request.queryParams.scenario,
+					request.queryParams.species,
+					request.queryParams.period,
+					request.queryParams.scenario,
 					
-					'X': request.queryParams.X,
-					'Y': request.queryParams.Y,
+					request.queryParams.X,
+					request.queryParams.Y,
 					
-					'start': request.queryParams.start,
-					'limit': request.queryParams.limit
-				}
+					request.queryParams.start,
+					request.queryParams.limit
+				)
 			).toArray()
 		)
 	
@@ -827,21 +818,20 @@ function pairsSpeciesObject(request, response)
 	response
 		.send(
 			db._query(
-				QuerySpeciesObject,
-				{
-					'@grid': K.collections.grid.name,
-					'@pair': K.collections.pair.name,
+				QuerySpeciesObject(
+					db._collection(K.collections.grid.name),
+					db._collection(K.collections.pair.name),
 					
-					'species': request.queryParams.species,
-					'period': request.queryParams.period,
-					'scenario': request.queryParams.scenario,
+					request.queryParams.species,
+					request.queryParams.period,
+					request.queryParams.scenario,
 					
-					'X': request.queryParams.X,
-					'Y': request.queryParams.Y,
+					request.queryParams.X,
+					request.queryParams.Y,
 					
-					'start': request.queryParams.start,
-					'limit': request.queryParams.limit
-				}
+					request.queryParams.start,
+					request.queryParams.limit
+				)
 			).toArray()
 		)
 	
@@ -877,25 +867,32 @@ function pairsUnitStats(request, response)
 	}
 	
 	///
-	// Perform query.
+	// Perform the query.
 	///
-	response
-		.send(
-			db._query(
-				QueryUnitStats,
-				{
-					'@unitPolygons': K.collections.unit.name,
-					'@pair': K.collections.pair.name,
-					
-					'unit': request.queryParams.unit,
-					'period': request.queryParams.period,
-					'scenario': request.queryParams.scenario,
-					
-					'X': request.queryParams.X,
-					'Y': request.queryParams.Y
-				}
-			).toArray()[0]
-		)
+	const result = db._query(
+		QueryUnitStats,
+		{
+			'@unitPolygons': K.collections.unit.name,
+			'@pair': K.collections.pair.name,
+			
+			'unit': request.queryParams.unit,
+			'period': request.queryParams.period,
+			'scenario': request.queryParams.scenario,
+			
+			'X': request.queryParams.X,
+			'Y': request.queryParams.Y
+		}
+	).toArray()[0]
+	
+	///
+	// Handle unit not found.
+	///
+	if(result != null) {
+		response.send(result)
+		return
+	}
+	
+	response.throw(404, `Unit [${request.queryParams.unit}] was not found.`)
 	
 } // pairsUnitStats()
 
@@ -930,28 +927,35 @@ function pairsUnitArray(request, response)
 	}
 	
 	///
-	// Perform query.
+	// Perform the query.
 	///
-	response
-		.send(
-			db._query(
-				QueryUnitArray,
-				{
-					'@unitPolygons': K.collections.unit.name,
-					'@pair': K.collections.pair.name,
-					
-					'unit': request.queryParams.unit,
-					'period': request.queryParams.period,
-					'scenario': request.queryParams.scenario,
-					
-					'X': request.queryParams.X,
-					'Y': request.queryParams.Y,
-					
-					'start': request.queryParams.start,
-					'limit': request.queryParams.limit
-				}
-			).toArray()
-		)
+	const result = db._query(
+		QueryUnitArray,
+		{
+			'@unitPolygons': K.collections.unit.name,
+			'@pair': K.collections.pair.name,
+			
+			'unit': request.queryParams.unit,
+			'period': request.queryParams.period,
+			'scenario': request.queryParams.scenario,
+			
+			'X': request.queryParams.X,
+			'Y': request.queryParams.Y,
+			
+			'start': request.queryParams.start,
+			'limit': request.queryParams.limit
+		}
+	).toArray()
+	
+	///
+	// Handle unit not found.
+	///
+	if(result[0] != null) {
+		response.send(result)
+		return
+	}
+	
+	response.throw(404, `Unit [${request.queryParams.unit}] was not found.`)
 	
 } // pairsUnitArray()
 
@@ -986,27 +990,34 @@ function pairsUnitObject(request, response)
 	}
 	
 	///
-	// Perform query.
+	// Perform the query.
 	///
-	response
-		.send(
-			db._query(
-				QueryUnitObject,
-				{
-					'@unitPolygons': K.collections.unit.name,
-					'@pair': K.collections.pair.name,
-					
-					'unit': request.queryParams.unit,
-					'period': request.queryParams.period,
-					'scenario': request.queryParams.scenario,
-					
-					'X': request.queryParams.X,
-					'Y': request.queryParams.Y,
-					
-					'start': request.queryParams.start,
-					'limit': request.queryParams.limit
-				}
-			).toArray()
-		)
+	const result = db._query(
+		QueryUnitObject,
+		{
+			'@unitPolygons': K.collections.unit.name,
+			'@pair': K.collections.pair.name,
+			
+			'unit': request.queryParams.unit,
+			'period': request.queryParams.period,
+			'scenario': request.queryParams.scenario,
+			
+			'X': request.queryParams.X,
+			'Y': request.queryParams.Y,
+			
+			'start': request.queryParams.start,
+			'limit': request.queryParams.limit
+		}
+	).toArray()
+	
+	///
+	// Handle unit not found.
+	///
+	if(result[0] != null) {
+		response.send(result)
+		return
+	}
+	
+	response.throw(404, `Unit [${request.queryParams.unit}] was not found.`)
 	
 } // pairsUnitObject()

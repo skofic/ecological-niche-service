@@ -320,12 +320,11 @@ function coordinatesArray(request, response)
 	response
 		.send(
 			db._query(
-				QueryArray,
-				{
-					'@collection': K.collections.grid.name,
-					'start': request.queryParams.start,
-					'limit': request.queryParams.limit
-				}
+				QueryArray(
+					db._collection(K.collections.grid.name),
+					request.queryParams.start,
+					request.queryParams.limit
+				)
 			).toArray()
 		)
 	
@@ -351,12 +350,11 @@ function coordinatesPoint(request, response)
 	response
 		.send(
 			db._query(
-				QueryPoint,
-				{
-					'@collection': K.collections.grid.name,
-					'start': request.queryParams.start,
-					'limit': request.queryParams.limit
-				}
+				QueryPoint(
+					db._collection(K.collections.grid.name),
+					request.queryParams.start,
+					request.queryParams.limit
+				)
 			).toArray()
 		)
 	
@@ -428,15 +426,14 @@ function speciesArray(request, response)
 	response
 		.send(
 			db._query(
-				QuerySpeciesArray,
-				{
-					'@collection': K.collections.grid.name,
-					'period': request.queryParams.period,
-					'species': request.queryParams.species,
-					'scenario': request.queryParams.scenario,
-					'start': request.queryParams.start,
-					'limit': request.queryParams.limit
-				}
+				QuerySpeciesArray(
+					db._collection(K.collections.grid.name),
+					request.queryParams.species,
+					request.queryParams.period,
+					request.queryParams.scenario,
+					request.queryParams.start,
+					request.queryParams.limit
+				)
 			).toArray()
 		)
 	
@@ -470,15 +467,14 @@ function speciesPoint(request, response)
 	response
 		.send(
 			db._query(
-				QuerySpeciesPoint,
-				{
-					'@collection': K.collections.grid.name,
-					'period': request.queryParams.period,
-					'species': request.queryParams.species,
-					'scenario': request.queryParams.scenario,
-					'start': request.queryParams.start,
-					'limit': request.queryParams.limit
-				}
+				QuerySpeciesPoint(
+					db._collection(K.collections.grid.name),
+					request.queryParams.species,
+					request.queryParams.period,
+					request.queryParams.scenario,
+					request.queryParams.start,
+					request.queryParams.limit
+				)
 			).toArray()
 		)
 	

@@ -20,4 +20,5 @@ module.exports =
 		.required()     // must provide
 		.description(dd`
 			Number of records per page.
+			If both start and this value are zero, all records are returned.
 		`)

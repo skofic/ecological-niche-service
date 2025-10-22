@@ -43,57 +43,53 @@
  * @type {string}
  */
 const query = `
-LET unit = (
-	FOR doc IN @@unitPolygons
-		FILTER doc._key == @unit
-	RETURN doc
-)
+LET unit = DOCUMENT(@@unitPolygons, @unit)
 
-LET pairs = LENGTH(unit) == 0
-	?   (
-			[]
-		)
+RETURN unit == null
+	?   null
 	:   (
-			FOR doc IN @@pair
+			LET pairs = (
+				FOR doc IN @@pair
+				
+					FILTER GEO_INTERSECTS(unit.geometry, doc.geometry)
+					FILTER HAS(@period == "1960-1990" ? doc.properties.@period
+													: doc.properties.@period.@scenario, @X)
+					FILTER HAS(@period == "1960-1990" ? doc.properties.@period
+													: doc.properties.@period.@scenario, @Y)
+					  
+					COLLECT X = @period == "1960-1990" ? doc.properties.@period.@X
+													 : doc.properties.@period.@scenario.@X,
+						  Y = @period == "1960-1990" ? doc.properties.@period.@Y
+													 : doc.properties.@period.@scenario.@Y
+					WITH COUNT INTO items
+				
+				RETURN { X, Y, items }
+			)
 			
-				FILTER GEO_INTERSECTS(unit[0].geometry, doc.geometry)
-				FILTER HAS(@period == "1960-1990" ? doc.properties.@period
-												  : doc.properties.@period.@scenario, @X)
-				FILTER HAS(@period == "1960-1990" ? doc.properties.@period
-												  : doc.properties.@period.@scenario, @Y)
-				  
-				COLLECT X = @period == "1960-1990" ? doc.properties.@period.@X
-												   : doc.properties.@period.@scenario.@X,
-		                Y = @period == "1960-1990" ? doc.properties.@period.@Y
-												   : doc.properties.@period.@scenario.@Y
-				WITH COUNT INTO items
-		
-			RETURN { X, Y, items }
+			RETURN LENGTH(pairs) == 0
+				?   {
+						count: 0
+					}
+				:   {
+						count: LENGTH(pairs),
+						@X: {
+							min: MIN(pairs[*].X),
+							avg: AVG(pairs[*].X),
+							max: MAX(pairs[*].X)
+						},
+						@Y: {
+							min: MIN(pairs[*].Y),
+							avg: AVG(pairs[*].Y),
+							max: MAX(pairs[*].Y)
+						},
+						items: {
+							min: MIN(pairs[*].items),
+							avg: AVG(pairs[*].items),
+							max: MAX(pairs[*].items)
+						},
+						properties: unit.properties
+					}
 		)
-
-RETURN LENGTH(unit) == 0
-	?   {
-            count: 0
-		}
-	:   {
-			count: LENGTH(pairs),
-			@X: {
-				min: MIN(pairs[*].X),
-				avg: AVG(pairs[*].X),
-				max: MAX(pairs[*].X)
-			},
-			@Y: {
-				min: MIN(pairs[*].Y),
-				avg: AVG(pairs[*].Y),
-				max: MAX(pairs[*].Y)
-			},
-			items: {
-				min: MIN(pairs[*].items),
-				avg: AVG(pairs[*].items),
-				max: MAX(pairs[*].items)
-			},
-			properties: unit[0].properties
-		}
 `
 
 module.exports = query

@@ -33,18 +33,14 @@
  * @type {string}
  */
 const query = `
-LET unit = (
-	FOR doc IN @@unitPolygons
-		FILTER doc._key == @unit
-	RETURN doc
-)
+LET unit = DOCUMENT(@@unitPolygons, @unit)
 
-RETURN LENGTH(unit) == 0
-	?   []
+RETURN unit == null
+	?   null
 	:   (
 			FOR doc IN @@pair
 			
-				FILTER GEO_INTERSECTS(unit[0].geometry, doc.geometry)
+				FILTER GEO_INTERSECTS(unit.geometry, doc.geometry)
 				FILTER HAS(@period == "1960-1990" ? doc.properties.@period
 				                                  : doc.properties.@period.@scenario, @X)
 				FILTER HAS(@period == "1960-1990" ? doc.properties.@period

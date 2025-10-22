@@ -233,6 +233,9 @@ This set of services return indicator pair combinations that can be used to disp
 - `/pair/species/stat`: Return statistics for indicators pair, species, period and scenario.
 - `/pair/species/array`: Return indicators pair values for species, period and scenario as an array.
 - `/pair/species/object`: Return indicators pair values for species, period and scenario as an object.
+- `/pair/unit/stat`: Return statistics for indicators pair, unit, period and scenario.
+- `/pair/unit/array`: Return indicators pair values for unit, period and scenario as an array.
+- `/pair/unit/object`: Return indicators pair values for unit, period and scenario as an object.
 
 ## License
 

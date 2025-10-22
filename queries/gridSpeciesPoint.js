@@ -1,37 +1,78 @@
 'use strict'
 
+const {aql} = require('@arangodb')
+
+
 /**
- * Return a map grid of species occurrence probabilities
- * for a specific period and model scenario as an array of GeoJSONL objects.
+ * This function will build the query according to the provided parameters.
  *
- * The map will contain a grid of rects:
- * Pixel Size 0.08333333333333332871,-0.08333333333333332871
+ * Return a map grid of species occurrence probabilities
+ * for a specific period and model scenario as an array of arrays.
  *
  * Requires the following parameters:
- * - @period:  Period for data (e.g. "cur2005", "fut2035", "fut2065" and "fut2095").
- * - @species: Genus and species (e.g. "Abies alba").
- * - @scenario: Future model scenario (e.g. "rcp45" or "rcp85"; ignored for @period cur2005).
+ * - ${thePeriod}:  Period for data (e.g. "cur2005", "fut2035", "fut2065" and "fut2095").
+ * - ${theSpecies}: Genus and species (e.g. "Abies alba").
+ * - ${theScenario}: Future model scenario (e.g. "rcp45" or "rcp85"; ignored for ${thePeriod} cur2005).
  *
- * Returns an array og GeoJSONL objects with point geometry.
+ * Returns an array og GeoJSON objects with point geometry.
  *
- * @type {string}
+ * If both theStart and theLimit are zero, all records will be returned.
+ *
+ * The function returns the final query.
+ *
+ * @param theCollection {collection}: Map grid collection (OCCURRENCE).
+ * @param theSpecies {String}: The genus and species.
+ * @param thePeriod {String}: The period.
+ * @param theScenario {String}: T&he model scenario
+ * @param theStart {Number}: The zero-based first record.
+ * @param theLimit {Number}: The number of records to return.
  */
-const query = `
-FOR doc IN @@collection
-	FILTER @species IN doc.properties.species
-	FILTER @period == "cur2005" ? doc.properties.probabilities.@species.@period.value
-	                          : doc.properties.probabilities.@species.@period.@scenario
-	                          != null
-	LIMIT @start, @limit
+module.exports = function(
+	theCollection,
+	theSpecies,
+	thePeriod, theScenario,
+	theStart, theLimit)
+{
+	///
+	// Query start.
+	///
+	const queryStart = aql`
+FOR doc IN ${theCollection}
+  FILTER ${theSpecies} IN doc.properties.species
+  FILTER ${thePeriod} == "cur2005" ? doc.properties.probabilities.${theSpecies}.${thePeriod}.value
+								   : doc.properties.probabilities.${theSpecies}.${thePeriod}.${theScenario}
+         != null
+	`
+	
+	///
+	// Query limits.
+	///
+	const queryLimits = aql`
+	LIMIT ${theStart}, ${theLimit}
+	`
+	
+	///
+	// Query end.
+	///
+	const queryEnd = aql`
 RETURN {
 	type: 'Feature',
 	geometry: doc.geometry,
 	properties: {
-		value: @period == "cur2005"
-			    ? doc.properties.probabilities.@species.@period.value
-			    : doc.properties.probabilities.@species.@period.@scenario
+		value: ${thePeriod} == "cur2005"
+			    ? doc.properties.probabilities.${theSpecies}.${thePeriod}.value
+			    : doc.properties.probabilities.${theSpecies}.${thePeriod}.${theScenario}
 	}
 }
-`
-
-module.exports = query
+	`
+	
+	///
+	// Build query.
+	///
+	if(theStart === 0 && theLimit === 0){
+		return aql.join([queryStart, queryEnd])
+	}
+	
+	return aql.join([queryStart, queryLimits, queryEnd])
+	
+}
