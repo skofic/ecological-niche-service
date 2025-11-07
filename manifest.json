@@ -21,6 +21,12 @@
       "required": true,
       "default": "OCCURRENCE"
     },
+    "collectionChoro": {
+      "description": "Species distribution geometry",
+      "type": "string",
+      "required": true,
+      "default": "CHOROLOGY"
+    },
     "collectionPair": {
       "description": "Climatic indicators grid records collection name",
       "type": "string",

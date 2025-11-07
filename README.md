@@ -211,6 +211,7 @@ The services are divided into two sections sections: one section providing data 
 This set of services provides information regarding the available species:
 
 - `/species/list`: Return the list of available species.
+- `/species/chorology`: Return species distribution geometry.
 
 ### Map
 

@@ -46,6 +46,18 @@ module.exports = Object.freeze({
 			],
 			"view": []
 		},
+		"chorology": {
+			"name": module.context.configuration.collectionChoro,
+			"index": [
+				{
+					"name": "idx_species",
+					"type": "persistent",
+					"fields": ["properties.species"],
+					"unique": true
+				}
+			],
+			"view": []
+		},
 		"unit": {
 			"name": module.context.configuration.collectionUnitShapes,
 			"index": [],

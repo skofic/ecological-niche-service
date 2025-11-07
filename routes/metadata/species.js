@@ -17,16 +17,25 @@ const dd = require('dedent')
 // Metadata record.
 ///
 const metadata =
-	{
-		list: {
-			summary: "List all species",
+{
+	list: {
+		summary: "List all species",
+		description: dd`
+		This service will return the list of all available species.
+		`,
+		response: dd`
+The service will return an array with the list of all available species.
+		`
+	},
+	chorology: {
+		summary: "Return species chorology",
 			description: dd`
-			This service will return the list of all available species.
+		This service will return the geometry of the species distribution.
 		`,
 			response: dd`
-The service will return an array with the list of all available species.
-			`
-		}
+The service will return a single GeoJSON geometry object.
+		`
 	}
+}
 
 module.exports = metadata
