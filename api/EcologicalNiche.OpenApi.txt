@@ -30,29 +30,151 @@
           "required": false
         },
         "responses": {
-          "404": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Pragma": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "no-cache"
+                }
+              },
+              "X-Content-Type-Options": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "nosniff"
+                }
+              },
+              "Content-Security-Policy": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "frame-ancestors 'self'; form-action 'self';"
+                }
+              },
+              "Strict-Transport-Security": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "max-age=31536000 ; includeSubDomains"
+                }
+              },
+              "Server": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "ArangoDB"
+                }
+              },
+              "Content-Type": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Cache-Control": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "no-cache, no-store, must-revalidate, pre-check=0, post-check=0, max-age=0, s-maxage=0"
+                }
+              },
+              "Expires": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "0"
+                }
+              },
+              "Content-Length": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "1203"
+                }
+              },
+              "X-Arango-Queue-Time-Seconds": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "0.000000"
+                }
+              },
+              "Connection": {
+                "description": "",
+                "schema": {
+                  "type": "string",
+                  "example": "Close"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/{protocol}:/{host}:{port}/_db/{db}/{path}/species/chorology/": {
+      "get": {
+        "summary": "Return species chorology",
+        "description": "This service will return the species distribution geometry as a multi-polygon.\nProvide the genus and species names in the parameter and the service will return a GeoJSON geometry.\nIf the species was not found, the service will return an empty object.",
+        "operationId": "1c947bab-beb5-4b46-b809-609f890f66a9",
+        "parameters": [
+          {
+            "name": "species",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "Abies alba",
+              "description": ""
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "This service will return the species distribution geometry as a multi-polygon.\nProvide the genus and species names in the parameter and the service will return a GeoJSON geometry.\nIf the species was not found, the service will return an empty object.",
+          "content": {
+            "text/plain": {}
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
             "description": "",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "error": {
-                      "type": "boolean"
-                    },
-                    "code": {
-                      "type": "integer",
-                      "format": "int64",
-                      "example": 404
-                    },
-                    "errorNum": {
-                      "type": "integer",
-                      "format": "int64",
-                      "example": 404
-                    },
-                    "errorMessage": {
+                    "type": {
                       "type": "string",
-                      "example": "unknown path '/scat/species/list'"
+                      "example": "MultiPolygon"
+                    },
+                    "coordinates": {
+                      "type": "object",
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": {
+                              "type": "number"
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -119,7 +241,7 @@
                 "description": "",
                 "schema": {
                   "type": "string",
-                  "example": "91"
+                  "example": "110896"
                 }
               },
               "X-Arango-Queue-Time-Seconds": {
@@ -2040,96 +2162,99 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "count": {
-                      "type": "integer",
-                      "format": "int64",
-                      "example": 2
-                    },
-                    "bio01": {
-                      "type": "object",
-                      "properties": {
-                        "min": {
-                          "type": "integer",
-                          "format": "int64",
-                          "example": 9
-                        },
-                        "avg": {
-                          "type": "number"
-                        },
-                        "max": {
-                          "type": "number"
-                        }
-                      }
-                    },
-                    "bio12": {
-                      "type": "object",
-                      "properties": {
-                        "min": {
-                          "type": "integer",
-                          "format": "int64",
-                          "example": 818
-                        },
-                        "avg": {
-                          "type": "integer",
-                          "format": "int64",
-                          "example": 839
-                        },
-                        "max": {
-                          "type": "integer",
-                          "format": "int64",
-                          "example": 860
-                        }
-                      }
-                    },
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "min": {
-                          "type": "integer",
-                          "format": "int64",
-                          "example": 1
-                        },
-                        "avg": {
-                          "type": "integer",
-                          "format": "int64",
-                          "example": 1
-                        },
-                        "max": {
-                          "type": "integer",
-                          "format": "int64",
-                          "example": 1
-                        }
-                      }
-                    },
+                  "type": "array",
+                  "items": {
+                    "type": "object",
                     "properties": {
-                      "type": "object",
+                      "count": {
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 2
+                      },
+                      "bio01": {
+                        "type": "object",
+                        "properties": {
+                          "min": {
+                            "type": "integer",
+                            "format": "int64",
+                            "example": 9
+                          },
+                          "avg": {
+                            "type": "number"
+                          },
+                          "max": {
+                            "type": "number"
+                          }
+                        }
+                      },
+                      "bio12": {
+                        "type": "object",
+                        "properties": {
+                          "min": {
+                            "type": "integer",
+                            "format": "int64",
+                            "example": 818
+                          },
+                          "avg": {
+                            "type": "integer",
+                            "format": "int64",
+                            "example": 839
+                          },
+                          "max": {
+                            "type": "integer",
+                            "format": "int64",
+                            "example": 860
+                          }
+                        }
+                      },
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "min": {
+                            "type": "integer",
+                            "format": "int64",
+                            "example": 1
+                          },
+                          "avg": {
+                            "type": "integer",
+                            "format": "int64",
+                            "example": 1
+                          },
+                          "max": {
+                            "type": "integer",
+                            "format": "int64",
+                            "example": 1
+                          }
+                        }
+                      },
                       "properties": {
-                        "chr_AvElevation": {
-                          "type": "number"
-                        },
-                        "chr_MinElevation": {
-                          "type": "integer",
-                          "format": "int64",
-                          "example": 273
-                        },
-                        "chr_MaxElevation": {
-                          "type": "integer",
-                          "format": "int64",
-                          "example": 309
-                        },
-                        "chr_StdElevation": {
-                          "type": "number"
-                        },
-                        "chr_AvSlope": {
-                          "type": "number"
-                        },
-                        "chr_AvAspect": {
-                          "type": "number"
-                        },
-                        "geo_shape_area": {
-                          "type": "number"
+                        "type": "object",
+                        "properties": {
+                          "chr_AvElevation": {
+                            "type": "number"
+                          },
+                          "chr_MinElevation": {
+                            "type": "integer",
+                            "format": "int64",
+                            "example": 273
+                          },
+                          "chr_MaxElevation": {
+                            "type": "integer",
+                            "format": "int64",
+                            "example": 309
+                          },
+                          "chr_StdElevation": {
+                            "type": "number"
+                          },
+                          "chr_AvSlope": {
+                            "type": "number"
+                          },
+                          "chr_AvAspect": {
+                            "type": "number"
+                          },
+                          "geo_shape_area": {
+                            "type": "number"
+                          }
                         }
                       }
                     }
@@ -2198,7 +2323,7 @@
                 "description": "",
                 "schema": {
                   "type": "string",
-                  "example": "359"
+                  "example": "361"
                 }
               },
               "X-Arango-Queue-Time-Seconds": {

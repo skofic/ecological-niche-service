@@ -32,6 +32,39 @@
             "followAuthorizationHeader": false
           },
           "response": []
+        },
+        {
+          "name": "Return species chorology",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/species/chorology?species=Abies alba",
+              "query": [
+                {
+                  "key": "species",
+                  "value": "Abies alba",
+                  "disabled": false,
+                  "description": "Genus and species"
+                }
+              ],
+              "protocol": null,
+              "host": [
+                "{{protocol}}://{{host}}:{{port}}/_db/{{db}}/{{path}}/species/chorology"
+              ],
+              "port": null,
+              "path": null
+            },
+            "description": "This service will return the species distribution geometry as a multi-polygon.\nProvide the genus and species names in the parameter and the service will return a GeoJSON geometry.\nIf the species was not found, the service will return an empty object.",
+            "header": [],
+            "body": null,
+            "auth": null
+          },
+          "protocolProfileBehavior": {
+            "followRedirects": false,
+            "followOriginalHttpMethod": false,
+            "followAuthorizationHeader": false
+          },
+          "response": []
         }
       ],
       "protocolProfileBehavior": null,

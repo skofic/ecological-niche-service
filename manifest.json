@@ -1,6 +1,6 @@
 {
   "name": "ecological-niche-service",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A service to get indicator pair scatter plots and species viability data",
   "engines": {
     "arangodb": "^3.0.0"

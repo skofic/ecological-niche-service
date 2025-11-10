@@ -23,6 +23,28 @@
         "parameters": []
       }
     },
+    "/species/chorology": {
+      "get": {
+        "summary": "Return species chorology",
+        "description": "This service will return the species distribution geometry as a multi-polygon.\nProvide the genus and species names in the parameter and the service will return a GeoJSON geometry.\nIf the species was not found, the service will return an empty object.",
+        "operationId": "1c947bab-beb5-4b46-b809-609f890f66a9",
+        "parameters": [
+          {
+            "type": "string",
+            "default": "Abies alba",
+            "name": "species",
+            "description": "Genus and species",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      }
+    },
     "/map/stat": {
       "get": {
         "summary": "Occurrence grid cells statistics",
