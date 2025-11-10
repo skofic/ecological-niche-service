@@ -28,7 +28,6 @@ const QuerySpeciesChorology = require('../queries/speciesChorology')
 // Service metadata.
 ///
 const metadata = require('./metadata/species')
-const ModelUnitParam = require("../models/ModelUnitNumber");
 
 
 ///
@@ -87,7 +86,6 @@ router
 	.queryParam('species', ModelSpeciesParam)
 	
 	.response(200, ModelChorology, metadata.chorology.response)
-	.response(204, "No geometry available for species.")
 
 
 /******************************************************************************/
@@ -136,15 +134,23 @@ function speciesChorology(request, response)
 	///
 	// Perform query.
 	///
-	response
-		.send(
-			db._query(
-				QuerySpeciesChorology,
-				{
-					'@collection': K.collections.chorology.name,
-					'species': request.queryParams.species
-				}
-			).toArray()[0]
-		)
+	const result = db._query(
+		QuerySpeciesChorology,
+		{
+			'@collection': K.collections.chorology.name,
+			'species': request.queryParams.species
+		}
+	).toArray()
+	
+	///
+	// Handle result.
+	///
+	if(result.length === 0) {
+		response
+			.send({})
+	} else {
+		response
+			.send(result[0])
+	}
 	
 } // speciesChorology()

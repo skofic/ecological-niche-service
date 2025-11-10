@@ -30,7 +30,8 @@ The service will return an array with the list of all available species.
 	chorology: {
 		summary: "Return species chorology",
 			description: dd`
-		This service will return the geometry of the species distribution.
+		This service will return the geometry of the species distribution, \
+		or an empty object if the species was not found.
 		`,
 			response: dd`
 The service will return a single GeoJSON geometry object.
