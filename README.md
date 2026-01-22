@@ -240,6 +240,6 @@ This set of services return indicator pair combinations that can be used to disp
 
 ## License
 
-Copyright (c) 2025 Milko Skofic
+Copyright (c) 2026 Milko Skofic
 
 License: Apache 2
